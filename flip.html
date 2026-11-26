@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <style>
-/* Ίδιο σύστημα με το Ευρετήριο Οικοπέδων: φίλτρα & παραδοχές αριστερά, αποτελέσματα δεξιά, λεπτομέρεια σε συρτάρι. */
+/* Ίδιο σύστημα με το Ευρετήριο Οικοπέδων: φίλτρα & ρυθμίσεις αριστερά, αποτελέσματα δεξιά, λεπτομέρεια σε συρτάρι. */
 :root{
   --bg:#f4f3ef; --panel:#fffefb; --ink:#1b1f1d; --muted:#5d6561; --line:#dedbd3; --chip:#efede7;
   --accent:#1d5f4f; --accent-hi:#174d40; --accent-ink:#ffffff; --danger:#b3261e;
@@ -155,7 +155,7 @@ footer{font-size:12px;color:var(--muted);line-height:1.5}
     <button type="button" id="f-reset">Καθαρισμός φίλτρων</button>
 
     <details class="box" id="assump">
-      <summary>Παραδοχές υπολογισμού</summary>
+      <summary>Κόστη &amp; ρυθμίσεις</summary>
       <div class="inner" id="assump-inner"></div>
     </details>
     <details class="box" id="arvbox">
@@ -171,7 +171,7 @@ footer{font-size:12px;color:var(--muted);line-height:1.5}
       <button type="button" id="cfg-export">Αποθήκευση ρυθμίσεων</button>
       <label class="btnrow"><button type="button" id="cfg-import-btn">Φόρτωση ρυθμίσεων</button><input type="file" id="cfg-import" accept="application/json" hidden></label>
     </div>
-    <footer>Πηγή αγγελιών: Intrum Marketplace (δημόσιες σελίδες), ανανεώνεται καθημερινά. Οι υπολογισμοί είναι ενδεικτικοί, βασίζονται σε ζητούμενες τιμές και στις δικές σου παραδοχές. Πριν από προσφορά: αυτοψία, έλεγχος τίτλων, αυθαιρέτων και βαρών. Οι φωτογραφίες του Intrum μπορεί να είναι επεξεργασμένες.</footer>
+    <footer>Πηγή αγγελιών: Intrum Marketplace (δημόσιες σελίδες), ανανεώνεται καθημερινά. Οι υπολογισμοί είναι ενδεικτικοί, βασίζονται σε ζητούμενες τιμές και στις δικές σου ρυθμίσεις κόστους. Πριν από προσφορά: αυτοψία, έλεγχος τίτλων, αυθαιρέτων και βαρών. Οι φωτογραφίες του Intrum μπορεί να είναι επεξεργασμένες.</footer>
   </aside>
 
   <div id="content">
@@ -217,7 +217,7 @@ const medianAny = (a) => { a = a.filter((x) => x != null && isFinite(x)).sort((x
 const LS = "flip.v1";
 const store = { get() { try { return JSON.parse(localStorage.getItem(LS) || "{}"); } catch { return {}; } }, set(v) { try { localStorage.setItem(LS, JSON.stringify(v)); } catch {} } };
 
-// ---------- Παραδοχές ----------
+// ---------- Κόστη & ρυθμίσεις ----------
 const ASSUMPTIONS = [
   ["Αγορά", [
     ["discount", "Έκπτωση διαπραγμάτευσης (%)", 0, "Πόσο κάτω από τη ζητούμενη πιστεύεις ότι κλείνει."],
