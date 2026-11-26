@@ -213,6 +213,7 @@ const el = (tag, attrs = {}, ...kids) => {
   return e;
 };
 const nf = new Intl.NumberFormat("el-GR", { maximumFractionDigits: 0 });
+const pn = (v) => (+v).toLocaleString("el-GR", { maximumFractionDigits: 2 });
 const eur = (v) => v == null || !isFinite(v) ? "—" : "€" + nf.format(Math.round(v));
 const pct = (v) => v == null || !isFinite(v) ? "—" : (v * 100).toFixed(1).replace(".", ",") + "%";
 const num = (v) => v == null || !isFinite(v) ? "—" : nf.format(Math.round(v));
@@ -225,13 +226,13 @@ const store = { get() { try { return JSON.parse(localStorage.getItem(LS) || "{}"
 const ASSUMPTIONS = [
   ["Αγορά", [
     ["discount", "Έκπτωση διαπραγμάτευσης (%)", 0, "Πόσο κάτω από τη ζητούμενη πιστεύεις ότι κλείνει."],
-    ["buyPct", "Κόστη αγοράς (% τιμής)", 5.6, "Φόρος μεταβίβασης 3,09% + συμβολαιογράφος, υποθηκοφυλακείο/κτηματολόγιο, δικηγόρος."],
+    ["buyPct", "Κόστη αγοράς (% τιμής)", 5.6, "Φόρος μεταβίβασης 3,09% (επί της μεγαλύτερης από τιμή και αντικειμενική αξία) + συμβολαιογράφος, κτηματολόγιο, δικηγόρος."],
     ["buyFixed", "Κόστη αγοράς σταθερά (€)", 800, "Μηχανικός, βεβαιώσεις, ΠΕΑ."],
   ]],
   ["Ανακαίνιση (€/m² κύριων χώρων)", [
-    ["renoLight", "Ελαφριά (νεόδμητα, καλή ενεργειακή κλάση)", 250, ""],
-    ["renoMedium", "Μέτρια (1985–2004)", 450, ""],
-    ["renoHeavy", "Πλήρης (πριν το 1985 ή ημιτελή)", 700, ""],
+    ["renoLight", "Ελαφριά: από 2005 με κλάση Α–Γ, ή ήδη ανακαινισμένο", 250, ""],
+    ["renoMedium", "Μέτρια: 1985–2004, από 2005 με κακή κλάση, ή χωρίς έτος", 450, ""],
+    ["renoHeavy", "Πλήρης: πριν το 1985, ημιτελές, ή «χρήζει ανακαίνισης»", 700, ""],
     ["contingency", "Απρόβλεπτα (%)", 15, ""],
   ]],
   ["Κράτηση & πώληση", [
@@ -243,12 +244,13 @@ const ASSUMPTIONS = [
   ]],
   ["Τιμή πώλησης", [
     ["spiPremium", "Προσαύξηση ανακαινισμένου έναντι μέσης τιμής αγοράς (%)", 5, "Οι τιμές Indomio/Spitogatos είναι μέση ζητούμενη τιμή όλων των κατοικιών του δήμου, όχι μόνο ανακαινισμένων."],
+    ["sellNeg", "Έκπτωση διαπραγμάτευσης στην πώληση (%)", 5, "Οι τιμές αγοράς (Indomio, Spitogatos) είναι ζητούμενες· οι πωλήσεις κλείνουν συνήθως χαμηλότερα."],
     ["autoUplift", "Προσαύξηση αυτόματης εκτίμησης (%)", 25, "Ανακαινισμένο ακίνητο έναντι της ζητούμενης τιμής των REO της περιοχής."],
     ["auxWeight", "Βάρος βοηθητικών χώρων (%)", 30, "Αποθήκες/υπόγεια μετράνε λιγότερο από τους κύριους χώρους."],
     ["sizeAdj", "Διόρθωση μεγέθους: % ανά 10 m² πάνω από 110 m²", -2.5, "Τα μεγάλα ακίνητα πουλάνε φθηνότερα ανά m². Μέγιστη διόρθωση −30%."],
     ["groundAdj", "Διόρθωση ισογείου (%)", -10, ""],
     ["basementAdj", "Διόρθωση υπογείου/ημιυπογείου (%)", -35, ""],
-    ["highNoLiftAdj", "Διόρθωση 3ου+ ορόφου χωρίς ασανσέρ (%)", -10, ""],
+    ["highNoLiftAdj", "Διόρθωση 3ου+ ορόφου χωρίς ασανσέρ (%)", -10, "Εφαρμόζεται μόνο όταν η περιγραφή γράφει ότι δεν υπάρχει ασανσέρ."],
     ["oldAdj", "Διόρθωση κτιρίου πριν το 1985 (%)", -5, "Ακόμα και ανακαινισμένο, το παλιό κτίριο πουλάει φθηνότερα."],
     ["newAdj", "Διόρθωση κτιρίου από 2005 (%)", 5, ""],
   ]],
@@ -289,15 +291,21 @@ function floorOf(l) {
   const m = (l.floorText || l.floorLabel || "").match(/(\d+)/);
   return m ? { kind: "floor", n: Number(m[1]) } : { kind: "unknown" };
 }
-function condition(l) {
-  const t = (l.title || "").toLowerCase();
-  if (/ημιτελ/.test(t) || (l.stage && !/ολοκληρωμ/i.test(l.stage))) return "heavy";
-  if (!l.year) return "medium";
+// Επίπεδο ανακαίνισης και ο λόγος που επιλέχθηκε (φαίνεται στην ανάλυση κάθε ακινήτου).
+function conditionWhy(l) {
+  const t = (l.title || "").toLowerCase(), d = (l.description || "").toLowerCase();
+  if (/ημιτελ/.test(t) || (l.stage && !/ολοκληρωμ/i.test(l.stage))) return ["heavy", "ημιτελές"];
+  if (/(χρήζει|χρειάζεται|απαιτεί|προς|έργο)\s+(πλήρους\s+|ριζικής\s+|εκτεταμένης\s+)?ανακαίνισ/.test(d)) return ["heavy", "η περιγραφή γράφει ότι θέλει ανακαίνιση"];
+  if (/(πλήρως|πρόσφατα|ολικά)\s+ανακαινισμέν/.test(d)) return ["light", "η περιγραφή το αναφέρει ανακαινισμένο"];
+  if (!l.year) return ["medium", "χωρίς έτος κατασκευής"];
   const goodEnergy = /^(Α\+?|Β\+?|Γ|A\+?|B\+?)$/.test((l.energyClass || "").trim());
-  if (l.year >= 2005 && (goodEnergy || !l.energyClass || /εκκρεμ/i.test(l.energyClass))) return "light";
-  if (l.year >= 1985) return "medium";
-  return "heavy";
+  const noCert = !l.energyClass || /εκκρεμ|δεν απαιτ/i.test(l.energyClass);
+  if (l.year >= 2005 && (goodEnergy || noCert)) return ["light", `κτίριο ${l.year}` + (goodEnergy ? `, κλάση ${l.energyClass}` : "")];
+  if (l.year >= 2005) return ["medium", `κτίριο ${l.year} αλλά κλάση ${l.energyClass}`];
+  if (l.year >= 1985) return ["medium", `κτίριο ${l.year}`];
+  return ["heavy", `κτίριο ${l.year}`];
 }
+const condition = (l) => conditionWhy(l)[0];
 const COND_LABEL = { light: "Ελαφριά", medium: "Μέτρια", heavy: "Πλήρης" };
 
 const normName = (s) => (s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-zα-ω0-9]+/g, " ").trim();
@@ -321,37 +329,52 @@ function arvFor(l) {
   if (a && ARV[a]) return { psm: +ARV[a], src: `δική σου τιμή (${l.area.name})` };
   if (r && ARV[r]) return { psm: +ARV[r], src: `δική σου τιμή (${l.region.name})` };
   const mk = marketFor(l);
-  if (mk) return { psm: mk.psm * (1 + S.spiPremium / 100), src: `Indomio ${mk.name} €${nf.format(mk.psm)}/m² (${MARKET.retrieved || ""}) +${S.spiPremium}%`, market: true };
+  if (mk) return { psm: mk.psm * (1 + S.spiPremium / 100), src: `Indomio ${mk.name} €${nf.format(mk.psm)}/m² (${MARKET.retrieved || ""}) +${pn(S.spiPremium)}%`, market: true };
   if (r && SPI.regions?.[r]) {
     // Ο δείκτης είναι ανά μεγάλη περιοχή· τον διορθώνουμε με τη σχετική θέση του δήμου μέσα σε αυτήν (από τις αγγελίες Intrum).
     const am = a && AUTO[a]?.n >= 3 ? AUTO[a] : null, rm = AUTO[r];
     const ratio = am && rm ? Math.min(1.4, Math.max(0.6, am.med / rm.med)) : 1;
     const rel = ratio !== 1 ? ` × ${ratio.toFixed(2).replace(".", ",")} (ο δήμος ${l.area.name} έναντι της περιοχής, από ${am.n} αγγελίες Intrum)` : "";
-    return { psm: SPI.regions[r] * ratio * (1 + S.spiPremium / 100), src: `Spitogatos ${l.region.name} €${nf.format(SPI.regions[r])}/m²${rel} +${S.spiPremium}%`, spi: true };
+    return { psm: SPI.regions[r] * ratio * (1 + S.spiPremium / 100), src: `Spitogatos ${l.region.name} €${nf.format(SPI.regions[r])}/m²${rel} +${pn(S.spiPremium)}%`, spi: true };
   }
   const auto = (a && AUTO[a]?.n >= 5 && AUTO[a]) || (r && AUTO[r]?.n >= 3 && AUTO[r]) || null;
   if (!auto) return { psm: null, src: "χωρίς εκτίμηση" };
-  return { psm: auto.med * (1 + S.autoUplift / 100), src: `αυτόματη: διάμεσος Intrum ${auto.name} €${nf.format(auto.med)}/m² (${auto.n} αγγελίες) +${S.autoUplift}%`, auto: true };
+  return { psm: auto.med * (1 + S.autoUplift / 100), src: `αυτόματη: διάμεσος Intrum ${auto.name} €${nf.format(auto.med)}/m² (${auto.n} αγγελίες) +${pn(S.autoUplift)}%`, auto: true };
 }
 
+// Κύριοι χώροι: από τη σελίδα του ακινήτου· αλλιώς από τον τίτλο αν δεν ξεπερνά το συνολικό εμβαδόν· αλλιώς το συνολικό.
+function mainSqmOf(l) {
+  if (l.mainSqm) return l.mainSqm;
+  const ts = titleSqm(l.title);
+  if (ts && (!l.sqm || ts <= l.sqm)) return ts;
+  return l.sqm || ts || 0;
+}
+// Ασανσέρ: το Intrum δεν το δίνει ως πεδίο· το βρίσκουμε μόνο αν το γράφει η περιγραφή.
+function liftOf(l) {
+  const t = `${l.description || ""} ${Object.keys(l.features || {}).join(" ")}`.toLowerCase();
+  if (/(χωρίς|δεν διαθέτει|δεν υπάρχει|δεν έχει)\s+(ανελκυστ|ασανσ)/.test(t)) return false;
+  if (/ανελκυστ|ασανσ/.test(t)) return true;
+  return null;
+}
 function calc(l) {
-  const main = l.mainSqm || titleSqm(l.title) || l.sqm || 0;
+  const main = mainSqmOf(l);
   const aux = Math.max(0, (l.sqm || 0) - main);
   const effSqm = main + aux * S.auxWeight / 100;
   const fl = floorOf(l);
-  const cond = condition(l);
+  const [cond, condWhy] = conditionWhy(l);
   const arv0 = arvFor(l);
   const adj = [];
   if (fl.kind === "ground") adj.push(["Ισόγειο", S.groundAdj]);
   if (fl.kind === "basement") adj.push(["Υπόγειο/ημιυπόγειο", S.basementAdj]);
-  const noLift = l.elevator ? /όχι|οχι/i.test(l.elevator) : (l.year && l.year < 1975);
-  if (fl.kind === "floor" && fl.n >= 3 && noLift) adj.push(["3ος+ χωρίς ασανσέρ", S.highNoLiftAdj]);
+  const lift = liftOf(l);
+  if (fl.kind === "floor" && fl.n >= 3 && lift === false) adj.push(["3ος+ χωρίς ασανσέρ", S.highNoLiftAdj]);
   if (main > 110 && S.sizeAdj) adj.push([`Μέγεθος ${Math.round(main)} m²`, Math.max(-30, Math.round(S.sizeAdj * (main - 110) / 10 * 10) / 10)]);
   if (l.year && l.year < 1985) adj.push(["Κτίριο πριν το 1985", S.oldAdj]);
   if (l.year && l.year >= 2005) adj.push(["Κτίριο από 2005", S.newAdj]);
   const adjPct = adj.reduce((s, [, v]) => s + +v, 0);
   const arvPsm = arv0.psm ? arv0.psm * (1 + adjPct / 100) : null;
-  const arv = arvPsm ? arvPsm * effSqm : null;
+  const arvAsk = arvPsm ? arvPsm * effSqm : null;
+  const arv = arvAsk != null ? arvAsk * (1 - S.sellNeg / 100) : null; // οι τιμές αγοράς είναι ζητούμενες· η πώληση κλείνει χαμηλότερα
 
   const renoPsm = { light: S.renoLight, medium: S.renoMedium, heavy: S.renoHeavy }[cond];
   const reno = renoPsm * (main + aux * 0.3);
@@ -390,16 +413,16 @@ function calc(l) {
   if (vsMarket != null && vsMarket < -0.5) flags.push(["Πολύ κάτω από αγορά: έλεγξε γιατί", "bad"]);
   if (drop > 0) flags.push([`−${(drop * 100).toFixed(0)}% τιμή`, "good"]);
   if (isNew) flags.push(["Νέα", "good"]);
-  return { l, mk, vsMarket, main, aux, effSqm, fl, cond, arv0, adj, adjPct, arvPsm, arv, renoPsm, reno, renoTot, buy, buyCost, hold, sellCost, invested, pre, tax, profit, roi, annual, maxOffer, drop, isNew, flags, kind: kindOf(l), ppsm: l.price && main ? l.price / main : null };
+  return { l, mk, vsMarket, main, aux, effSqm, fl, cond, condWhy, arv0, adj, adjPct, arvPsm, arvAsk, arv, renoPsm, reno, renoTot, buy, buyCost, hold, sellCost, invested, pre, tax, profit, roi, annual, maxOffer, drop, isNew, flags, kind: kindOf(l), ppsm: l.price && main ? l.price / main : null };
 }
 
 function buildAuto() {
   AUTO = {};
   const add = (slug, name, v) => { if (!slug) return; (AUTO[slug] = AUTO[slug] || { name, vals: [] }).vals.push(v); };
   for (const l of DATA) {
-    const main = l.mainSqm || titleSqm(l.title) || l.sqm;
+    const main = mainSqmOf(l);
     const f = floorOf(l);
-    if (!l.price || !main || f.kind === "basement") continue;
+    if (!l.price || !main || f.kind === "basement" || kindOf(l) === "parking") continue;
     const v = l.price / main;
     add(l.area?.slug, l.area?.name, v);
     add(l.region?.slug, l.region?.name, v);
@@ -485,7 +508,7 @@ function render() {
   const good = ROWS.filter((c) => c.roi >= S.targetRoi / 100);
   $("stats").replaceChildren(
     el("div", { class: "stat" }, el("b", {}, nf.format(ROWS.length)), el("span", {}, `από ${nf.format(DATA.length)} αγγελίες`)),
-    el("div", { class: "stat" }, el("b", { class: "pos" }, nf.format(good.length)), el("span", {}, `με ROI ≥ ${S.targetRoi}%`)),
+    el("div", { class: "stat" }, el("b", { class: "pos" }, nf.format(good.length)), el("span", {}, `με ROI ≥ ${pn(S.targetRoi)}%`)),
     el("div", { class: "stat" }, el("b", {}, pct(medianAny(ROWS.map((c) => c.roi)))), el("span", {}, "διάμεσο ROI")),
   );
   renderHead();
@@ -498,6 +521,10 @@ function render() {
   if (view === "map") drawMap();
   renderRegions();
 }
+
+// Οι ρυθμίσεις εφαρμόζονται καθώς πληκτρολογείς (με μικρή καθυστέρηση), ώστε ένα κλικ σε ακίνητο αμέσως μετά να μη χάνεται.
+let rerenderTimer = null;
+function rerenderSoon() { clearTimeout(rerenderTimer); rerenderTimer = setTimeout(render, 250); }
 
 // ---------- Περιοχές ----------
 function buildRegions() {
@@ -527,7 +554,7 @@ function renderArv() {
     groups.set(l.region.slug, g);
   }
   const input = (slug, placeholder) => el("input", { type: "number", step: "50", min: "0", value: ARV[slug] ?? "", placeholder: placeholder ? nf.format(placeholder) : "",
-    onchange: (e) => { const v = e.target.value; if (v === "") delete ARV[slug]; else ARV[slug] = +v; persist(); render(); } });
+    oninput: (e) => { const v = e.target.value; if (v === "") delete ARV[slug]; else if (isFinite(+v)) ARV[slug] = +v; else return; persist(); rerenderSoon(); } });
   const t = el("table", { class: "arv-t" });
   const tb = el("tbody");
   const sorted = [...groups.values()].sort((a, b) => (AUTO[b.region.slug]?.n || 0) - (AUTO[a.region.slug]?.n || 0));
@@ -555,7 +582,7 @@ function renderAssumptions() {
   const inner = $("assump-inner");
   inner.replaceChildren(...ASSUMPTIONS.map(([group, rows]) => el("div", { class: "field" }, el("div", { class: "eyebrow" }, group),
     ...rows.map(([k, label, def, help]) => el("label", { class: "field" }, el("span", { title: help || "" }, label + (help ? " ⓘ" : "")),
-      el("input", { type: "number", step: "any", value: S[k], onchange: (e) => { S[k] = e.target.value === "" ? def : +e.target.value; persist(); render(); } }))))),
+      el("input", { type: "number", step: "any", value: S[k], oninput: (e) => { const v = e.target.value === "" ? def : +e.target.value; if (v === S[k] || !isFinite(v)) return; S[k] = v; persist(); rerenderSoon(); } }))))),
     el("button", { type: "button", onclick: () => { Object.assign(S, DEFAULTS); persist(); renderAssumptions(); render(); } }, "Επαναφορά προεπιλογών"));
 }
 
@@ -576,20 +603,21 @@ function openDrawer(c) {
     el("div", { class: "facts" },
       el("div", { class: "fact" }, el("span", { class: "eyebrow" }, "Κέρδος"), el("b", { class: c.profit > 0 ? "pos" : "neg" }, eur(c.profit))),
       el("div", { class: "fact" }, el("span", { class: "eyebrow" }, "ROI"), el("b", { class: c.roi > 0 ? "pos" : "neg" }, pct(c.roi)), el("span", { class: "note" }, `${pct(c.annual)} ετήσιο`)),
-      el("div", { class: "fact" }, el("span", { class: "eyebrow" }, "Μέγ. προσφορά"), el("b", {}, c.maxOffer > 0 ? eur(c.maxOffer) : "—"), el("span", { class: "note" }, `για ROI ${S.targetRoi}%`))),
+      el("div", { class: "fact" }, el("span", { class: "eyebrow" }, "Μέγ. προσφορά"), el("b", {}, c.maxOffer > 0 ? eur(c.maxOffer) : "—"), el("span", { class: "note" }, `για ROI ${pn(S.targetRoi)}%`))),
     c.arv0.auto ? el("p", { class: "alert" }, "Η τιμή πώλησης είναι αυτόματη εκτίμηση από τις αγγελίες Intrum. Βάλε δική σου τιμή για την περιοχή στο «Τιμή πώλησης ανά περιοχή» για αξιόπιστο αποτέλεσμα.") : null,
     !c.arv0.psm ? el("p", { class: "alert" }, "Δεν υπάρχει τιμή πώλησης για την περιοχή. Βάλε €/m² στο «Τιμή πώλησης ανά περιοχή».") : null,
     el("div", { class: "eyebrow" }, "Ανάλυση"),
     pairs([
       ["Ζητούμενη τιμή", l.price ? eur(l.price) : "κατόπιν αιτήματος"],
-      S.discount ? [`Τιμή αγοράς (−${S.discount}%)`, eur(c.buy)] : null,
-      [`Κόστη αγοράς (${S.buyPct}% + €${nf.format(S.buyFixed)})`, eur(c.buyCost)],
-      [`Ανακαίνιση: ${COND_LABEL[c.cond]} €${nf.format(c.renoPsm)}/m² + ${S.contingency}% απρόβλεπτα`, eur(c.renoTot)],
-      [`Κράτηση ${S.holdMonths} μήνες`, eur(c.hold)],
+      S.discount ? [`Τιμή αγοράς (${S.discount > 0 ? "−" : "+"}${pn(Math.abs(S.discount))}%)`, eur(c.buy)] : null,
+      [`Κόστη αγοράς (${pn(S.buyPct)}% + €${nf.format(S.buyFixed)})`, eur(c.buyCost)],
+      [`Ανακαίνιση: ${COND_LABEL[c.cond]} (${c.condWhy}) €${nf.format(c.renoPsm)}/m² + ${pn(S.contingency)}% απρόβλεπτα`, eur(c.renoTot)],
+      [`Κράτηση ${pn(S.holdMonths)} μήνες`, eur(c.hold)],
       ["Συνολική επένδυση", eur(c.invested), true],
-      [`Τιμή πώλησης: €${num(c.arvPsm)}/m² × ${num(c.effSqm)} m²`, eur(c.arv)],
+      [`Τιμή πώλησης: €${num(c.arvPsm)}/m² × ${num(c.effSqm)} m²`, eur(c.arvAsk)],
+      S.sellNeg ? [`Διαπραγμάτευση στην πώληση −${pn(S.sellNeg)}%`, "−" + eur(c.arvAsk - c.arv)] : null,
       [`Κόστη πώλησης`, "−" + eur(c.sellCost)],
-      S.taxPct ? [`Φόρος ${S.taxPct}%`, "−" + eur(c.tax)] : null,
+      S.taxPct ? [`Φόρος ${pn(S.taxPct)}%`, "−" + eur(c.tax)] : null,
       ["Καθαρό κέρδος", eur(c.profit), true],
     ]),
     el("p", { class: "note" }, `Βάση τιμής πώλησης: ${c.arv0.src}. ` + (c.adj.length ? `Διορθώσεις: ${c.adj.map(([k, v]) => `${k} ${v > 0 ? "+" : ""}${v}%`).join(", ")}.` : "Χωρίς διορθώσεις.") +
@@ -683,7 +711,10 @@ $("f-reset").addEventListener("click", () => {
 fetch("data/arv-defaults.json", { cache: "no-cache" }).then((r) => r.ok ? r.json() : {}).catch(() => ({})).then((j) => { SPI = j || {}; })
 .then(() => fetch("data/market-prices.json", { cache: "no-cache" })).then((r) => r.ok ? r.json() : {}).catch(() => ({})).then((j) => { MARKET = j || {}; buildMarket(); })
 .then(() => fetch("data/listings.json", { cache: "no-cache" })).then((r) => { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); }).then((db) => {
-  DATA = db.listings.filter((l) => !l.removedAt);
+  // Το Intrum μερικές φορές έχει το ίδιο ακίνητο (ίδιος κωδικός) δύο φορές· κρατάμε την πιο πρόσφατη αγγελία.
+  const byCode = new Map();
+  for (const l of db.listings.filter((x) => !x.removedAt)) { const p = byCode.get(l.code); if (!p || l.id > p.id) byCode.set(l.code, l); }
+  DATA = [...byCode.values()];
   updatedAt = db.updatedAt;
   BASELINE = db.baseline || (db.listings.map((l) => l.firstSeen).filter(Boolean).sort()[0]) || null;
   const withDetail = DATA.filter((l) => l.detailFetchedAt).length;

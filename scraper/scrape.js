@@ -4,14 +4,17 @@
 // πρώτα τη λίστα (50 ανά σελίδα), μετά τη σελίδα κάθε ακινήτου που είναι νέο,
 // άλλαξε τιμή ή δεν έχει ελεγχθεί για καιρό.
 //
-// Χρήση: node scraper/scrape.js [--minutes 300] [--max-details 2000] [--concurrency 3]
+// Χρήση: node scraper/scrape.js [--minutes 300] [--max-details 2000] [--concurrency 3] [--refresh]
 
 const fs = require('fs');
 const path = require('path');
 const { chromium } = require('playwright');
 
 const BASE = 'https://marketplace.intrum.gr';
-const LIST_URL = (page) => `${BASE}/residential/sale?per_page=50&page=${page}&sort_by=weight:desc`;
+const LIST_URL = (page, sort) => `${BASE}/residential/sale?per_page=50&page=${page}&sort_by=${sort}`;
+// Η προεπιλεγμένη ταξινόμηση δεν είναι σταθερή (ίσα «βάρη»), οπότε μια σελίδα μπορεί να επαναλάβει αγγελίες.
+// Αν μετά από ένα πέρασμα λείπουν αγγελίες, ξαναπερνάμε με άλλη ταξινόμηση.
+const LIST_SORTS = ['weight:desc', 'price:asc', 'price:desc'];
 const DETAIL_URL = (id) => `${BASE}/el/listings/${id}`;
 const OUT = path.join(__dirname, '..', 'data', 'listings.json');
 const DETAIL_MAX_AGE_DAYS = 30;
@@ -24,6 +27,7 @@ const args = Object.fromEntries(
 );
 const MINUTES = Number(args.minutes || 300);
 const MAX_DETAILS = Number(args['max-details'] || 5000);
+const REFRESH = !!args.refresh; // ξαναδιάβασε όλες τις σελίδες ακινήτων
 const CONCURRENCY = Number(args.concurrency || 3);
 const deadline = Date.now() + MINUTES * 60 * 1000;
 const today = new Date().toISOString().slice(0, 10);
@@ -88,11 +92,14 @@ async function scrapeList(browser) {
   const page = await newPage(browser, { blockMaps: true });
   const seen = new Map();
   let total = null;
-  for (let n = 1; n < 200; n++) {
+  for (const sort of LIST_SORTS) {
+  if (total != null && seen.size >= total) break;
+  let lastPage = 200;
+  for (let n = 1; n <= lastPage; n++) {
     let cards = null;
     for (let attempt = 1; attempt <= 3 && !cards; attempt++) {
       try {
-        await page.goto(LIST_URL(n), { waitUntil: 'domcontentloaded', timeout: 60000 });
+        await page.goto(LIST_URL(n, sort), { waitUntil: 'domcontentloaded', timeout: 60000 });
         await page.waitForSelector('a[href*="/listings/"]', { timeout: 45000 });
         await sleep(800);
         const onPage = Number(new URL(page.url()).searchParams.get('page') || 1);
@@ -123,9 +130,12 @@ async function scrapeList(browser) {
     if (cards.total != null) total = cards.total;
     const before = seen.size;
     for (const c of cards.items) if (!seen.has(c.id)) seen.set(c.id, { id: c.id, ...parseCard(c.lines) });
-    console.log(`list page ${n}: +${seen.size - before} (σύνολο ${seen.size}/${total ?? '?'})`);
-    if (cards.items.length === 0 || seen.size === before) break;
+    console.log(`list ${sort} page ${n}: +${seen.size - before} (σύνολο ${seen.size}/${total ?? '?'})`);
+    if (total != null) lastPage = Math.ceil(total / 50);
+    if (cards.items.length === 0) break;
     if (total != null && seen.size >= total) break;
+  }
+  console.log(`ταξινόμηση ${sort}: ${seen.size}/${total ?? '?'}`);
   }
   await page.close();
   return { cards: [...seen.values()], total };
@@ -144,8 +154,11 @@ function parseDetail(raw) {
   const iDisc = lines.findIndex((l, i) => i > iFeat && l.startsWith('*Intrum'));
   const description = iDesc >= 0 && iFeat > iDesc ? lines.slice(iDesc + 1, iFeat).join('\n') : null;
 
+  // Τα χαρακτηριστικά διαβάζονται από τη δομή της σελίδας (ζεύγη ετικέτα/τιμή)· οι γραμμές κειμένου είναι μόνο εφεδρεία.
   const features = {};
-  if (iFeat >= 0) {
+  if (raw.features && raw.features.length) {
+    for (const [k, v] of raw.features) if (k) features[k] = v || 'Ναι';
+  } else if (iFeat >= 0) {
     const block = lines.slice(iFeat + 1, iDisc > iFeat ? iDisc : undefined).filter((l) => !SECTION_HEADERS.has(l));
     for (let i = 0; i + 1 < block.length; i += 2) features[block[i]] = block[i + 1];
   }
@@ -209,6 +222,10 @@ async function scrapeDetail(page, id) {
     crumbs: [...document.querySelectorAll('a[href*="locations="]')].map((a) => [a.innerText.trim(), a.getAttribute('href')]),
     maps: [...document.querySelectorAll('a[href*="maps.google"], a[href*="google.com/maps"]')].map((a) => a.href),
     image: document.querySelector('meta[property="og:image"]')?.content,
+    features: [...document.querySelectorAll('.label-attribute')].map((a) => [
+      a.querySelector('.attribute__label')?.innerText.trim(),
+      a.querySelector('.attribute__value')?.innerText.trim(),
+    ]),
     text: document.querySelector('main')?.innerText || document.body.innerText,
   }));
   return parseDetail(raw);
@@ -247,7 +264,7 @@ async function scrapeDetail(page, id) {
   db.total = total;
   save(db);
 
-  const stale = (l) => !l.detailFetchedAt || (Date.now() - Date.parse(l.detailFetchedAt)) / 864e5 > DETAIL_MAX_AGE_DAYS;
+  const stale = (l) => REFRESH || !l.detailFetchedAt || (Date.now() - Date.parse(l.detailFetchedAt)) / 864e5 > DETAIL_MAX_AGE_DAYS;
   const queue = db.listings.filter((l) => !l.removedAt && stale(l))
     .sort((a, b) => (a.detailFetchedAt ? 1 : 0) - (b.detailFetchedAt ? 1 : 0) || b.id - a.id)
     .slice(0, MAX_DETAILS);
