@@ -145,6 +145,7 @@ footer{font-size:12px;line-height:1.5;color:var(--muted)}
     <button class="primary" type="submit">Αναζήτηση</button>
     <button type="button" id="loc" title="Βρες το οικόπεδο όπου στέκεσαι">Από τη θέση μου</button>
   </form>
+  <a href="flip.html">Ευκαιρίες flip →</a>
 </header>
 <main>
   <div id="map"></div>
@@ -520,6 +521,9 @@ $("loc").addEventListener("click", () => {
     err => setOut(el("div",{class:"alert bad"}, err.code===1 ? "Δεν δόθηκε άδεια θέσης. Επίτρεψέ τη από τις ρυθμίσεις του browser και ξαναδοκίμασε." : "Δεν ήταν δυνατός ο εντοπισμός θέσης. Ξαναδοκίμασε σε ανοιχτό χώρο.")),
     {enableHighAccuracy:true, timeout:20000, maximumAge:0});
 });
+// Άνοιγμα από άλλη σελίδα: index.html?q=<διεύθυνση ή συντεταγμένες>
+const deepQ = new URLSearchParams(location.search).get("q");
+if (deepQ) { $("q").value = deepQ; $("f").requestSubmit(); }
 })();
 </script>
 </body>

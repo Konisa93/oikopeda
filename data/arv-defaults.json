@@ -1,0 +1,17 @@
+{
+  "source": "Spitogatos Price Index (SPI), μέση ζητούμενη τιμή πώλησης κατοικιών, Γ' τρίμηνο 2026",
+  "sourceUrl": "https://www.spitogatos.gr/deiktis-timon",
+  "retrieved": "2026-11-26",
+  "regions": {
+    "athens-center": 2553,
+    "athens-north": 3505,
+    "athens-south": 4257,
+    "athens-west": 2315,
+    "athens-east": 2520,
+    "piraeus": 2667,
+    "piraeus-suburbs": 2271,
+    "rest-of-attica": 2133,
+    "thessaloniki-municipality": 2740,
+    "thessaloniki-suburbs": 2140
+  }
+}
