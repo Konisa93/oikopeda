@@ -199,10 +199,14 @@
   "athens-north-agios-stefanos": {
    "name": "Άγιος Στέφανος",
    "region": "athens-north",
-   "psm": 3054.68,
-   "listings": 85,
-   "type": "diamerismata",
-   "url": "https://www.spiti24.gr/pwliseis/diamerismata/agios-stefanos"
+   "psm": 2135.11,
+   "listings": null,
+   "type": "katoikies",
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/agios-stefanos",
+   "apartmentsPsm": 3054.68,
+   "apartmentsListings": 85,
+   "forced": true,
+   "why": "Μέσος όρος όλων των κατοικιών στο spiti24, όπως τον έδωσε ο χρήστης· ο μέσος όρος διαμερισμάτων ήταν υψηλός λόγω νεόδμητων."
   },
   "athens-north-agia-paraskevi": {
    "name": "Αγία Παρασκευή",
@@ -327,10 +331,14 @@
   "athens-east-artemida-loutsa": {
    "name": "Αρτέμιδα (Λούτσα)",
    "region": "athens-east",
-   "psm": 2609.91,
-   "listings": 75,
-   "type": "diamerismata",
-   "url": "https://www.spiti24.gr/pwliseis/diamerismata/artemida-loutsa"
+   "psm": 2083.65,
+   "listings": null,
+   "type": "katoikies",
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/artemida-loutsa",
+   "apartmentsPsm": 2609.91,
+   "apartmentsListings": 75,
+   "forced": true,
+   "why": "Μέσος όρος όλων των κατοικιών στο spiti24, όπως τον έδωσε ο χρήστης· ο μέσος όρος διαμερισμάτων ήταν υψηλός λόγω νεόδμητων."
   },
   "athens-east-gerakas": {
    "name": "Γέρακας",
@@ -351,10 +359,14 @@
   "athens-east-koropi": {
    "name": "Κορωπί",
    "region": "athens-east",
-   "psm": 3190.81,
-   "listings": 143,
-   "type": "diamerismata",
-   "url": "https://www.spiti24.gr/pwliseis/diamerismata/koropi"
+   "psm": 3041.13,
+   "listings": null,
+   "type": "katoikies",
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/koropi",
+   "apartmentsPsm": 3190.81,
+   "apartmentsListings": 143,
+   "forced": true,
+   "why": "Μέσος όρος όλων των κατοικιών στο spiti24, όπως τον έδωσε ο χρήστης· ο μέσος όρος διαμερισμάτων ήταν υψηλός λόγω νεόδμητων."
   },
   "athens-east-nea-makri": {
    "name": "Νέα Μάκρη",
@@ -631,10 +643,14 @@
   "athens-west-metamorfosi": {
    "name": "Μεταμόρφωση",
    "region": "athens-west",
-   "psm": 3179.68,
-   "listings": 393,
-   "type": "diamerismata",
-   "url": "https://www.spiti24.gr/pwliseis/diamerismata/metamorfosi"
+   "psm": 3150.39,
+   "listings": null,
+   "type": "katoikies",
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/metamorfosi",
+   "apartmentsPsm": 3179.68,
+   "apartmentsListings": 393,
+   "forced": true,
+   "why": "Μέσος όρος όλων των κατοικιών στο spiti24, όπως τον έδωσε ο χρήστης· ο μέσος όρος διαμερισμάτων ήταν υψηλός λόγω νεόδμητων."
   },
   "athens-west-nea-ionia": {
    "name": "Νέα Ιωνία",
@@ -751,10 +767,14 @@
   "rest-of-attica-magoula": {
    "name": "Μαγούλα",
    "region": "rest-of-attica",
-   "psm": 1561.6,
-   "listings": 5,
-   "type": "diamerismata",
-   "url": "https://www.spiti24.gr/pwliseis/diamerismata/magoula"
+   "psm": 1885.79,
+   "listings": null,
+   "type": "katoikies",
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/magoula",
+   "apartmentsPsm": 1561.6,
+   "apartmentsListings": 5,
+   "forced": true,
+   "why": "Μέσος όρος όλων των κατοικιών στο spiti24, όπως τον έδωσε ο χρήστης· ο μέσος όρος διαμερισμάτων ήταν υψηλός λόγω νεόδμητων."
   },
   "rest-of-attica-markopoulo": {
    "name": "Μαρκόπουλο",
@@ -771,10 +791,14 @@
   "rest-of-attica-pikermi": {
    "name": "Πικέρμι",
    "region": "rest-of-attica",
-   "psm": 2999.03,
-   "listings": 37,
-   "type": "diamerismata",
-   "url": "https://www.spiti24.gr/pwliseis/diamerismata/pikermi"
+   "psm": 2110.51,
+   "listings": null,
+   "type": "katoikies",
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/pikermi",
+   "apartmentsPsm": 2999.03,
+   "apartmentsListings": 37,
+   "forced": true,
+   "why": "Μέσος όρος όλων των κατοικιών στο spiti24, όπως τον έδωσε ο χρήστης· ο μέσος όρος διαμερισμάτων ήταν υψηλός λόγω νεόδμητων."
   },
   "rest-of-attica-rafina": {
    "name": "Ραφήνα",
@@ -798,7 +822,9 @@
    "psm": 6419.49,
    "listings": 35,
    "type": "katoikies",
-   "url": "https://www.spiti24.gr/pwliseis/katoikies/sounio"
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/sounio",
+   "forced": true,
+   "why": "Μέσος όρος όλων των κατοικιών στο spiti24, όπως τον έδωσε ο χρήστης· ο μέσος όρος διαμερισμάτων ήταν υψηλός λόγω νεόδμητων."
   },
   "rest-of-attica-oropos": {
    "name": "Ωρωπός",
