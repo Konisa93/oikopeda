@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-11-26T11:21:04.304Z",
+ "updatedAt": "2026-11-26T11:23:32.298Z",
  "source": "https://marketplace.intrum.gr",
  "listings": [
   {
@@ -4852,7 +4852,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Αυτόνομη",
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:47:13.627Z",
+   "detailFetchedAt": "2026-11-26T11:21:05.199Z",
    "detailError": null
   },
   {
@@ -5040,7 +5040,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:47:15.294Z",
+   "detailFetchedAt": "2026-11-26T11:21:09.639Z",
    "detailError": null
   },
   {
@@ -5133,7 +5133,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T11:05:40.664Z"
+   "detailFetchedAt": "2026-11-26T11:21:11.346Z"
   },
   {
    "id": 2507,
@@ -5224,7 +5224,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Αυτόνομη",
    "glazing": "Μονοί",
-   "detailFetchedAt": "2026-11-26T11:05:46.455Z"
+   "detailFetchedAt": "2026-11-26T11:21:12.998Z"
   },
   {
    "id": 2504,
@@ -5322,7 +5322,7 @@
    "heating": "Αυτόνομη",
    "glazing": "Διπλά",
    "detailFetchedAt": "2026-11-26T10:47:18.038Z",
-   "detailError": null
+   "detailError": "page.goto: net::ERR_ABORTED at https://marketplace.intrum.gr/el/listings/2504"
   },
   {
    "id": 2501,
@@ -5415,7 +5415,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:47:18.971Z",
+   "detailFetchedAt": "2026-11-26T11:21:09.579Z",
    "detailError": null
   },
   {
@@ -5511,7 +5511,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:47:19.138Z",
+   "detailFetchedAt": "2026-11-26T11:21:13.339Z",
    "detailError": null
   },
   {
@@ -5602,7 +5602,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:47:21.769Z",
+   "detailFetchedAt": "2026-11-26T11:21:13.159Z",
    "detailError": null
   },
   {
@@ -5707,7 +5707,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Κεντρική",
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:47:23.215Z",
+   "detailFetchedAt": "2026-11-26T11:21:14.350Z",
    "detailError": null
   },
   {
@@ -5799,7 +5799,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:47:22.611Z",
+   "detailFetchedAt": "2026-11-26T11:21:16.767Z",
    "detailError": null
   },
   {
@@ -5890,7 +5890,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Αυτόνομη",
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:47:23.490Z",
+   "detailFetchedAt": "2026-11-26T11:21:16.496Z",
    "detailError": null
   },
   {
@@ -5981,7 +5981,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Μονοί",
-   "detailFetchedAt": "2026-11-26T10:47:25.742Z",
+   "detailFetchedAt": "2026-11-26T11:21:17.886Z",
    "detailError": null
   },
   {
@@ -6086,7 +6086,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Κεντρική",
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:47:26.613Z",
+   "detailFetchedAt": "2026-11-26T11:21:17.806Z",
    "detailError": null
   },
   {
@@ -6180,7 +6180,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:47:27.078Z",
+   "detailFetchedAt": "2026-11-26T11:21:20.455Z",
    "detailError": null
   },
   {
@@ -6272,7 +6272,7 @@
    "stage": "Ημιτελές",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:47:27.143Z",
+   "detailFetchedAt": "2026-11-26T11:21:21.059Z",
    "detailError": null
   },
   {
@@ -6370,7 +6370,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:47:29.166Z",
+   "detailFetchedAt": "2026-11-26T11:21:21.182Z",
    "detailError": null
   },
   {
@@ -6464,7 +6464,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:47:31.170Z",
+   "detailFetchedAt": "2026-11-26T11:21:21.678Z",
    "detailError": null
   },
   {
@@ -6567,7 +6567,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Αυτόνομη",
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:47:31.258Z",
+   "detailFetchedAt": "2026-11-26T11:21:24.780Z",
    "detailError": null
   },
   {
@@ -6670,7 +6670,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:47:31.055Z",
+   "detailFetchedAt": "2026-11-26T11:21:24.335Z",
    "detailError": null
   },
   {
@@ -6763,7 +6763,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:47:32.752Z",
+   "detailFetchedAt": "2026-11-26T11:21:24.493Z",
    "detailError": null
   },
   {
@@ -6851,7 +6851,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:47:35.688Z",
+   "detailFetchedAt": "2026-11-26T11:21:25.575Z",
    "detailError": null
   },
   {
@@ -6939,7 +6939,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:47:34.559Z",
+   "detailFetchedAt": "2026-11-26T11:21:28.454Z",
    "detailError": null
   },
   {
@@ -7027,7 +7027,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:47:35.285Z",
+   "detailFetchedAt": "2026-11-26T11:21:28.551Z",
    "detailError": null
   },
   {
@@ -7120,7 +7120,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Αυτόνομη",
    "glazing": "Μονοί",
-   "detailFetchedAt": "2026-11-26T10:47:36.309Z",
+   "detailFetchedAt": "2026-11-26T11:21:29.050Z",
    "detailError": null
   },
   {
@@ -7213,7 +7213,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Κεντρική",
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:47:38.342Z",
+   "detailFetchedAt": "2026-11-26T11:21:29.381Z",
    "detailError": null
   },
   {
@@ -7305,7 +7305,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Αυτόνομη",
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:47:39.661Z",
+   "detailFetchedAt": "2026-11-26T11:21:32.153Z",
    "detailError": null
   },
   {
@@ -7403,7 +7403,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:47:40.416Z",
+   "detailFetchedAt": "2026-11-26T11:21:32.486Z",
    "detailError": null
   },
   {
@@ -7488,7 +7488,7 @@
    "stage": null,
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:47:40.520Z",
+   "detailFetchedAt": "2026-11-26T11:21:32.151Z",
    "detailError": null
   },
   {
@@ -7578,7 +7578,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:47:41.943Z",
+   "detailFetchedAt": "2026-11-26T11:21:33.009Z",
    "detailError": null
   },
   {
@@ -7676,7 +7676,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Αυτόνομη",
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:47:43.694Z",
+   "detailFetchedAt": "2026-11-26T11:21:35.138Z",
    "detailError": null
   },
   {
@@ -7760,7 +7760,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:47:44.183Z",
+   "detailFetchedAt": "2026-11-26T11:21:36.117Z",
    "detailError": null
   },
   {
@@ -7855,7 +7855,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:47:44.577Z",
+   "detailFetchedAt": "2026-11-26T11:21:35.758Z",
    "detailError": null
   },
   {
@@ -7936,7 +7936,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Αυτόνομη",
    "glazing": "Μονοί",
-   "detailFetchedAt": "2026-11-26T10:47:45.544Z",
+   "detailFetchedAt": "2026-11-26T11:21:36.674Z",
    "detailError": null
   },
   {
@@ -8028,7 +8028,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:47:47.674Z",
+   "detailFetchedAt": "2026-11-26T11:21:39.364Z",
    "detailError": null
   },
   {
@@ -8125,7 +8125,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:47:47.912Z",
+   "detailFetchedAt": "2026-11-26T11:21:39.940Z",
    "detailError": null
   },
   {
@@ -8212,7 +8212,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Αυτόνομη",
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:47:49.729Z",
+   "detailFetchedAt": "2026-11-26T11:21:39.935Z",
    "detailError": null
   },
   {
@@ -8323,7 +8323,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Αυτόνομη",
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:47:48.775Z",
+   "detailFetchedAt": "2026-11-26T11:21:40.151Z",
    "detailError": null
   },
   {
@@ -8427,7 +8427,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Αυτόνομη",
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:47:51.235Z",
+   "detailFetchedAt": "2026-11-26T11:21:43.417Z",
    "detailError": null
   },
   {
@@ -8530,7 +8530,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Αυτόνομη",
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:47:51.583Z",
+   "detailFetchedAt": "2026-11-26T11:21:43.323Z",
    "detailError": null
   },
   {
@@ -8620,7 +8620,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:47:52.103Z",
+   "detailFetchedAt": "2026-11-26T11:21:44.098Z",
    "detailError": null
   },
   {
@@ -8713,7 +8713,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:47:53.593Z",
+   "detailFetchedAt": "2026-11-26T11:21:43.588Z",
    "detailError": null
   },
   {
@@ -8809,7 +8809,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:47:54.909Z",
+   "detailFetchedAt": "2026-11-26T11:21:47.058Z",
    "detailError": null
   },
   {
@@ -8909,7 +8909,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Αυτόνομη",
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:47:55.272Z",
+   "detailFetchedAt": "2026-11-26T11:21:47.662Z",
    "detailError": null
   },
   {
@@ -9007,7 +9007,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:47:55.338Z",
+   "detailFetchedAt": "2026-11-26T11:21:47.251Z",
    "detailError": null
   },
   {
@@ -9116,7 +9116,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Αυτόνομη",
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:47:57.824Z",
+   "detailFetchedAt": "2026-11-26T11:21:47.356Z",
    "detailError": null
   },
   {
@@ -9211,7 +9211,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:47:58.626Z",
+   "detailFetchedAt": "2026-11-26T11:21:50.444Z",
    "detailError": null
   },
   {
@@ -9309,7 +9309,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:47:59.419Z",
+   "detailFetchedAt": "2026-11-26T11:21:54.098Z",
    "detailError": null
   },
   {
@@ -9403,7 +9403,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:47:59.172Z",
+   "detailFetchedAt": "2026-11-26T11:21:50.777Z",
    "detailError": null
   },
   {
@@ -9495,7 +9495,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:48:02.320Z",
+   "detailFetchedAt": "2026-11-26T11:21:51.927Z",
    "detailError": null
   },
   {
@@ -9590,7 +9590,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Αυτόνομη",
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:48:02.490Z",
+   "detailFetchedAt": "2026-11-26T11:21:54.319Z",
    "detailError": null
   },
   {
@@ -9677,7 +9677,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:48:02.726Z",
+   "detailFetchedAt": "2026-11-26T11:21:54.563Z",
    "detailError": null
   },
   {
@@ -9772,7 +9772,7 @@
    "stage": "Ημιτελές",
    "heating": null,
    "glazing": "Μονοί",
-   "detailFetchedAt": "2026-11-26T10:48:02.829Z",
+   "detailFetchedAt": "2026-11-26T11:21:56.596Z",
    "detailError": null
   },
   {
@@ -9860,7 +9860,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:48:05.980Z",
+   "detailFetchedAt": "2026-11-26T11:21:58.257Z",
    "detailError": null
   },
   {
@@ -9941,7 +9941,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:48:06.868Z",
+   "detailFetchedAt": "2026-11-26T11:21:58.232Z",
    "detailError": null
   },
   {
@@ -10029,7 +10029,7 @@
    "stage": null,
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:48:07.604Z",
+   "detailFetchedAt": "2026-11-26T11:21:59.677Z",
    "detailError": null
   },
   {
@@ -10121,7 +10121,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:48:06.950Z",
+   "detailFetchedAt": "2026-11-26T11:22:00.293Z",
    "detailError": null
   },
   {
@@ -10207,7 +10207,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:48:10.241Z",
+   "detailFetchedAt": "2026-11-26T11:22:02.579Z",
    "detailError": null
   },
   {
@@ -10301,7 +10301,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:48:11.384Z",
+   "detailFetchedAt": "2026-11-26T11:22:02.506Z",
    "detailError": null
   },
   {
@@ -10395,7 +10395,7 @@
    "stage": "Ημιτελές",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:48:11.061Z",
+   "detailFetchedAt": "2026-11-26T11:22:03.609Z",
    "detailError": null
   },
   {
@@ -10485,7 +10485,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:48:11.089Z",
+   "detailFetchedAt": "2026-11-26T11:22:03.952Z",
    "detailError": null
   },
   {
@@ -10576,7 +10576,7 @@
    "stage": "Ημιτελές",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:48:13.829Z",
+   "detailFetchedAt": "2026-11-26T11:22:06.378Z",
    "detailError": null
   },
   {
@@ -10665,7 +10665,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:48:14.750Z",
+   "detailFetchedAt": "2026-11-26T11:22:07.316Z",
    "detailError": null
   },
   {
@@ -10779,7 +10779,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Αυτόνομη",
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:48:14.500Z",
+   "detailFetchedAt": "2026-11-26T11:22:07.253Z",
    "detailError": null
   },
   {
@@ -10878,7 +10878,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Αυτόνομη",
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:48:15.842Z",
+   "detailFetchedAt": "2026-11-26T11:22:07.653Z",
    "detailError": null
   },
   {
@@ -10975,7 +10975,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:48:17.546Z",
+   "detailFetchedAt": "2026-11-26T11:22:09.828Z",
    "detailError": null
   },
   {
@@ -11067,7 +11067,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:48:17.991Z",
+   "detailFetchedAt": "2026-11-26T11:22:11.568Z",
    "detailError": null
   },
   {
@@ -11156,7 +11156,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:48:20.715Z",
+   "detailFetchedAt": "2026-11-26T11:22:11.662Z",
    "detailError": null
   },
   {
@@ -11244,7 +11244,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:48:19.816Z",
+   "detailFetchedAt": "2026-11-26T11:22:11.317Z",
    "detailError": null
   },
   {
@@ -11348,7 +11348,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Αυτόνομη",
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:48:20.760Z",
+   "detailFetchedAt": "2026-11-26T11:22:14.097Z",
    "detailError": null
   },
   {
@@ -11445,7 +11445,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:48:21.858Z",
+   "detailFetchedAt": "2026-11-26T11:22:15.220Z",
    "detailError": null
   },
   {
@@ -11540,7 +11540,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:48:23.869Z",
+   "detailFetchedAt": "2026-11-26T11:22:16.508Z",
    "detailError": null
   },
   {
@@ -11637,7 +11637,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Αυτόνομη",
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:48:24.975Z",
+   "detailFetchedAt": "2026-11-26T11:22:14.965Z",
    "detailError": null
   },
   {
@@ -11734,7 +11734,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Αυτόνομη",
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:48:24.627Z",
+   "detailFetchedAt": "2026-11-26T11:22:18.649Z",
    "detailError": null
   },
   {
@@ -11837,7 +11837,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Κεντρική",
    "glazing": "Μονοί",
-   "detailFetchedAt": "2026-11-26T10:48:26.034Z",
+   "detailFetchedAt": "2026-11-26T11:22:19.199Z",
    "detailError": null
   },
   {
@@ -11941,7 +11941,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:48:27.910Z",
+   "detailFetchedAt": "2026-11-26T11:22:19.077Z",
    "detailError": null
   },
   {
@@ -12037,7 +12037,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:48:28.217Z",
+   "detailFetchedAt": "2026-11-26T11:22:20.283Z",
    "detailError": null
   },
   {
@@ -12127,7 +12127,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Μονοί",
-   "detailFetchedAt": "2026-11-26T10:48:28.884Z",
+   "detailFetchedAt": "2026-11-26T11:22:22.749Z",
    "detailError": null
   },
   {
@@ -12219,7 +12219,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:48:29.712Z",
+   "detailFetchedAt": "2026-11-26T11:22:23.059Z",
    "detailError": null
   },
   {
@@ -12313,7 +12313,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:48:31.883Z",
+   "detailFetchedAt": "2026-11-26T11:22:23.047Z",
    "detailError": null
   },
   {
@@ -12399,7 +12399,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:48:32.545Z",
+   "detailFetchedAt": "2026-11-26T11:22:24.372Z",
    "detailError": null
   },
   {
@@ -12489,7 +12489,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:48:32.438Z",
+   "detailFetchedAt": "2026-11-26T11:22:26.252Z",
    "detailError": null
   },
   {
@@ -12585,7 +12585,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:48:33.238Z",
+   "detailFetchedAt": "2026-11-26T11:22:26.604Z",
    "detailError": null
   },
   {
@@ -12686,7 +12686,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:48:36.157Z",
+   "detailFetchedAt": "2026-11-26T11:22:26.859Z",
    "detailError": null
   },
   {
@@ -12786,7 +12786,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Αυτόνομη",
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:48:35.714Z",
+   "detailFetchedAt": "2026-11-26T11:22:28.412Z",
    "detailError": null
   },
   {
@@ -12885,7 +12885,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:48:36.551Z",
+   "detailFetchedAt": "2026-11-26T11:22:30.432Z",
    "detailError": null
   },
   {
@@ -12969,7 +12969,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:48:36.582Z",
+   "detailFetchedAt": "2026-11-26T11:22:30.061Z",
    "detailError": null
   },
   {
@@ -13064,7 +13064,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:48:39.687Z",
+   "detailFetchedAt": "2026-11-26T11:22:30.916Z",
    "detailError": null
   },
   {
@@ -13158,7 +13158,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:48:39.724Z",
+   "detailFetchedAt": "2026-11-26T11:22:31.771Z",
    "detailError": null
   },
   {
@@ -13263,7 +13263,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Αυτόνομη",
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:48:40.791Z",
+   "detailFetchedAt": "2026-11-26T11:22:34.653Z",
    "detailError": null
   },
   {
@@ -13362,7 +13362,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:48:40.106Z",
+   "detailFetchedAt": "2026-11-26T11:22:36.096Z",
    "detailError": null
   },
   {
@@ -13462,7 +13462,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Κεντρική",
    "glazing": "Μονοί",
-   "detailFetchedAt": "2026-11-26T10:48:43.774Z",
+   "detailFetchedAt": "2026-11-26T11:22:34.723Z",
    "detailError": null
   },
   {
@@ -13559,7 +13559,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Αυτόνομη",
    "glazing": "Μονοί",
-   "detailFetchedAt": "2026-11-26T10:48:43.723Z",
+   "detailFetchedAt": "2026-11-26T11:22:35.508Z",
    "detailError": null
   },
   {
@@ -13661,7 +13661,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Αυτόνομη",
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:48:44.261Z",
+   "detailFetchedAt": "2026-11-26T11:22:37.580Z",
    "detailError": null
   },
   {
@@ -13757,7 +13757,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:48:45.140Z",
+   "detailFetchedAt": "2026-11-26T11:22:38.905Z",
    "detailError": null
   },
   {
@@ -13853,7 +13853,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Αυτόνομη",
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:48:47.075Z",
+   "detailFetchedAt": "2026-11-26T11:22:39.183Z",
    "detailError": null
   },
   {
@@ -13940,7 +13940,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:48:47.643Z",
+   "detailFetchedAt": "2026-11-26T11:22:39.356Z",
    "detailError": null
   },
   {
@@ -14039,7 +14039,7 @@
    "stage": "Ημιτελές",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:48:47.920Z",
+   "detailFetchedAt": "2026-11-26T11:22:41.069Z",
    "detailError": null
   },
   {
@@ -14132,7 +14132,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:48:48.877Z",
+   "detailFetchedAt": "2026-11-26T11:22:42.493Z",
    "detailError": null
   },
   {
@@ -14227,7 +14227,7 @@
    "stage": "Ημιτελές",
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:48:51.053Z",
+   "detailFetchedAt": "2026-11-26T11:22:42.939Z",
    "detailError": null
   },
   {
@@ -14316,7 +14316,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Αυτόνομη",
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:48:51.486Z",
+   "detailFetchedAt": "2026-11-26T11:22:43.716Z",
    "detailError": null
   },
   {
@@ -14410,7 +14410,7 @@
    "stage": "Ημιτελές",
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:48:51.628Z",
+   "detailFetchedAt": "2026-11-26T11:22:44.422Z",
    "detailError": null
   },
   {
@@ -14493,7 +14493,7 @@
    "stage": null,
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:48:51.900Z",
+   "detailFetchedAt": "2026-11-26T11:22:45.571Z",
    "detailError": null
   },
   {
@@ -14566,7 +14566,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:48:55.253Z",
+   "detailFetchedAt": "2026-11-26T11:22:46.830Z",
    "detailError": null
   },
   {
@@ -14640,7 +14640,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:48:55.687Z",
+   "detailFetchedAt": "2026-11-26T11:22:48.606Z",
    "detailError": null
   },
   {
@@ -14736,7 +14736,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:48:55.560Z",
+   "detailFetchedAt": "2026-11-26T11:22:47.392Z",
    "detailError": null
   },
   {
@@ -14811,7 +14811,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Μονοί",
-   "detailFetchedAt": "2026-11-26T10:48:55.480Z",
+   "detailFetchedAt": "2026-11-26T11:22:49.716Z",
    "detailError": null
   },
   {
@@ -14892,7 +14892,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:48:59.609Z",
+   "detailFetchedAt": "2026-11-26T11:22:50.099Z",
    "detailError": null
   },
   {
@@ -14974,7 +14974,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:48:59.999Z",
+   "detailFetchedAt": "2026-11-26T11:22:51.435Z",
    "detailError": null
   },
   {
@@ -15057,7 +15057,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Κεντρική",
    "glazing": "Μονοί",
-   "detailFetchedAt": "2026-11-26T10:48:58.941Z",
+   "detailFetchedAt": "2026-11-26T11:22:51.844Z",
    "detailError": null
   },
   {
@@ -15147,7 +15147,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:48:59.940Z",
+   "detailFetchedAt": "2026-11-26T11:22:53.307Z",
    "detailError": null
   },
   {
@@ -15230,7 +15230,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:49:02.420Z",
+   "detailFetchedAt": "2026-11-26T11:22:53.698Z",
    "detailError": null
   },
   {
@@ -15317,7 +15317,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Κεντρική",
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:49:04.054Z",
+   "detailFetchedAt": "2026-11-26T11:22:55.732Z",
    "detailError": null
   },
   {
@@ -15398,7 +15398,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:49:03.524Z",
+   "detailFetchedAt": "2026-11-26T11:22:56.155Z",
    "detailError": null
   },
   {
@@ -15487,7 +15487,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:49:04.215Z",
+   "detailFetchedAt": "2026-11-26T11:22:57.589Z",
    "detailError": null
   },
   {
@@ -15570,7 +15570,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Μονοί",
-   "detailFetchedAt": "2026-11-26T10:49:06.613Z",
+   "detailFetchedAt": "2026-11-26T11:22:57.587Z",
    "detailError": null
   },
   {
@@ -15678,7 +15678,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Αυτόνομη",
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:49:08.123Z",
+   "detailFetchedAt": "2026-11-26T11:22:59.193Z",
    "detailError": null
   },
   {
@@ -15771,7 +15771,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:49:07.765Z",
+   "detailFetchedAt": "2026-11-26T11:22:59.433Z",
    "detailError": null
   },
   {
@@ -15869,7 +15869,7 @@
    "stage": "Ημιτελές",
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:49:07.708Z",
+   "detailFetchedAt": "2026-11-26T11:23:01.130Z",
    "detailError": null
   },
   {
@@ -15956,7 +15956,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:49:10.787Z",
+   "detailFetchedAt": "2026-11-26T11:23:05.335Z",
    "detailError": null
   },
   {
@@ -16050,7 +16050,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Αυτόνομη",
    "glazing": "Μονοί",
-   "detailFetchedAt": "2026-11-26T10:49:11.828Z",
+   "detailFetchedAt": "2026-11-26T11:23:02.459Z",
    "detailError": null
   },
   {
@@ -16148,7 +16148,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:49:12.473Z",
+   "detailFetchedAt": "2026-11-26T11:23:03.286Z",
    "detailError": null
   },
   {
@@ -16235,7 +16235,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:49:12.076Z",
+   "detailFetchedAt": "2026-11-26T11:23:04.690Z",
    "detailError": null
   },
   {
@@ -16333,7 +16333,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Μονοί",
-   "detailFetchedAt": "2026-11-26T10:49:17.903Z",
+   "detailFetchedAt": "2026-11-26T11:23:06.059Z",
    "detailError": null
   },
   {
@@ -16425,7 +16425,7 @@
    "stage": "Ημιτελές",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:49:15.652Z",
+   "detailFetchedAt": "2026-11-26T11:23:06.752Z",
    "detailError": null
   },
   {
@@ -16516,7 +16516,7 @@
    "stage": "Ημιτελές",
    "heating": "Αυτόνομη",
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:49:16.090Z",
+   "detailFetchedAt": "2026-11-26T11:23:09.054Z",
    "detailError": null
   },
   {
@@ -16615,7 +16615,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Αυτόνομη",
    "glazing": "Μονοί",
-   "detailFetchedAt": "2026-11-26T10:49:16.107Z",
+   "detailFetchedAt": "2026-11-26T11:23:08.975Z",
    "detailError": null
   },
   {
@@ -16714,7 +16714,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Αυτόνομη",
    "glazing": "Μονοί",
-   "detailFetchedAt": "2026-11-26T10:49:19.683Z",
+   "detailFetchedAt": "2026-11-26T11:23:09.567Z",
    "detailError": null
   },
   {
@@ -16811,7 +16811,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Αυτόνομη",
    "glazing": "Μονοί",
-   "detailFetchedAt": "2026-11-26T10:49:19.772Z",
+   "detailFetchedAt": "2026-11-26T11:23:10.845Z",
    "detailError": null
   },
   {
@@ -16910,7 +16910,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Αυτόνομη",
    "glazing": "Μονοί",
-   "detailFetchedAt": "2026-11-26T10:49:19.544Z",
+   "detailFetchedAt": "2026-11-26T11:23:12.961Z",
    "detailError": null
   },
   {
@@ -17009,7 +17009,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Αυτόνομη",
    "glazing": "Μονοί",
-   "detailFetchedAt": "2026-11-26T10:49:21.502Z",
+   "detailFetchedAt": "2026-11-26T11:23:13.778Z",
    "detailError": null
   },
   {
@@ -17108,7 +17108,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Αυτόνομη",
    "glazing": "Μονοί",
-   "detailFetchedAt": "2026-11-26T10:49:22.791Z",
+   "detailFetchedAt": "2026-11-26T11:23:12.757Z",
    "detailError": null
   },
   {
@@ -17207,7 +17207,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Αυτόνομη",
    "glazing": "Μονοί",
-   "detailFetchedAt": "2026-11-26T10:49:22.845Z",
+   "detailFetchedAt": "2026-11-26T11:23:15.208Z",
    "detailError": null
   },
   {
@@ -17305,7 +17305,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Αυτόνομη",
    "glazing": "Μονοί",
-   "detailFetchedAt": "2026-11-26T10:49:24.323Z",
+   "detailFetchedAt": "2026-11-26T11:23:16.558Z",
    "detailError": null
   },
   {
@@ -17392,7 +17392,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Μονοί",
-   "detailFetchedAt": "2026-11-26T10:49:27.770Z",
+   "detailFetchedAt": "2026-11-26T11:23:16.225Z",
    "detailError": null
   },
   {
@@ -17490,7 +17490,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Αυτόνομη",
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:49:27.381Z",
+   "detailFetchedAt": "2026-11-26T11:23:17.499Z",
    "detailError": null
   },
   {
@@ -17582,7 +17582,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:49:27.170Z",
+   "detailFetchedAt": "2026-11-26T11:23:19.452Z",
    "detailError": null
   },
   {
@@ -17674,7 +17674,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:49:28.161Z",
+   "detailFetchedAt": "2026-11-26T11:23:21.231Z",
    "detailError": null
   },
   {
@@ -17768,7 +17768,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Αυτόνομη",
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:49:30.867Z",
+   "detailFetchedAt": "2026-11-26T11:23:19.528Z",
    "detailError": null
   },
   {
@@ -17884,7 +17884,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Αυτόνομη",
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:49:31.606Z",
+   "detailFetchedAt": "2026-11-26T11:23:21.389Z",
    "detailError": null
   },
   {
@@ -17967,7 +17967,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Αυτόνομη",
    "glazing": "Μονοί",
-   "detailFetchedAt": "2026-11-26T10:49:33.342Z",
+   "detailFetchedAt": "2026-11-26T11:23:22.689Z",
    "detailError": null
   },
   {
@@ -18056,7 +18056,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:49:31.621Z",
+   "detailFetchedAt": "2026-11-26T11:23:24.051Z",
    "detailError": null
   },
   {
@@ -18151,7 +18151,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:49:35.049Z",
+   "detailFetchedAt": "2026-11-26T11:23:25.457Z",
    "detailError": null
   },
   {
@@ -18247,7 +18247,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Αυτόνομη",
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:49:35.969Z",
+   "detailFetchedAt": "2026-11-26T11:23:25.385Z",
    "detailError": null
   },
   {
@@ -18332,7 +18332,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:49:35.835Z",
+   "detailFetchedAt": "2026-11-26T11:23:26.124Z",
    "detailError": null
   },
   {
@@ -18429,7 +18429,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:49:36.958Z",
+   "detailFetchedAt": "2026-11-26T11:23:28.360Z",
    "detailError": null
   },
   {
@@ -18521,7 +18521,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:49:39.104Z",
+   "detailFetchedAt": "2026-11-26T11:23:29.032Z",
    "detailError": null
   },
   {
@@ -18627,7 +18627,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Αυτόνομη",
    "glazing": "Μονοί",
-   "detailFetchedAt": "2026-11-26T10:49:39.126Z",
+   "detailFetchedAt": "2026-11-26T11:23:29.272Z",
    "detailError": null
   },
   {
@@ -18712,7 +18712,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:49:39.900Z",
+   "detailFetchedAt": "2026-11-26T11:23:29.675Z",
    "detailError": null
   },
   {
@@ -18804,7 +18804,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Κεντρική",
    "glazing": "Μονοί",
-   "detailFetchedAt": "2026-11-26T10:49:40.165Z",
+   "detailFetchedAt": "2026-11-26T11:23:32.269Z",
    "detailError": null
   },
   {
@@ -18897,7 +18897,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:49:43.137Z",
+   "detailFetchedAt": "2026-11-26T11:23:32.298Z",
    "detailError": null
   },
   {
