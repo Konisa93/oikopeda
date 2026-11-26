@@ -330,7 +330,8 @@ function buildMarket() {
 // Τιμή αγοράς του δήμου: πρώτα spiti24 (μέσος όρος διαμερισμάτων του δήμου), αλλιώς Indomio (Αττική).
 function marketFor(l) {
   const s = l.area?.slug && S24.areas?.[l.area.slug];
-  if (s && s.psm && (s.listings == null || s.listings >= 5)) return { name: s.name || l.area.name, psm: s.psm, n: s.listings, src: "spiti24", url: s.url, date: S24.retrieved };
+  // Μόνο μέσος όρος διαμερισμάτων με τουλάχιστον 5 αγγελίες· ο μέσος όρος «κατοικιών» μικρών περιοχών τον αλλοιώνουν βίλες και μονοκατοικίες.
+  if (s && s.psm && s.type !== "katoikies" && s.listings >= 5) return { name: s.name || l.area.name, psm: s.psm, n: s.listings, src: "spiti24", url: s.url, date: S24.retrieved };
   const idx = MARKET_IDX[l.region?.slug];
   if (!idx) return null;
   const m = idx[normName(l.neighborhood?.name)] || idx[normName(l.area?.name)];

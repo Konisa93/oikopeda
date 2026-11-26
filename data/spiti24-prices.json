@@ -1,0 +1,2408 @@
+{
+ "source": "spiti24.gr: μέσος όρος ζητούμενης τιμής €/τ.μ. διαμερισμάτων προς πώληση ανά περιοχή (όπως τον δείχνει η σελίδα αναζήτησης)",
+ "sourceUrl": "https://www.spiti24.gr/",
+ "retrieved": "2026-11-26",
+ "note": "type=katoikies: η περιοχή είχε <5 διαμερίσματα, η τιμή είναι για όλες τις κατοικίες και δεν χρησιμοποιείται στην εκτίμηση.",
+ "areas": {
+  "athens-center-ano-patisia": {
+   "name": "Άνω Πατήσια",
+   "region": "athens-center",
+   "psm": 2928.4,
+   "listings": 913,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/ano-patisia"
+  },
+  "athens-center-ampelokipoi-pentagon": {
+   "name": "Αμπελόκηποι - Πεντάγωνο",
+   "region": "athens-center",
+   "psm": 3314.91,
+   "listings": 2468,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/ampelokipoi-pentagon"
+  },
+  "athens-center-gizi-pedion-areos": {
+   "name": "Γκύζη - Πεδίον Άρεως",
+   "region": "athens-center",
+   "psm": 2799.71,
+   "listings": 847,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/gizi-pedion-areos"
+  },
+  "athens-center-exarchia-neapoli": {
+   "name": "Εξάρχεια - Νεάπολη",
+   "region": "athens-center",
+   "psm": 3489.55,
+   "listings": 1465,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/exarchia-neapoli"
+  },
+  "athens-center-ilisia": {
+   "name": "Ιλίσια",
+   "region": "athens-center",
+   "psm": 3638,
+   "listings": 404,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/ilisia"
+  },
+  "athens-center-kentro": {
+   "name": "Κέντρο",
+   "region": "athens-center",
+   "psm": 4304.23,
+   "listings": 946,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/kentro"
+  },
+  "athens-center-kolonaki-lykavittos": {
+   "name": "Κολωνάκι - Λυκαβηττός",
+   "region": "athens-center",
+   "psm": 6453.88,
+   "listings": 1409,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/kolonaki-lykavittos"
+  },
+  "athens-center-kolonos-kolokynthous": {
+   "name": "Κολωνός - Κολοκυνθούς",
+   "region": "athens-center",
+   "psm": 2512.9,
+   "listings": 1179,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/kolonos-kolokynthous"
+  },
+  "athens-center-koukaki-makrygianni": {
+   "name": "Κουκάκι - Μακρυγιάννη",
+   "region": "athens-center",
+   "psm": 4258.96,
+   "listings": 790,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/koukaki-makrygianni"
+  },
+  "athens-center-kipseli": {
+   "name": "Κυψέλη",
+   "region": "athens-center",
+   "psm": 2329.89,
+   "listings": 2974,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/kipseli"
+  },
+  "athens-center-patision-acharnon": {
+   "name": "Λεωφ. Πατησίων - Λεωφ. Αχαρνών",
+   "region": "athens-center",
+   "psm": 1969.98,
+   "listings": 3994,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/patision-acharnon"
+  },
+  "athens-center-mets-kalimarmaro": {
+   "name": "Μετς - Καλλιμάρμαρο",
+   "region": "athens-center",
+   "psm": 4551.43,
+   "listings": 321,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/mets-kalimarmaro"
+  },
+  "athens-center-neos-kosmos": {
+   "name": "Νέος Κόσμος",
+   "region": "athens-center",
+   "psm": 3718.88,
+   "listings": 2438,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/neos-kosmos"
+  },
+  "athens-center-pagkrati": {
+   "name": "Παγκράτι",
+   "region": "athens-center",
+   "psm": 3811.11,
+   "listings": 2989,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/pagkrati"
+  },
+  "athens-center-patisia": {
+   "name": "Πατήσια",
+   "region": "athens-center",
+   "psm": 1974.42,
+   "listings": 1158,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/patisia"
+  },
+  "athens-center-petralona": {
+   "name": "Πετράλωνα",
+   "region": "athens-center",
+   "psm": 3103.14,
+   "listings": 700,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/petralona"
+  },
+  "athens-center-poligono-tourkovounia": {
+   "name": "Πολύγωνο - Τουρκοβούνια",
+   "region": "athens-center",
+   "psm": 2627.36,
+   "listings": 378,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/poligono-tourkovounia"
+  },
+  "athens-center-sepolia-skouze": {
+   "name": "Σεπόλια - Σκουζέ",
+   "region": "athens-center",
+   "psm": 2397.96,
+   "listings": 585,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/sepolia-skouze"
+  },
+  "piraeus-kallipoli-freattida": {
+   "name": "Καλλίπολη – Φρεαττύδα",
+   "region": "piraeus",
+   "psm": 3358.59,
+   "listings": 872,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/kallipoli-freattida"
+  },
+  "piraeus-kaminia-palaia-kokkinia": {
+   "name": "Καμίνια – Παλαιά Κοκκινιά",
+   "region": "piraeus",
+   "psm": 2778.95,
+   "listings": 1047,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/kaminia-palaia-kokkinia"
+  },
+  "piraeus-neo-faliro": {
+   "name": "Νέο Φάληρο",
+   "region": "piraeus",
+   "psm": 3325.29,
+   "listings": 481,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/neo-faliro"
+  },
+  "piraeus-tabouria-agia-sofia": {
+   "name": "Ταμπούρια – Αγία Σοφία",
+   "region": "piraeus",
+   "psm": 2873.39,
+   "listings": 1335,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/tabouria-agia-sofia"
+  },
+  "argosaronikos-islands-abelakia": {
+   "name": "Αμπελάκια",
+   "region": "argosaronikos-islands",
+   "psm": 1436.36,
+   "listings": 11,
+   "type": "katoikies",
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/ampelakia-salamina"
+  },
+  "argosaronikos-islands-salamina": {
+   "name": "Σαλαμίνα",
+   "region": "argosaronikos-islands",
+   "psm": 1916.42,
+   "listings": 96,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/salamina"
+  },
+  "athens-north-agios-stefanos": {
+   "name": "Άγιος Στέφανος",
+   "region": "athens-north",
+   "psm": 3054.68,
+   "listings": 85,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/agios-stefanos"
+  },
+  "athens-north-agia-paraskevi": {
+   "name": "Αγία Παρασκευή",
+   "region": "athens-north",
+   "psm": 3931.4,
+   "listings": 1398,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/agia-paraskevi-athina-voreia-proastia"
+  },
+  "athens-north-vrilissia": {
+   "name": "Βριλήσσια",
+   "region": "athens-north",
+   "psm": 4963.09,
+   "listings": 1150,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/vrilissia"
+  },
+  "athens-north-dionisos": {
+   "name": "Διόνυσος",
+   "region": "athens-north",
+   "psm": 2645.38,
+   "listings": 68,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/dionisos"
+  },
+  "athens-north-drossia": {
+   "name": "Δροσιά",
+   "region": "athens-north",
+   "psm": 3842.85,
+   "listings": 415,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/drossia"
+  },
+  "athens-north-ekali": {
+   "name": "Εκάλη",
+   "region": "athens-north",
+   "psm": 3024.7,
+   "listings": 71,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/ekali-athina-voreia-proastia"
+  },
+  "athens-north-iraklio": {
+   "name": "Ηράκλειο",
+   "region": "athens-north",
+   "psm": 3652.89,
+   "listings": 1118,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/iraklio"
+  },
+  "athens-north-kifissia": {
+   "name": "Κηφισιά",
+   "region": "athens-north",
+   "psm": 4984.89,
+   "listings": 1400,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/kifissia"
+  },
+  "athens-north-marousi": {
+   "name": "Μαρούσι",
+   "region": "athens-north",
+   "psm": 4086.94,
+   "listings": 2463,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/marousi"
+  },
+  "athens-north-nea-erithraia": {
+   "name": "Νέα Ερυθραία",
+   "region": "athens-north",
+   "psm": 3701.18,
+   "listings": 492,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/nea-erithraia"
+  },
+  "athens-north-paleo-psichiko": {
+   "name": "Παλαιό Ψυχικό",
+   "region": "athens-north",
+   "psm": 5995.19,
+   "listings": 204,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/paleo-psichiko"
+  },
+  "athens-north-papagou": {
+   "name": "Παπάγου",
+   "region": "athens-north",
+   "psm": 4490.64,
+   "listings": 293,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/papagou"
+  },
+  "athens-north-penteli": {
+   "name": "Πεντέλη",
+   "region": "athens-north",
+   "psm": 2616.58,
+   "listings": 19,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/penteli"
+  },
+  "athens-north-pefki": {
+   "name": "Πεύκη",
+   "region": "athens-north",
+   "psm": 4226.72,
+   "listings": 549,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/pefki"
+  },
+  "athens-north-chalandri": {
+   "name": "Χαλάνδρι",
+   "region": "athens-north",
+   "psm": 3809.1,
+   "listings": 1675,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/chalandri"
+  },
+  "athens-north-cholargos": {
+   "name": "Χολαργός",
+   "region": "athens-north",
+   "psm": 4204.98,
+   "listings": 767,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/cholargos"
+  },
+  "athens-east-artemida-loutsa": {
+   "name": "Αρτέμιδα (Λούτσα)",
+   "region": "athens-east",
+   "psm": 2609.91,
+   "listings": 75,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/artemida-loutsa"
+  },
+  "athens-east-gerakas": {
+   "name": "Γέρακας",
+   "region": "athens-east",
+   "psm": 3703.01,
+   "listings": 1124,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/gerakas"
+  },
+  "athens-east-glika-nera": {
+   "name": "Γλυκά Νερά",
+   "region": "athens-east",
+   "psm": 3310.47,
+   "listings": 232,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/glika-nera"
+  },
+  "athens-east-koropi": {
+   "name": "Κορωπί",
+   "region": "athens-east",
+   "psm": 3190.81,
+   "listings": 143,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/koropi"
+  },
+  "athens-east-nea-makri": {
+   "name": "Νέα Μάκρη",
+   "region": "athens-east",
+   "psm": 2382.06,
+   "listings": 206,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/nea-makri"
+  },
+  "athens-east-paiania": {
+   "name": "Παιανία",
+   "region": "athens-east",
+   "psm": 2764.94,
+   "listings": 100,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/paiania"
+  },
+  "athens-east-pallini": {
+   "name": "Παλλήνη",
+   "region": "athens-east",
+   "psm": 3136.21,
+   "listings": 328,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/pallini-athina-anatolika-proastia"
+  },
+  "athens-south-agios-dimitrios": {
+   "name": "Άγιος Δημήτριος",
+   "region": "athens-south",
+   "psm": 3742.26,
+   "listings": 2083,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/agios-dimitrios-athina-notia-proastia"
+  },
+  "athens-south-alimos": {
+   "name": "Άλιμος",
+   "region": "athens-south",
+   "psm": 4978.07,
+   "listings": 2572,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/alimos"
+  },
+  "athens-south-argyroupoli": {
+   "name": "Αργυρούπολη",
+   "region": "athens-south",
+   "psm": 4307.93,
+   "listings": 823,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/argyroupoli"
+  },
+  "athens-south-vari-varkiza": {
+   "name": "Βάρη - Βάρκιζα",
+   "region": "athens-south",
+   "psm": 5674.13,
+   "listings": 1082,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/vari-varkiza"
+  },
+  "athens-south-voula": {
+   "name": "Βούλα",
+   "region": "athens-south",
+   "psm": 7086.93,
+   "listings": 2431,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/voula"
+  },
+  "athens-south-vironas": {
+   "name": "Βύρωνας",
+   "region": "athens-south",
+   "psm": 2966.1,
+   "listings": 1599,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/vironas"
+  },
+  "athens-south-glyfada": {
+   "name": "Γλυφάδα",
+   "region": "athens-south",
+   "psm": 6185.95,
+   "listings": 6157,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/glyfada"
+  },
+  "athens-south-dafni": {
+   "name": "Δάφνη",
+   "region": "athens-south",
+   "psm": 3560.33,
+   "listings": 1062,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/dafni"
+  },
+  "athens-south-elliniko": {
+   "name": "Ελληνικό",
+   "region": "athens-south",
+   "psm": 6105.44,
+   "listings": 1150,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/elliniko"
+  },
+  "athens-south-zografou": {
+   "name": "Ζωγράφου",
+   "region": "athens-south",
+   "psm": 3000.42,
+   "listings": 1268,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/zografou"
+  },
+  "athens-south-ilioupoli": {
+   "name": "Ηλιούπολη",
+   "region": "athens-south",
+   "psm": 3844.9,
+   "listings": 2103,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/ilioupoli"
+  },
+  "athens-south-kaisariani": {
+   "name": "Καισαριανή",
+   "region": "athens-south",
+   "psm": 3118.18,
+   "listings": 694,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/kaisariani"
+  },
+  "athens-south-kalithea": {
+   "name": "Καλλιθέα",
+   "region": "athens-south",
+   "psm": 3179.64,
+   "listings": 4902,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/kallithea-athina-notia-proastia"
+  },
+  "athens-south-nea-smyrni": {
+   "name": "Νέα Σμύρνη",
+   "region": "athens-south",
+   "psm": 3680.34,
+   "listings": 3118,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/nea-smyrni"
+  },
+  "athens-south-palaio-faliro": {
+   "name": "Παλαιό Φάληρο",
+   "region": "athens-south",
+   "psm": 4275.59,
+   "listings": 3215,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/palaio-faliro"
+  },
+  "athens-south-imittos": {
+   "name": "Υμηττός",
+   "region": "athens-south",
+   "psm": 3382.5,
+   "listings": 215,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/imittos"
+  },
+  "piraeus-suburbs-agios-ioannis-rentis": {
+   "name": "Άγιος Ιωάννης Ρέντης",
+   "region": "piraeus-suburbs",
+   "psm": 2112.88,
+   "listings": 305,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/agios-ioannis-rentis"
+  },
+  "piraeus-suburbs-drapetsona": {
+   "name": "Δραπετσώνα",
+   "region": "piraeus-suburbs",
+   "psm": 3073.19,
+   "listings": 358,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/drapetsona"
+  },
+  "piraeus-suburbs-keratsini": {
+   "name": "Κερατσίνι",
+   "region": "piraeus-suburbs",
+   "psm": 2276.35,
+   "listings": 1191,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/keratsini"
+  },
+  "piraeus-suburbs-koridallos": {
+   "name": "Κορυδαλλός",
+   "region": "piraeus-suburbs",
+   "psm": 2698.51,
+   "listings": 1261,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/koridallos"
+  },
+  "piraeus-suburbs-moschato": {
+   "name": "Μοσχάτο",
+   "region": "piraeus-suburbs",
+   "psm": 3853.61,
+   "listings": 538,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/moschato"
+  },
+  "piraeus-suburbs-nikaia": {
+   "name": "Νίκαια",
+   "region": "piraeus-suburbs",
+   "psm": 2374.13,
+   "listings": 1605,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/nikaia-proastia-peiraia"
+  },
+  "piraeus-suburbs-perama": {
+   "name": "Πέραμα",
+   "region": "piraeus-suburbs",
+   "psm": 1883.25,
+   "listings": 266,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/perama-proastia-peiraia"
+  },
+  "piraeus-suburbs-tavros": {
+   "name": "Ταύρος",
+   "region": "piraeus-suburbs",
+   "psm": 2815.53,
+   "listings": 202,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/tavros"
+  },
+  "athens-west-ilion": {
+   "name": "Ίλιον",
+   "region": "athens-west",
+   "psm": 2596.99,
+   "listings": 1185,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/ilion"
+  },
+  "athens-west-agia-varvara": {
+   "name": "Αγία Βαρβάρα",
+   "region": "athens-west",
+   "psm": 1631.6,
+   "listings": 156,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/agia-varvara-athina-dytika-proastia"
+  },
+  "athens-west-agioi-anargiroi": {
+   "name": "Αγιοι Ανάργυροι",
+   "region": "athens-west",
+   "psm": 2314.13,
+   "listings": 308,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/agioi-anargiroi-athina-dytika-proastia"
+  },
+  "athens-west-aigaleo": {
+   "name": "Αιγάλεω",
+   "region": "athens-west",
+   "psm": 2542.59,
+   "listings": 763,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/aigaleo"
+  },
+  "athens-west-acharnes": {
+   "name": "Αχαρνές",
+   "region": "athens-west",
+   "psm": 1969.02,
+   "listings": 762,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/acharnes"
+  },
+  "athens-west-galatsi": {
+   "name": "Γαλάτσι",
+   "region": "athens-west",
+   "psm": 3053.32,
+   "listings": 1204,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/galatsi"
+  },
+  "athens-west-kamatero": {
+   "name": "Καματερό",
+   "region": "athens-west",
+   "psm": 2487.28,
+   "listings": 221,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/kamatero"
+  },
+  "athens-west-metamorfosi": {
+   "name": "Μεταμόρφωση",
+   "region": "athens-west",
+   "psm": 3179.68,
+   "listings": 393,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/metamorfosi"
+  },
+  "athens-west-nea-ionia": {
+   "name": "Νέα Ιωνία",
+   "region": "athens-west",
+   "psm": 3170.62,
+   "listings": 1091,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/nea-ionia"
+  },
+  "athens-west-nea-philadelfia": {
+   "name": "Νέα Φιλαδέλφεια",
+   "region": "athens-west",
+   "psm": 2524.06,
+   "listings": 222,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/nea-philadelfia"
+  },
+  "athens-west-nea-chalkidona": {
+   "name": "Νέα Χαλκηδόνα",
+   "region": "athens-west",
+   "psm": 2299.74,
+   "listings": 102,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/nea-chalkidona"
+  },
+  "athens-west-peristeri": {
+   "name": "Περιστέρι",
+   "region": "athens-west",
+   "psm": 2876.22,
+   "listings": 2278,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/peristeri"
+  },
+  "athens-west-petroupoli": {
+   "name": "Πετρούπολη",
+   "region": "athens-west",
+   "psm": 2991.78,
+   "listings": 951,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/petroupoli"
+  },
+  "athens-west-chaidari": {
+   "name": "Χαϊδάρι",
+   "region": "athens-west",
+   "psm": 2528.43,
+   "listings": 520,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/chaidari"
+  },
+  "rest-of-attica-ano-liosia": {
+   "name": "Άνω Λιόσια",
+   "region": "rest-of-attica",
+   "psm": 1668.59,
+   "listings": 232,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/ano-liosia"
+  },
+  "rest-of-attica-afidnes": {
+   "name": "Αφίδνες",
+   "region": "rest-of-attica",
+   "psm": 1917,
+   "listings": 5,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/afidnes"
+  },
+  "rest-of-attica-elefsina": {
+   "name": "Ελευσίνα",
+   "region": "rest-of-attica",
+   "psm": 2127.07,
+   "listings": 81,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/elefsina"
+  },
+  "rest-of-attica-zefiri": {
+   "name": "Ζεφύρι",
+   "region": "rest-of-attica",
+   "psm": 1359.02,
+   "listings": 46,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/zefiri"
+  },
+  "rest-of-attica-kalivia-thorikou": {
+   "name": "Καλύβια Θορικού",
+   "region": "rest-of-attica",
+   "psm": 3156.84,
+   "listings": 201,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/kalivia-thorikou"
+  },
+  "rest-of-attica-keratea": {
+   "name": "Κερατέα",
+   "region": "rest-of-attica",
+   "psm": 2135.52,
+   "listings": 75,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/keratea"
+  },
+  "rest-of-attica-kouvaras": {
+   "name": "Κουβαράς",
+   "region": "rest-of-attica",
+   "psm": 1618.83,
+   "listings": 6,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/kouvaras"
+  },
+  "rest-of-attica-megara": {
+   "name": "Μέγαρα",
+   "region": "rest-of-attica",
+   "psm": 1578.89,
+   "listings": 53,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/megara"
+  },
+  "rest-of-attica-magoula": {
+   "name": "Μαγούλα",
+   "region": "rest-of-attica",
+   "psm": 1561.6,
+   "listings": 5,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/magoula"
+  },
+  "rest-of-attica-markopoulo": {
+   "name": "Μαρκόπουλο",
+   "region": "rest-of-attica",
+   "psm": 3424.67,
+   "listings": 439,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/markopoulo"
+  },
+  "rest-of-attica-pikermi": {
+   "name": "Πικέρμι",
+   "region": "rest-of-attica",
+   "psm": 2999.03,
+   "listings": 37,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/pikermi"
+  },
+  "rest-of-attica-rafina": {
+   "name": "Ραφήνα",
+   "region": "rest-of-attica",
+   "psm": 3239.89,
+   "listings": 342,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/rafina"
+  },
+  "rest-of-attica-saronida": {
+   "name": "Σαρωνίδα",
+   "region": "rest-of-attica",
+   "psm": 4157.5,
+   "listings": 226,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/saronida"
+  },
+  "rest-of-attica-sounio": {
+   "name": "Σούνιο",
+   "region": "rest-of-attica",
+   "psm": 6419.49,
+   "listings": 35,
+   "type": "katoikies",
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/sounio"
+  },
+  "rest-of-attica-oropos": {
+   "name": "Ωρωπός",
+   "region": "rest-of-attica",
+   "psm": 1994.56,
+   "listings": 131,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/oropos"
+  },
+  "thessaloniki-municipality-vardaris-lahanokipi": {
+   "name": "Βαρδάρης - Λαχανόκηποι",
+   "region": "thessaloniki-municipality",
+   "psm": 2463.21,
+   "listings": 592,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/vardaris-lahanokipi"
+  },
+  "thessaloniki-municipality-voulgari-ntepo-martiou": {
+   "name": "Βούλγαρη - Ντεπώ - Μαρτίου",
+   "region": "thessaloniki-municipality",
+   "psm": 2670.18,
+   "listings": 1244,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/voulgari-ntepo-martiou"
+  },
+  "thessaloniki-municipality-center-of-thessaloniki": {
+   "name": "Κέντρο Θεσσαλονίκης",
+   "region": "thessaloniki-municipality",
+   "psm": 3376.31,
+   "listings": 3728,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/center-of-thessaloniki"
+  },
+  "thessaloniki-municipality-xirokrini-panagia-faneromeni": {
+   "name": "Ξηροκρήνη - Παναγία Φανερωμένη",
+   "region": "thessaloniki-municipality",
+   "psm": 1998.03,
+   "listings": 576,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/xirokrini-panagia-faneromeni"
+  },
+  "thessaloniki-municipality-sfageia-ichthyoskala": {
+   "name": "Σφαγεία - Ιχθυόσκαλα",
+   "region": "thessaloniki-municipality",
+   "psm": 2843.15,
+   "listings": 13,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/sfageia-ichthyoskala"
+  },
+  "thessaloniki-municipality-toumpa": {
+   "name": "Τούμπα",
+   "region": "thessaloniki-municipality",
+   "psm": 2717.8,
+   "listings": 1782,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/toumpa"
+  },
+  "thessaloniki-municipality-triandria-doxa": {
+   "name": "Τριανδρία - Δόξα",
+   "region": "thessaloniki-municipality",
+   "psm": 2591.88,
+   "listings": 364,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/triandria-doxa"
+  },
+  "thessaloniki-municipality-faliro-ippokratio": {
+   "name": "Φάληρο - Ιπποκράτειο",
+   "region": "thessaloniki-municipality",
+   "psm": 2727.76,
+   "listings": 1585,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/faliro-ippokratio"
+  },
+  "thessaloniki-municipality-charilaou": {
+   "name": "Χαριλάου",
+   "region": "thessaloniki-municipality",
+   "psm": 2758.97,
+   "listings": 897,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/charilaou"
+  },
+  "thessaloniki-suburbs-ampelokipoi": {
+   "name": "Αμπελόκηποι",
+   "region": "thessaloniki-suburbs",
+   "psm": 1476.42,
+   "listings": 506,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/ampelokipoi"
+  },
+  "thessaloniki-suburbs-vasilika": {
+   "name": "Βασιλικά",
+   "region": "thessaloniki-suburbs",
+   "psm": 1525,
+   "listings": 46,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/vasilika"
+  },
+  "thessaloniki-suburbs-eleftherio-kordelio": {
+   "name": "Ελευθέριο-Κορδελιό",
+   "region": "thessaloniki-suburbs",
+   "psm": 1520.58,
+   "listings": 260,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/eleftherio-kordelio"
+  },
+  "thessaloniki-suburbs-epanomi": {
+   "name": "Επανομή",
+   "region": "thessaloniki-suburbs",
+   "psm": 1618.6,
+   "listings": 131,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/epanomi"
+  },
+  "thessaloniki-suburbs-efkarpia": {
+   "name": "Ευκαρπία",
+   "region": "thessaloniki-suburbs",
+   "psm": 2013.05,
+   "listings": 112,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/efkarpia"
+  },
+  "thessaloniki-suburbs-echedoros": {
+   "name": "Εχέδωρος",
+   "region": "thessaloniki-suburbs",
+   "psm": 1366.77,
+   "listings": 118,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/echedoros"
+  },
+  "thessaloniki-suburbs-evosmos": {
+   "name": "Εύοσμος",
+   "region": "thessaloniki-suburbs",
+   "psm": 2067.15,
+   "listings": 1349,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/evosmos"
+  },
+  "thessaloniki-suburbs-thermi": {
+   "name": "Θέρμη",
+   "region": "thessaloniki-suburbs",
+   "psm": 2814.88,
+   "listings": 2614,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/thermi"
+  },
+  "thessaloniki-suburbs-thermaikos": {
+   "name": "Θερμαϊκός",
+   "region": "thessaloniki-suburbs",
+   "psm": 2662.98,
+   "listings": 979,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/thermaikos"
+  },
+  "thessaloniki-suburbs-kalamaria": {
+   "name": "Καλαμαριά",
+   "region": "thessaloniki-suburbs",
+   "psm": 3225.72,
+   "listings": 2505,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/kalamaria"
+  },
+  "thessaloniki-suburbs-kallithea": {
+   "name": "Καλλιθέα",
+   "region": "thessaloniki-suburbs",
+   "psm": 1022.06,
+   "listings": 50,
+   "type": "katoikies",
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/kallithea-thessaloniki-proastia"
+  },
+  "thessaloniki-suburbs-mikra": {
+   "name": "Μίκρα",
+   "region": "thessaloniki-suburbs",
+   "psm": 1838.43,
+   "listings": 88,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/mikra"
+  },
+  "thessaloniki-suburbs-menemeni": {
+   "name": "Μενεμένη",
+   "region": "thessaloniki-suburbs",
+   "psm": 1634.1,
+   "listings": 205,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/menemeni"
+  },
+  "thessaloniki-suburbs-michaniona": {
+   "name": "Μηχανιώνα",
+   "region": "thessaloniki-suburbs",
+   "psm": 1941.14,
+   "listings": 208,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/michaniona"
+  },
+  "thessaloniki-suburbs-migdonia": {
+   "name": "Μυγδονία",
+   "region": "thessaloniki-suburbs",
+   "psm": 1173.54,
+   "listings": 26,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/migdonia"
+  },
+  "thessaloniki-suburbs-neapoli": {
+   "name": "Νεάπολη",
+   "region": "thessaloniki-suburbs",
+   "psm": 1641.44,
+   "listings": 642,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/neapoli-thessaloniki-proastia"
+  },
+  "thessaloniki-suburbs-panorama": {
+   "name": "Πανόραμα",
+   "region": "thessaloniki-suburbs",
+   "psm": 3126.49,
+   "listings": 336,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/panorama"
+  },
+  "thessaloniki-suburbs-pefka": {
+   "name": "Πεύκα",
+   "region": "thessaloniki-suburbs",
+   "psm": 2329.59,
+   "listings": 102,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/pefka"
+  },
+  "thessaloniki-suburbs-polichni": {
+   "name": "Πολίχνη",
+   "region": "thessaloniki-suburbs",
+   "psm": 1786.68,
+   "listings": 282,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/polichni"
+  },
+  "thessaloniki-suburbs-pylea": {
+   "name": "Πυλαία",
+   "region": "thessaloniki-suburbs",
+   "psm": 2847,
+   "listings": 559,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/pylea"
+  },
+  "thessaloniki-suburbs-stavroupoli": {
+   "name": "Σταυρούπολη",
+   "region": "thessaloniki-suburbs",
+   "psm": 1876.03,
+   "listings": 658,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/stavroupoli-thessaloniki-proastia"
+  },
+  "thessaloniki-suburbs-sikies": {
+   "name": "Συκιές",
+   "region": "thessaloniki-suburbs",
+   "psm": 1761.67,
+   "listings": 546,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/sikies"
+  },
+  "thessaloniki-suburbs-chortiatis": {
+   "name": "Χορτιάτης",
+   "region": "thessaloniki-suburbs",
+   "psm": 1486.77,
+   "listings": 112,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/chortiatis"
+  },
+  "thessaloniki-suburbs-oreokastro": {
+   "name": "Ωραιόκαστρο",
+   "region": "thessaloniki-suburbs",
+   "psm": 2242.56,
+   "listings": 179,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/oreokastro"
+  },
+  "thessaloniki-rest-of-prefecture-agios-athanasios": {
+   "name": "Άγιος Αθανάσιος",
+   "region": "thessaloniki-rest-of-prefecture",
+   "psm": 1007.29,
+   "listings": 17,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/agios-athanasios-thessaloniki-ypoloipo-nomou"
+  },
+  "thessaloniki-rest-of-prefecture-assiros": {
+   "name": "Άσσηρος",
+   "region": "thessaloniki-rest-of-prefecture",
+   "psm": 793.31,
+   "listings": 26,
+   "type": "katoikies",
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/assiros"
+  },
+  "thessaloniki-rest-of-prefecture-lagkadas": {
+   "name": "Λαγκαδάς",
+   "region": "thessaloniki-rest-of-prefecture",
+   "psm": 1463.54,
+   "listings": 92,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/lagkadas"
+  },
+  "chalkidiki-anthemountas": {
+   "name": "Ανθεμούντας",
+   "region": "chalkidiki",
+   "psm": 1051.8,
+   "listings": 5,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/anthemountas"
+  },
+  "chalkidiki-kallikrateia": {
+   "name": "Καλλικράτεια",
+   "region": "chalkidiki",
+   "psm": 2730.84,
+   "listings": 547,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/kallikrateia"
+  },
+  "chalkidiki-kassandra": {
+   "name": "Κασσάνδρα",
+   "region": "chalkidiki",
+   "psm": 2927.72,
+   "listings": 426,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/kassandra"
+  },
+  "chalkidiki-moudania": {
+   "name": "Μουδανιά",
+   "region": "chalkidiki",
+   "psm": 2513.66,
+   "listings": 256,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/moudania"
+  },
+  "chalkidiki-ormilia": {
+   "name": "Ορμύλια",
+   "region": "chalkidiki",
+   "psm": 2437.89,
+   "listings": 61,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/ormilia"
+  },
+  "chalkidiki-pallini": {
+   "name": "Παλλήνη",
+   "region": "chalkidiki",
+   "psm": 3257.95,
+   "listings": 504,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/pallini-chalkidiki"
+  },
+  "chalkidiki-poligiros": {
+   "name": "Πολύγυρος",
+   "region": "chalkidiki",
+   "psm": 2685.95,
+   "listings": 95,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/poligiros"
+  },
+  "chalkidiki-sithonia": {
+   "name": "Σιθωνία",
+   "region": "chalkidiki",
+   "psm": 3312.34,
+   "listings": 219,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/sithonia"
+  },
+  "chalkidiki-stagiron-akanthou": {
+   "name": "Σταγείρων - Ακάνθου",
+   "region": "chalkidiki",
+   "psm": 2180.4,
+   "listings": 35,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/stagiron-akanthou"
+  },
+  "pieria-prefecture-elafina": {
+   "name": "Ελαφίνα",
+   "region": "pieria-prefecture",
+   "psm": 999.5,
+   "listings": 6,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/elafina"
+  },
+  "pieria-prefecture-katerini": {
+   "name": "Κατερίνη",
+   "region": "pieria-prefecture",
+   "psm": 1326.02,
+   "listings": 349,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/katerini"
+  },
+  "pieria-prefecture-kolindros": {
+   "name": "Κολινδρός",
+   "region": "pieria-prefecture",
+   "psm": 675.67,
+   "listings": 21,
+   "type": "katoikies",
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/kolindros"
+  },
+  "pieria-prefecture-korinos": {
+   "name": "Κορινός",
+   "region": "pieria-prefecture",
+   "psm": 681.17,
+   "listings": 6,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/korinos"
+  },
+  "pieria-prefecture-litochoro": {
+   "name": "Λιτόχωρο",
+   "region": "pieria-prefecture",
+   "psm": 1693.31,
+   "listings": 51,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/litochoro"
+  },
+  "pieria-prefecture-petra": {
+   "name": "Πέτρα",
+   "region": "pieria-prefecture",
+   "psm": 775.88,
+   "listings": 24,
+   "type": "katoikies",
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/petra"
+  },
+  "pieria-prefecture-paralia": {
+   "name": "Παραλία",
+   "region": "pieria-prefecture",
+   "psm": 1691.61,
+   "listings": 64,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/paralia-nomos-pierias"
+  },
+  "pieria-prefecture-pieria": {
+   "name": "Πιερία",
+   "region": "pieria-prefecture",
+   "psm": 1069.24,
+   "listings": 29,
+   "type": "katoikies",
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/pieria"
+  },
+  "pieria-prefecture-pidna": {
+   "name": "Πύδνα",
+   "region": "pieria-prefecture",
+   "psm": 819.71,
+   "listings": 38,
+   "type": "katoikies",
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/pidna"
+  },
+  "imathia-alexandreia": {
+   "name": "Αλεξάνδρεια",
+   "region": "imathia",
+   "psm": 858.37,
+   "listings": 76,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/alexandreia"
+  },
+  "imathia-antigonides": {
+   "name": "Αντιγονίδες",
+   "region": "imathia",
+   "psm": 499.9,
+   "listings": 21,
+   "type": "katoikies",
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/antigonides"
+  },
+  "imathia-apostolos-pavlos": {
+   "name": "Απόστολος Παύλος",
+   "region": "imathia",
+   "psm": 1240,
+   "listings": 39,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/apostolos-pavlos"
+  },
+  "imathia-veroia": {
+   "name": "Βέροια",
+   "region": "imathia",
+   "psm": 1072.64,
+   "listings": 319,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/veroia"
+  },
+  "imathia-vergina": {
+   "name": "Βεργίνα",
+   "region": "imathia",
+   "psm": 975.71,
+   "listings": 17,
+   "type": "katoikies",
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/vergina"
+  },
+  "imathia-dovra": {
+   "name": "Δοβρά",
+   "region": "imathia",
+   "psm": 969.28,
+   "listings": 25,
+   "type": "katoikies",
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/dovra"
+  },
+  "imathia-plati": {
+   "name": "Πλατύ",
+   "region": "imathia",
+   "psm": 481.71,
+   "listings": 7,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/plati"
+  },
+  "pella-edessa": {
+   "name": "Έδεσσα",
+   "region": "pella",
+   "psm": 1043.95,
+   "listings": 61,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/edessa"
+  },
+  "pella-aridaia": {
+   "name": "Αριδαία",
+   "region": "pella",
+   "psm": 937.5,
+   "listings": 16,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/aridaia"
+  },
+  "pella-vegoritida": {
+   "name": "Βεγορίτιδα",
+   "region": "pella",
+   "psm": 1148.27,
+   "listings": 11,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/vegoritida"
+  },
+  "pella-giannitsa": {
+   "name": "Γιαννιτσά",
+   "region": "pella",
+   "psm": 975.97,
+   "listings": 145,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/giannitsa"
+  },
+  "pella-skidra": {
+   "name": "Σκύδρα",
+   "region": "pella",
+   "psm": 898.7,
+   "listings": 10,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/skidra"
+  },
+  "kilkis-prefecture-gallikos": {
+   "name": "Γαλλικός",
+   "region": "kilkis-prefecture",
+   "psm": 822.67,
+   "listings": 6,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/gallikos"
+  },
+  "kilkis-prefecture-kilkis": {
+   "name": "Κιλκίς",
+   "region": "kilkis-prefecture",
+   "psm": 1063.53,
+   "listings": 112,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/kilkis"
+  },
+  "kilkis-prefecture-polikastro": {
+   "name": "Πολύκαστρο",
+   "region": "kilkis-prefecture",
+   "psm": 931.21,
+   "listings": 29,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/polikastro"
+  },
+  "serres-prefecture-emmanouil-pappas": {
+   "name": "Εμμανουήλ Παππάς",
+   "region": "serres-prefecture",
+   "psm": 627.85,
+   "listings": 78,
+   "type": "katoikies",
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/emmanouil-pappas"
+  },
+  "serres-prefecture-nea-zichni": {
+   "name": "Νέα Ζίχνη",
+   "region": "serres-prefecture",
+   "psm": 560.55,
+   "listings": 33,
+   "type": "katoikies",
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/nea-zichni"
+  },
+  "serres-prefecture-nigrita": {
+   "name": "Νιγρίτα",
+   "region": "serres-prefecture",
+   "psm": 567.85,
+   "listings": 20,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/nigrita"
+  },
+  "serres-prefecture-serres": {
+   "name": "Σέρρες",
+   "region": "serres-prefecture",
+   "psm": 1174.46,
+   "listings": 374,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/serres"
+  },
+  "serres-prefecture-sidirokastro": {
+   "name": "Σιδηρόκαστρο",
+   "region": "serres-prefecture",
+   "psm": 791.83,
+   "listings": 23,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/sidirokastro"
+  },
+  "drama-prefecture-doxato": {
+   "name": "Δοξάτο",
+   "region": "drama-prefecture",
+   "psm": 757.69,
+   "listings": 36,
+   "type": "katoikies",
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/doxato"
+  },
+  "drama-prefecture-drama": {
+   "name": "Δράμα",
+   "region": "drama-prefecture",
+   "psm": 1032.08,
+   "listings": 170,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/drama"
+  },
+  "drama-prefecture-kato-nevrokopi": {
+   "name": "Κάτω Νευροκόπι",
+   "region": "drama-prefecture",
+   "psm": 583.59,
+   "listings": 17,
+   "type": "katoikies",
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/kato-nevrokopi"
+  },
+  "drama-prefecture-kalampaki": {
+   "name": "Καλαμπάκι",
+   "region": "drama-prefecture",
+   "psm": 843.9,
+   "listings": 10,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/kalampaki"
+  },
+  "drama-prefecture-prosotsani": {
+   "name": "Προσοτσάνη",
+   "region": "drama-prefecture",
+   "psm": 612.58,
+   "listings": 36,
+   "type": "katoikies",
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/prosotsani"
+  },
+  "kavala-prefecture-eleftheroupoli": {
+   "name": "Ελευθερούπολη",
+   "region": "kavala-prefecture",
+   "psm": 1109.47,
+   "listings": 55,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/eleftheroupoli"
+  },
+  "kavala-prefecture-kavala": {
+   "name": "Καβάλα",
+   "region": "kavala-prefecture",
+   "psm": 2214.25,
+   "listings": 1083,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/kavala"
+  },
+  "kavala-prefecture-filippoi": {
+   "name": "Φίλιπποι",
+   "region": "kavala-prefecture",
+   "psm": 1262.04,
+   "listings": 27,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/filippoi"
+  },
+  "xanthi-prefecture-avdira": {
+   "name": "Άβδηρα",
+   "region": "xanthi-prefecture",
+   "psm": 1668.83,
+   "listings": 83,
+   "type": "katoikies",
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/avdira"
+  },
+  "xanthi-prefecture-xanthi": {
+   "name": "Ξάνθη",
+   "region": "xanthi-prefecture",
+   "psm": 1358.6,
+   "listings": 263,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/xanthi"
+  },
+  "xanthi-prefecture-stavroupoli": {
+   "name": "Σταυρούπολη",
+   "region": "xanthi-prefecture",
+   "psm": 811.28,
+   "listings": 29,
+   "type": "katoikies",
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/stavroupoli-nomos-xanthis"
+  },
+  "rodopi-prefecture-komotini": {
+   "name": "Κομοτηνή",
+   "region": "rodopi-prefecture",
+   "psm": 1334.22,
+   "listings": 166,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/komotini"
+  },
+  "rodopi-prefecture-maroneia": {
+   "name": "Μαρώνεια",
+   "region": "rodopi-prefecture",
+   "psm": 1650.15,
+   "listings": 46,
+   "type": "katoikies",
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/maroneia"
+  },
+  "evros-alexandroupoli": {
+   "name": "Αλεξανδρούπολη",
+   "region": "evros",
+   "psm": 2167.04,
+   "listings": 998,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/alexandroupoli"
+  },
+  "evros-didimoticho": {
+   "name": "Διδυμότειχο",
+   "region": "evros",
+   "psm": 552.87,
+   "listings": 39,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/didimoticho"
+  },
+  "evros-orestiada": {
+   "name": "Ορεστιάδα",
+   "region": "evros",
+   "psm": 805.14,
+   "listings": 93,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/orestiada"
+  },
+  "evros-soufli": {
+   "name": "Σουφλί",
+   "region": "evros",
+   "psm": 622.67,
+   "listings": 6,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/soufli"
+  },
+  "evros-feres": {
+   "name": "Φέρες",
+   "region": "evros",
+   "psm": 487.35,
+   "listings": 20,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/feres"
+  },
+  "cyclades-kea": {
+   "name": "Κέα",
+   "region": "cyclades",
+   "psm": 4276.91,
+   "listings": 44,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/kea"
+  },
+  "cyclades-mykonos": {
+   "name": "Μύκονος",
+   "region": "cyclades",
+   "psm": 7289.89,
+   "listings": 179,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/mykonos"
+  },
+  "cyclades-paros": {
+   "name": "Πάρος",
+   "region": "cyclades",
+   "psm": 5396.83,
+   "listings": 143,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/paros"
+  },
+  "cyclades-syros": {
+   "name": "Σύρος",
+   "region": "cyclades",
+   "psm": 2906.51,
+   "listings": 229,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/syros"
+  },
+  "dodecanese-simi": {
+   "name": "Σύμη",
+   "region": "dodecanese",
+   "psm": 4028.67,
+   "listings": 9,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/simi"
+  },
+  "sporades-skiros": {
+   "name": "Σκύρος",
+   "region": "sporades",
+   "psm": 1971,
+   "listings": 7,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/skiros"
+  },
+  "chios-prefecture-chios": {
+   "name": "Χίος",
+   "region": "chios-prefecture",
+   "psm": 2407.46,
+   "listings": 204,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/chios"
+  },
+  "lesvos-prefecture-lesvos-kalloni": {
+   "name": "Λέσβος - Καλλονή",
+   "region": "lesvos-prefecture",
+   "psm": 892.24,
+   "listings": 17,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/lesvos-kalloni"
+  },
+  "lesvos-prefecture-lesvos-mitilini": {
+   "name": "Λέσβος - Μυτιλήνη",
+   "region": "lesvos-prefecture",
+   "psm": 1574.73,
+   "listings": 88,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/lesvos-mitilini"
+  },
+  "heraklion-prefecture-viannos": {
+   "name": "Βιαννός",
+   "region": "heraklion-prefecture",
+   "psm": 2006.73,
+   "listings": 41,
+   "type": "katoikies",
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/viannos"
+  },
+  "heraklion-prefecture-heraclion-cretes": {
+   "name": "Ηράκλειο Κρήτης",
+   "region": "heraklion-prefecture",
+   "psm": 2867.42,
+   "listings": 828,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/heraclion-cretes"
+  },
+  "lasithi-prefecture-ierapetra": {
+   "name": "Ιεράπετρα",
+   "region": "lasithi-prefecture",
+   "psm": 1713.73,
+   "listings": 41,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/ierapetra"
+  },
+  "chania-prefecture-akrotiri": {
+   "name": "Ακρωτήρι",
+   "region": "chania-prefecture",
+   "psm": 2738.93,
+   "listings": 27,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/akrotiri-nomos-chanion"
+  },
+  "chania-prefecture-nea-kidonia": {
+   "name": "Νέα Κυδωνία",
+   "region": "chania-prefecture",
+   "psm": 2642.26,
+   "listings": 19,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/nea-kidonia"
+  },
+  "chania-prefecture-platanias": {
+   "name": "Πλατανιάς",
+   "region": "chania-prefecture",
+   "psm": 3907.17,
+   "listings": 76,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/platanias"
+  },
+  "kozani-prefecture-aiani": {
+   "name": "Αιανή",
+   "region": "kozani-prefecture",
+   "psm": 391.25,
+   "listings": 4,
+   "type": "katoikies",
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/aiani"
+  },
+  "kozani-prefecture-vermio": {
+   "name": "Βέρμιο",
+   "region": "kozani-prefecture",
+   "psm": 461.67,
+   "listings": 3,
+   "type": "katoikies",
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/vermio"
+  },
+  "kozani-prefecture-elimeia": {
+   "name": "Ελίμεια",
+   "region": "kozani-prefecture",
+   "psm": 487.88,
+   "listings": 8,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/elimeia"
+  },
+  "kozani-prefecture-kozani": {
+   "name": "Κοζάνη",
+   "region": "kozani-prefecture",
+   "psm": 961.65,
+   "listings": 164,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/kozani"
+  },
+  "kozani-prefecture-neapolis": {
+   "name": "Νεάπολης",
+   "region": "kozani-prefecture",
+   "psm": 569.6,
+   "listings": 10,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/neapolis"
+  },
+  "kozani-prefecture-ptolemaida": {
+   "name": "Πτολεμαϊδα",
+   "region": "kozani-prefecture",
+   "psm": 784.97,
+   "listings": 143,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/ptolemaida"
+  },
+  "kozani-prefecture-servia": {
+   "name": "Σέρβια",
+   "region": "kozani-prefecture",
+   "psm": 475.33,
+   "listings": 9,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/servia"
+  },
+  "kozani-prefecture-siatista": {
+   "name": "Σιάτιστα",
+   "region": "kozani-prefecture",
+   "psm": 715.63,
+   "listings": 8,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/siatista"
+  },
+  "kastoria-prefecture-agia-triada": {
+   "name": "Αγία Τριάδα",
+   "region": "kastoria-prefecture",
+   "psm": 626.92,
+   "listings": 12,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/agia-triada"
+  },
+  "kastoria-prefecture-ion-dragoumis": {
+   "name": "Ιών Δραγούμης",
+   "region": "kastoria-prefecture",
+   "psm": 359,
+   "listings": 4,
+   "type": "katoikies",
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/ion-dragoumis"
+  },
+  "kastoria-prefecture-kastoria": {
+   "name": "Καστοριά",
+   "region": "kastoria-prefecture",
+   "psm": 772.67,
+   "listings": 30,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/kastoria"
+  },
+  "kastoria-prefecture-orestida": {
+   "name": "Ορέστιδα",
+   "region": "kastoria-prefecture",
+   "psm": 561.36,
+   "listings": 14,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/orestida"
+  },
+  "florina-prefecture-amintaio": {
+   "name": "Αμύνταιο",
+   "region": "florina-prefecture",
+   "psm": 732.8,
+   "listings": 5,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/amintaio"
+  },
+  "florina-prefecture-florina": {
+   "name": "Φλώρινα",
+   "region": "florina-prefecture",
+   "psm": 902.11,
+   "listings": 38,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/florina"
+  },
+  "grevena-grevena": {
+   "name": "Γρεβενά",
+   "region": "grevena",
+   "psm": 850.25,
+   "listings": 57,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/grevena"
+  },
+  "ioannina-prefecture-anatoli": {
+   "name": "Ανατολή",
+   "region": "ioannina-prefecture",
+   "psm": 1679.89,
+   "listings": 74,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/anatoli"
+  },
+  "ioannina-prefecture-dodoni": {
+   "name": "Δωδώνη",
+   "region": "ioannina-prefecture",
+   "psm": 1103.2,
+   "listings": 5,
+   "type": "katoikies",
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/dodoni"
+  },
+  "ioannina-prefecture-zitsa": {
+   "name": "Ζίτσα",
+   "region": "ioannina-prefecture",
+   "psm": 912.71,
+   "listings": 7,
+   "type": "katoikies",
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/zitsa"
+  },
+  "ioannina-prefecture-ioannina": {
+   "name": "Ιωάννινα",
+   "region": "ioannina-prefecture",
+   "psm": 1967.05,
+   "listings": 575,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/ioannina"
+  },
+  "ioannina-prefecture-kentriko-zagori": {
+   "name": "Κεντρικό Ζαγόρι",
+   "region": "ioannina-prefecture",
+   "psm": 943.88,
+   "listings": 42,
+   "type": "katoikies",
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/kentriko-zagori"
+  },
+  "ioannina-prefecture-konitsa": {
+   "name": "Κόνιτσα",
+   "region": "ioannina-prefecture",
+   "psm": 1015.27,
+   "listings": 11,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/konitsa"
+  },
+  "ioannina-prefecture-pamvotida": {
+   "name": "Παμβωτίδα",
+   "region": "ioannina-prefecture",
+   "psm": 2128.56,
+   "listings": 16,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/pamvotida"
+  },
+  "ioannina-prefecture-passarona": {
+   "name": "Πασσαρώνα",
+   "region": "ioannina-prefecture",
+   "psm": 1485.5,
+   "listings": 10,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/passarona"
+  },
+  "ioannina-prefecture-tzoumerka": {
+   "name": "Τζουμέρκα",
+   "region": "ioannina-prefecture",
+   "psm": 1192,
+   "listings": 1,
+   "type": "katoikies",
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/tzoumerka"
+  },
+  "arta-prefecture-arta": {
+   "name": "Άρτα",
+   "region": "arta-prefecture",
+   "psm": 1210.12,
+   "listings": 75,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/arta"
+  },
+  "arta-prefecture-peta": {
+   "name": "Πέτα",
+   "region": "arta-prefecture",
+   "psm": 775.89,
+   "listings": 9,
+   "type": "katoikies",
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/peta"
+  },
+  "preveza-prefecture-preveza": {
+   "name": "Πρέβεζα",
+   "region": "preveza-prefecture",
+   "psm": 2209.74,
+   "listings": 146,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/preveza"
+  },
+  "preveza-prefecture-fanari": {
+   "name": "Φανάρι",
+   "region": "preveza-prefecture",
+   "psm": 2102.17,
+   "listings": 6,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/fanari"
+  },
+  "preveza-prefecture-filippiada": {
+   "name": "Φιλιππιάδα",
+   "region": "preveza-prefecture",
+   "psm": 947.5,
+   "listings": 20,
+   "type": "katoikies",
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/filippiada"
+  },
+  "thesprotia-igoumenitsa": {
+   "name": "Ηγουμενίτσα",
+   "region": "thesprotia",
+   "psm": 1820.12,
+   "listings": 92,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/igoumenitsa"
+  },
+  "thesprotia-sivota": {
+   "name": "Σύβοτα",
+   "region": "thesprotia",
+   "psm": 2756.57,
+   "listings": 44,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/sivota"
+  },
+  "thesprotia-filiates": {
+   "name": "Φιλιάτες",
+   "region": "thesprotia",
+   "psm": 1049.17,
+   "listings": 24,
+   "type": "katoikies",
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/filiates"
+  },
+  "corfu-prefecture-corfu": {
+   "name": "Κέρκυρα",
+   "region": "corfu-prefecture",
+   "psm": 3324.67,
+   "listings": 385,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/corfu"
+  },
+  "corfu-prefecture-paxoi": {
+   "name": "Παξοί",
+   "region": "corfu-prefecture",
+   "psm": 6335.81,
+   "listings": 48,
+   "type": "katoikies",
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/paxoi"
+  },
+  "larissa-prefecture-giannouli": {
+   "name": "Γιάννουλη",
+   "region": "larissa-prefecture",
+   "psm": 953.81,
+   "listings": 32,
+   "type": "katoikies",
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/giannouli"
+  },
+  "larissa-prefecture-larisa": {
+   "name": "Λάρισα",
+   "region": "larissa-prefecture",
+   "psm": 1815.72,
+   "listings": 618,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/larisa"
+  },
+  "trikala-prefecture-trikala": {
+   "name": "Τρίκαλα",
+   "region": "trikala-prefecture",
+   "psm": 1394.68,
+   "listings": 184,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/trikala"
+  },
+  "magnesia-volos": {
+   "name": "Βόλος",
+   "region": "magnesia",
+   "psm": 2000.09,
+   "listings": 956,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/volos"
+  },
+  "magnesia-milies": {
+   "name": "Μηλιές",
+   "region": "magnesia",
+   "psm": 1957.6,
+   "listings": 10,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/milies"
+  },
+  "magnesia-mouresi": {
+   "name": "Μούρεσι",
+   "region": "magnesia",
+   "psm": 1920.56,
+   "listings": 18,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/mouresi"
+  },
+  "magnesia-nea-agchialos": {
+   "name": "Νέα Αγχίαλος",
+   "region": "magnesia",
+   "psm": 1165.21,
+   "listings": 38,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/nea-agchialos"
+  },
+  "magnesia-nea-ionia-volou": {
+   "name": "Νέα Ιωνία Βόλου",
+   "region": "magnesia",
+   "psm": 1416.68,
+   "listings": 213,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/nea-ionia-volou"
+  },
+  "magnesia-portaria": {
+   "name": "Πορταριά",
+   "region": "magnesia",
+   "psm": 1652.13,
+   "listings": 8,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/portaria"
+  },
+  "phthiotis-atalanti": {
+   "name": "Αταλάντη",
+   "region": "phthiotis",
+   "psm": 835.83,
+   "listings": 12,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/atalanti"
+  },
+  "phthiotis-lamia": {
+   "name": "Λαμία",
+   "region": "phthiotis",
+   "psm": 1024.83,
+   "listings": 440,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/lamia"
+  },
+  "phthiotis-malesina": {
+   "name": "Μαλεσίνα",
+   "region": "phthiotis",
+   "psm": 1580,
+   "listings": 46,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/malesina"
+  },
+  "phthiotis-ipati": {
+   "name": "Υπάτη",
+   "region": "phthiotis",
+   "psm": 826.57,
+   "listings": 23,
+   "type": "katoikies",
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/ipati"
+  },
+  "boeotia-arachova": {
+   "name": "Αράχωβα",
+   "region": "boeotia",
+   "psm": 2452.08,
+   "listings": 25,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/arachova"
+  },
+  "boeotia-livadeia": {
+   "name": "Λιβαδειά",
+   "region": "boeotia",
+   "psm": 1143.93,
+   "listings": 135,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/livadeia"
+  },
+  "evia-dirfis": {
+   "name": "Δίρφυς",
+   "region": "evia",
+   "psm": 1040.88,
+   "listings": 57,
+   "type": "katoikies",
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/dirfis"
+  },
+  "evia-eretria": {
+   "name": "Ερέτρια",
+   "region": "evia",
+   "psm": 1828.15,
+   "listings": 46,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/eretria"
+  },
+  "evia-messapia": {
+   "name": "Μεσσαπία",
+   "region": "evia",
+   "psm": 1110,
+   "listings": 9,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/messapia"
+  },
+  "evia-chalkida": {
+   "name": "Χαλκίδα",
+   "region": "evia",
+   "psm": 2136.05,
+   "listings": 381,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/chalkida"
+  },
+  "aetolia-acarnania-agrinio": {
+   "name": "Αγρίνιο",
+   "region": "aetolia-acarnania",
+   "psm": 1102.69,
+   "listings": 360,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/agrinio"
+  },
+  "aetolia-acarnania-thermos": {
+   "name": "Θέρμος",
+   "region": "aetolia-acarnania",
+   "psm": 866.77,
+   "listings": 47,
+   "type": "katoikies",
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/thermos"
+  },
+  "aetolia-acarnania-iera-poli-messologiou": {
+   "name": "Μεσολόγγι",
+   "region": "aetolia-acarnania",
+   "psm": 864.07,
+   "listings": 61,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/iera-poli-messologiou"
+  },
+  "aetolia-acarnania-navpaktos": {
+   "name": "Ναύπακτος",
+   "region": "aetolia-acarnania",
+   "psm": 2508.32,
+   "listings": 107,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/navpaktos"
+  },
+  "aetolia-acarnania-paravola": {
+   "name": "Παραβόλα",
+   "region": "aetolia-acarnania",
+   "psm": 933.61,
+   "listings": 18,
+   "type": "katoikies",
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/paravola"
+  },
+  "aetolia-acarnania-pillini": {
+   "name": "Πυλλήνη",
+   "region": "aetolia-acarnania",
+   "psm": 580,
+   "listings": 6,
+   "type": "katoikies",
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/pillini"
+  },
+  "achaia-aigio": {
+   "name": "Αίγιο",
+   "region": "achaia",
+   "psm": 1172.66,
+   "listings": 298,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/aigio"
+  },
+  "achaia-egialia": {
+   "name": "Αιγιάλεια",
+   "region": "achaia",
+   "psm": 1307.15,
+   "listings": 53,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/egialia"
+  },
+  "achaia-akrata": {
+   "name": "Ακράτα",
+   "region": "achaia",
+   "psm": 2124.51,
+   "listings": 105,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/akrata"
+  },
+  "achaia-vrachneika": {
+   "name": "Βραχναίικα",
+   "region": "achaia",
+   "psm": 1930.13,
+   "listings": 15,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/vrachneika"
+  },
+  "achaia-diakopto": {
+   "name": "Διακοπτό",
+   "region": "achaia",
+   "psm": 2072.81,
+   "listings": 26,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/diakopto"
+  },
+  "achaia-lefkasio": {
+   "name": "Λευκάσιο",
+   "region": "achaia",
+   "psm": 1579.57,
+   "listings": 21,
+   "type": "katoikies",
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/lefkasio"
+  },
+  "achaia-messatida": {
+   "name": "Μεσσατίδα",
+   "region": "achaia",
+   "psm": 1391.27,
+   "listings": 104,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/messatida"
+  },
+  "achaia-patra": {
+   "name": "Πάτρα",
+   "region": "achaia",
+   "psm": 1941.13,
+   "listings": 4697,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/patra"
+  },
+  "achaia-rio": {
+   "name": "Ρίο",
+   "region": "achaia",
+   "psm": 1823.42,
+   "listings": 78,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/rio"
+  },
+  "ilia-amaliada": {
+   "name": "Αμαλιάδα",
+   "region": "ilia",
+   "psm": 1025.57,
+   "listings": 53,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/amaliada"
+  },
+  "ilia-kastro-killinis": {
+   "name": "Κάστρο Κυλλήνης",
+   "region": "ilia",
+   "psm": 1046.67,
+   "listings": 6,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/kastro-kyllinis"
+  },
+  "ilia-pirgos": {
+   "name": "Πύργος",
+   "region": "ilia",
+   "psm": 1022.64,
+   "listings": 99,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/pirgos"
+  },
+  "messinia-kalamata": {
+   "name": "Καλαμάτα",
+   "region": "messinia",
+   "psm": 3082.29,
+   "listings": 648,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/kalamata"
+  },
+  "messinia-messini": {
+   "name": "Μεσσήνη",
+   "region": "messinia",
+   "psm": 1320.48,
+   "listings": 23,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/messini"
+  },
+  "lakonia-krokees": {
+   "name": "Κροκεές",
+   "region": "lakonia",
+   "psm": 1101.7,
+   "listings": 20,
+   "type": "katoikies",
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/krokees"
+  },
+  "lakonia-monemvasia": {
+   "name": "Μονεμβασιά",
+   "region": "lakonia",
+   "psm": 2350.78,
+   "listings": 9,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/monemvasia"
+  },
+  "lakonia-sparti": {
+   "name": "Σπάρτη",
+   "region": "lakonia",
+   "psm": 1305.28,
+   "listings": 72,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/sparti"
+  },
+  "arcadia-north-kinouria": {
+   "name": "Βόρεια Κυνουρία",
+   "region": "arcadia",
+   "psm": 2387.95,
+   "listings": 147,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/north-kinouria"
+  },
+  "arcadia-levidi": {
+   "name": "Λεβίδι",
+   "region": "arcadia",
+   "psm": 931.92,
+   "listings": 24,
+   "type": "katoikies",
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/levidi"
+  },
+  "arcadia-tripoli": {
+   "name": "Τρίπολη",
+   "region": "arcadia",
+   "psm": 1450.68,
+   "listings": 94,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/tripoli"
+  },
+  "argolis-argos": {
+   "name": "Άργος",
+   "region": "argolis",
+   "psm": 1299.51,
+   "listings": 138,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/argos"
+  },
+  "argolis-asini": {
+   "name": "Ασίνη",
+   "region": "argolis",
+   "psm": 2715.78,
+   "listings": 192,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/asini"
+  },
+  "argolis-epidavros": {
+   "name": "Επίδαυρος",
+   "region": "argolis",
+   "psm": 1422.13,
+   "listings": 23,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/epidavros"
+  },
+  "argolis-kranidi": {
+   "name": "Κρανίδι",
+   "region": "argolis",
+   "psm": 2480.95,
+   "listings": 100,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/kranidi"
+  },
+  "argolis-nea-tirintha": {
+   "name": "Νέα Τίρυνθα",
+   "region": "argolis",
+   "psm": 1446.83,
+   "listings": 6,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/nea-tirintha"
+  },
+  "argolis-nafplio": {
+   "name": "Ναύπλιο",
+   "region": "argolis",
+   "psm": 3186.77,
+   "listings": 448,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/nafplio"
+  },
+  "corinthia-vocha": {
+   "name": "Βόχα",
+   "region": "corinthia",
+   "psm": 1645.87,
+   "listings": 98,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/vocha"
+  },
+  "corinthia-evrostini": {
+   "name": "Ευρωστίνη",
+   "region": "corinthia",
+   "psm": 1596.69,
+   "listings": 55,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/evrostini"
+  },
+  "corinthia-korinthos": {
+   "name": "Κόρινθος",
+   "region": "corinthia",
+   "psm": 1755.92,
+   "listings": 376,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/korinthos"
+  },
+  "corinthia-loutraki-perachora": {
+   "name": "Λουτράκι-Περαχώρα",
+   "region": "corinthia",
+   "psm": 2928.32,
+   "listings": 590,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/loutraki-perachora"
+  },
+  "corinthia-xilokastro": {
+   "name": "Ξυλόκαστρο",
+   "region": "corinthia",
+   "psm": 2122.13,
+   "listings": 287,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/xilokastro"
+  },
+  "corinthia-saronikos": {
+   "name": "Σαρωνικός",
+   "region": "corinthia",
+   "psm": 2103.3,
+   "listings": 89,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/saronikos"
+  },
+  "corinthia-sikiona": {
+   "name": "Σικυώνα",
+   "region": "corinthia",
+   "psm": 1958.1,
+   "listings": 52,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/kiato-sikiona"
+  },
+  "corinthia-soligeia": {
+   "name": "Σολύγεια",
+   "region": "corinthia",
+   "psm": 2194.87,
+   "listings": 23,
+   "type": "diamerismata",
+   "url": "https://www.spiti24.gr/pwliseis/diamerismata/soligeia"
+  }
+ }
+}
