@@ -60,6 +60,17 @@ td.num{font-variant-numeric:tabular-nums;text-align:right}
 .spinner{color:var(--muted)}
 footer{font-size:12px;color:var(--muted)}
 .leaflet-container{font:inherit}
+a{color:var(--accent)}
+#loc{white-space:nowrap}
+@media (max-width:560px){
+  header{padding-block:10px}
+  form{min-width:0;flex-basis:100%;flex-wrap:wrap}
+  form input[type=text]{flex-basis:100%}
+  form button{flex:1}
+  dl{grid-template-columns:1fr;gap:2px}
+  dt{font-size:12px;margin-top:8px}
+  .kaek{font-size:22px}
+}
 </style>
 </head>
 <body>
@@ -68,6 +79,7 @@ footer{font-size:12px;color:var(--muted)}
   <form id="f">
     <input type="text" id="q" autocomplete="off" placeholder="Διεύθυνση ή συντεταγμένες (π.χ. 37.9807, 23.7326)" value="">
     <button class="primary" type="submit">Αναζήτηση</button>
+    <button type="button" id="loc" title="Χρησιμοποίησε τη θέση της συσκευής">Η θέση μου</button>
   </form>
 </header>
 <main>
@@ -267,6 +279,7 @@ function render(rec){
     el("p",{class:"hint"},"Ιδιοκτήτης: δεν δημοσιεύεται. Για στοιχεία ιδιοκτησίας χρειάζεται απόσπασμα κτηματολογικού φύλλου (e-υπηρεσίες Κτηματολογίου) ή δικηγόρος/συμβολαιογράφος, με το παραπάνω ΚΑΕΚ.")));
   if(p) nodes.push(el("div",{class:"row-actions"}, el("button",{class:"primary",type:"button",onclick:()=>save(rec,x,y)},"Αποθήκευση στη λίστα")));
   setOut(...nodes);
+  if (window.matchMedia("(max-width:860px)").matches) $("out").scrollIntoView({behavior:"smooth", block:"start"});
 }
 
 function buildingTerms(rec){
@@ -355,6 +368,14 @@ $("csv").addEventListener("click",()=>{
 });
 $("clear").addEventListener("click",e=>{ const b=e.currentTarget; if(b.dataset.armed){ storeSaved([]); b.textContent="Καθαρισμός λίστας"; delete b.dataset.armed; } else { b.dataset.armed="1"; b.textContent="Σίγουρα; Πάτα ξανά"; setTimeout(()=>{ if(b.dataset.armed){ delete b.dataset.armed; b.textContent="Καθαρισμός λίστας"; } },4000); } });
 renderSaved();
+$("loc").addEventListener("click", () => {
+  if (!navigator.geolocation) return setOut(el("div",{class:"alert bad"},"Η συσκευή δεν υποστηρίζει εντοπισμό θέσης."));
+  setOut(el("p",{class:"spinner"},"Εντοπισμός θέσης…"));
+  navigator.geolocation.getCurrentPosition(
+    pos => lookupPoint(pos.coords.latitude, pos.coords.longitude, `Η θέση μου (ακρίβεια ±${Math.round(pos.coords.accuracy)} m)`),
+    err => setOut(el("div",{class:"alert bad"}, err.code===1 ? "Δεν δόθηκε άδεια θέσης. Επίτρεψέ τη από τις ρυθμίσεις του browser και ξαναδοκίμασε." : "Δεν ήταν δυνατός ο εντοπισμός θέσης. Ξαναδοκίμασε σε ανοιχτό χώρο.")),
+    {enableHighAccuracy:true, timeout:20000, maximumAge:0});
+});
 })();
 </script>
 </body>
