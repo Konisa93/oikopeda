@@ -759,10 +759,14 @@
   "rest-of-attica-markopoulo": {
    "name": "Μαρκόπουλο",
    "region": "rest-of-attica",
-   "psm": 3424.67,
-   "listings": 439,
-   "type": "diamerismata",
-   "url": "https://www.spiti24.gr/pwliseis/diamerismata/markopoulo"
+   "psm": 2789.13,
+   "listings": 1606,
+   "type": "katoikies",
+   "url": "https://www.spiti24.gr/pwliseis/katoikies/markopoulo",
+   "forced": true,
+   "apartmentsPsm": 3424.67,
+   "apartmentsListings": 439,
+   "why": "Τα διαμερίσματα του spiti24 (3.424,67 €/τ.μ.) είναι κυρίως νεόδμητα· για παλιό ανακαινισμένο χρησιμοποιούμε τον μέσο όρο όλων των κατοικιών."
   },
   "rest-of-attica-pikermi": {
    "name": "Πικέρμι",
