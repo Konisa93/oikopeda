@@ -111,10 +111,7 @@ td .x{min-height:32px;width:32px;padding:0;color:var(--muted)}
 .row-actions{display:flex;gap:8px;flex-wrap:wrap}
 .saved-ok{color:var(--ok);font-size:13px;align-self:center}
 
-/* Κράτα πατημένο για άδειασμα: γέμισμα 2s γραμμικά, επαναφορά 200ms ease-out. */
-.hold{position:relative;overflow:hidden}
-.hold .fill{position:absolute;inset:0;background:var(--danger);color:#fff;display:flex;align-items:center;justify-content:center;clip-path:inset(0 100% 0 0);transition:clip-path 200ms var(--ease-out);pointer-events:none}
-.hold.holding .fill{clip-path:inset(0 0 0 0);transition:clip-path 2s linear}
+button.danger{background:var(--danger);border-color:var(--danger);color:#fff}
 
 footer{font-size:12px;line-height:1.5;color:var(--muted)}
 .leaflet-container{font:inherit;background:var(--chip)}
@@ -137,7 +134,6 @@ footer{font-size:12px;line-height:1.5;color:var(--muted)}
   @keyframes fade{from{opacity:0}}
   button:active{transform:none}
   .spinner::before{animation-duration:2.5s}
-  .hold.holding .fill{transition:clip-path 2s linear}
 }
 </style>
 </head>
@@ -161,7 +157,7 @@ footer{font-size:12px;line-height:1.5;color:var(--muted)}
       <div id="saved"></div>
       <div class="row-actions">
         <button type="button" id="csv">Εξαγωγή CSV</button>
-        <button type="button" id="clear" class="hold" aria-label="Κράτα πατημένο για να αδειάσει η λίστα">Κράτα για άδειασμα<span class="fill" aria-hidden="true">Αδειάζει…</span></button>
+        <button type="button" id="clear">Διαγραφή λίστας</button>
       </div>
     </section>
     <footer>Πηγή: Ελληνικό Κτηματολόγιο (maps.ktimatologio.gr) · Όροι δόμησης & ζώνες αξιών: Ενιαίος Ψηφιακός Χάρτης ΤΕΕ (sdigmap.tee.gov.gr) · Γεωκωδικοποίηση: © OpenStreetMap contributors (Nominatim). Τα στοιχεία είναι ενδεικτικά και δεν υποκαθιστούν επίσημο απόσπασμα. Ιδιοκτήτες δεν δημοσιεύονται.</footer>
@@ -452,15 +448,13 @@ $("csv").addEventListener("click",()=>{
   const url=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));
   const link=el("a",{href:url,download:`oikopeda-${new Date().toISOString().slice(0,10)}.csv`}); document.body.append(link); link.click(); link.remove();
 });
-(() => {
-  const b=$("clear"); let t=null;
-  const start=e=>{ if(e.button>0 || !loadSaved().length) return; b.classList.add("holding"); t=setTimeout(()=>{ storeSaved([]); b.classList.remove("holding"); },2000); };
-  const stop=()=>{ clearTimeout(t); b.classList.remove("holding"); };
-  b.addEventListener("pointerdown",start); ["pointerup","pointerleave","pointercancel"].forEach(ev=>b.addEventListener(ev,stop));
-  b.addEventListener("keydown",e=>{ if((e.key==="Enter"||e.key===" ") && !e.repeat){ e.preventDefault(); start(e); } });
-  b.addEventListener("keyup",e=>{ if(e.key==="Enter"||e.key===" ") stop(); });
-  b.addEventListener("contextmenu",e=>e.preventDefault());
-})();
+$("clear").addEventListener("click", e => {
+  const b=e.currentTarget;
+  if(!loadSaved().length) return;
+  if(b.dataset.armed){ clearTimeout(b._t); delete b.dataset.armed; b.classList.remove("danger"); b.textContent="Διαγραφή λίστας"; storeSaved([]); return; }
+  b.dataset.armed="1"; b.classList.add("danger"); b.textContent="Σίγουρα; Πάτα ξανά";
+  b._t=setTimeout(()=>{ delete b.dataset.armed; b.classList.remove("danger"); b.textContent="Διαγραφή λίστας"; },4000);
+});
 renderSaved();
 $("loc").addEventListener("click", () => {
   if (!navigator.geolocation) return setOut(el("div",{class:"alert bad"},"Η συσκευή δεν υποστηρίζει εντοπισμό θέσης."));
