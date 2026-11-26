@@ -84,7 +84,7 @@ footer{font-size:12px;color:var(--muted)}
         <button type="button" id="clear">Καθαρισμός λίστας</button>
       </div>
     </section>
-    <footer>Πηγή: Ελληνικό Κτηματολόγιο (maps.ktimatologio.gr) · Γεωκωδικοποίηση: © OpenStreetMap contributors (Nominatim). Τα στοιχεία είναι ενδεικτικά και δεν υποκαθιστούν επίσημο απόσπασμα. Ιδιοκτήτες δεν δημοσιεύονται.</footer>
+    <footer>Πηγή: Ελληνικό Κτηματολόγιο (maps.ktimatologio.gr) · Όροι δόμησης & ζώνες αξιών: Ενιαίος Ψηφιακός Χάρτης ΤΕΕ (sdigmap.tee.gov.gr) · Γεωκωδικοποίηση: © OpenStreetMap contributors (Nominatim). Τα στοιχεία είναι ενδεικτικά και δεν υποκαθιστούν επίσημο απόσπασμα. Ιδιοκτήτες δεν δημοσιεύονται.</footer>
   </aside>
 </main>
 
@@ -104,6 +104,11 @@ const FOREST_LAYERS = [
   {svc:"DASIKA_ANARTHSH_45_60_gdb", label:"Δασικός χάρτης (αεροφωτογραφίες 1945/60)", field:"KATHGOROLD"},
 ];
 const NATURA_LAYERS = ["NATURA_SCI_P_gdb","NATURA_SPA_P_gdb","NATURA_SCISPA_P_gdb"];
+// Ενιαίος Ψηφιακός Χάρτης ΤΕΕ: πολεοδομική πληροφορία & ζώνες αντικειμενικών αξιών
+const TEE_UDM = "https://sdigmap.tee.gov.gr/mapping/rest/services/UDM/UDM_SERVICE_POLEODOMIKI_PLIROFORIA/MapServer";
+const TEE_APAA = "https://sdigmap.tee.gov.gr/portal/sharing/servers/42ee16d5686546c1928ce9709a73aaca/rest/services/APAA_PUBLIC/ENIAIOS_DIGITAL_MAP/MapServer";
+const UDM = {OIKISMOS:3, OT:6, EKTOS:9, YPSOS:16, ARTIO:17, KALYPSI:18, SYSTIMA:19, SD:20, XG_ERS:21, ARXAIO:23, APALLOTR:24, XG_GPS:26};
+const META_KEYS = new Set(["Έγκριση","Αρχείο ΦΕΚ","Ημ/νία Έναρξης Ισχύος","Τύπος Έγκρισης","Θέμα","Αριθμός Απόφασης","Ημ/νία Απόφασης","Καλλικρατικός Δήμος","KEY_FLAG","EIDIKH_CODED_DELIM_VALUES","OBJECTID","SHAPE","Shape","SHAPE.AREA","SHAPE.LEN","Γεωαναφ. Διαγρ. (ΕΓΣΑ87)","Πρωτότυπο Διάγραμμα"]);
 const FOREST_LETTER = {"Δ":"δασική","Χ":"χορτολιβαδική","Α":"άλλη (μη δασική)","Π":"ειδική κατηγορία"};
 const BAD_USES = /οδικ|αιγιαλ|θάλασσ|ρέμα|ποταμ|πλατε/i;
 proj4.defs("EPSG:2100","+proj=tmerc +lat_0=0 +lon_0=24 +k=0.9996 +x_0=500000 +y_0=0 +ellps=GRS80 +towgs84=-199.87,74.79,246.62,0,0,0,0 +units=m +no_defs");
@@ -154,13 +159,43 @@ async function lookupPoint(lat, lon, sourceLabel){
     const otaP = getJSON(queryUrl("OTA_P_gdb", pointParams(lat,lon,false))).then(j=>j.features?.[0]?.attributes||null).catch(()=>null);
     const forestP = Promise.all(FOREST_LAYERS.map(F => getJSON(queryUrl(F.svc, pointParams(lat,lon,false))).then(j=>({F, a:j.features?.[0]?.attributes||null})).catch(()=>({F,a:null}))));
     const naturaP = Promise.all(NATURA_LAYERS.map(s => getJSON(queryUrl(s, pointParams(lat,lon,false))).then(j=>(j.features||[]).map(f=>f.attributes)).catch(()=>[])));
-    const [parcels, ota, forest, natura] = await Promise.all([parcelP, otaP, forestP, naturaP]);
+    const udmP = teeIdentify(TEE_UDM, lat, lon, Object.values(UDM)).catch(()=>null);
+    const apaaP = teeIdentify(TEE_APAA, lat, lon, [1]).catch(()=>null);
+    const [parcels, ota, forest, natura, udm, apaa] = await Promise.all([parcelP, otaP, forestP, naturaP, udmP, apaaP]);
     const hit = parcels.find(p => p.feats.length);
-    const rec = { lat, lon, source:sourceLabel, ota, forest, natura:natura.flat(), parcel: hit ? {...hit.feats[0].attributes, _status:hit.L0.status, _cls:hit.L0.cls} : null, geom: hit ? hit.feats[0].geometry : null };
+    const rec = { lat, lon, source:sourceLabel, ota, forest, natura:natura.flat(), udm, zone: apaa?.[1]?.[0] || null, parcel: hit ? {...hit.feats[0].attributes, _status:hit.L0.status, _cls:hit.L0.cls} : null, geom: hit ? hit.feats[0].geometry : null };
     drawShape(rec.geom, lat, lon);
     render(rec);
   }catch(e){ setOut(errBox(e)); }
 }
+
+// identify σε MapServer του ΤΕΕ· επιστρέφει {layerId: [attributes,...]}
+async function teeIdentify(base, lat, lon, layers){
+  const d = 0.0005;
+  const u = base + "/identify?" + new URLSearchParams({geometry:`${lon},${lat}`, geometryType:"esriGeometryPoint", sr:"4326",
+    layers:"all:"+layers.join(","), tolerance:"0", mapExtent:`${lon-d},${lat-d},${lon+d},${lat+d}`, imageDisplay:"400,400,96", returnGeometry:"false", f:"json"});
+  const j = await getJSON(u), out = {};
+  for (const r of j.results||[]) { const a = {}; for (const [k,v] of Object.entries(r.attributes||{})) if (v!=="Null" && v!=="" && v!=null) a[k]=v; (out[r.layerId] ||= []).push(a); }
+  return out;
+}
+// Κλιμακωτός συντελεστής: «έως 200 τ.μ. : Σ.Δ.=0.40, ... άνω των 2000 τ.μ. : Σ.Δ.=0.20» → εμβαδόν δόμησης για δεδομένο εμβαδόν οικοπέδου
+function tieredTotal(text, keyRe, area){
+  if(!text || !area) return null;
+  const parts = text.split(/(?:^|[,;]\s*)[α-ω]\.\s+/).filter(s=>keyRe.test(s));
+  if(parts.length<2) return null;
+  let prev=0, total=0;
+  for(const s of parts){
+    const v = parseFloat(s.match(keyRe)[1].replace(",","."));
+    const up = s.match(/έως\s+([\d.,]+)\s*τ\.?\s*μ/);
+    const hi = up ? parseFloat(up[1].replace(/\.(?=\d{3})/g,"").replace(",",".")) : Infinity;
+    if(isNaN(v)) return null;
+    if(area>prev) total += (Math.min(area,hi)-prev)*v;
+    prev = hi; if(hi===Infinity) break;
+  }
+  return total;
+}
+function fekLink(a){ return a && a["Αρχείο ΦΕΚ"] && /^https:\/\//.test(a["Αρχείο ΦΕΚ"]) ? el("a",{href:a["Αρχείο ΦΕΚ"],target:"_blank",rel:"noopener"},"ΦΕΚ "+(a["Έγκριση"]||"")) : (a?.["Έγκριση"] ? "ΦΕΚ "+a["Έγκριση"] : null); }
+function withFek(text, a){ const s=el("span",{}, text); const f=fekLink(a); if(f){ s.append(" · "); s.append(f); } return s; }
 
 function ringsToLatLngs(rings){ return (rings||[]).map(r => r.map(([x,y]) => [y,x])); }
 function drawShape(geom, lat, lon){
@@ -196,6 +231,17 @@ function render(rec){
   } else {
     nodes.push(el("div",{class:"alert bad"},"Δεν βρέθηκε γεωτεμάχιο σε αυτό το σημείο στα δημόσια επίπεδα. Η περιοχή ίσως δεν έχει ακόμη κτηματογραφηθεί ή το σημείο είναι εκτός οικοπέδου."));
   }
+  nodes.push(buildingTerms(rec));
+  if(rec.zone){
+    const z=rec.zone, price=parseFloat(z["ΤΙΜΗ"]);
+    const zl=el("span",{}, `${z["ΟΝΟΜΑ"]||""} · ${isNaN(price)?"—":fmt(price)+" €/m²"}`);
+    if(/^https:\/\//.test(z["ΠΙΝΑΚΑΣ_ΑΝΤΙΚΕΙΜΕΝΙΚΟΥ"]||"")){ zl.append(" · "); zl.append(el("a",{href:z["ΠΙΝΑΚΑΣ_ΑΝΤΙΚΕΙΜΕΝΙΚΟΥ"],target:"_blank",rel:"noopener"},"Πίνακας")); }
+    nodes.push(el("section",{}, el("div",{class:"label"},"Αντικειμενική αξία"), dl([
+      ["Ζώνη / τιμή ζώνης", zl],
+      ["Περιγραφή", z["ΠΕΡΙΓΡΑΦΗ"]||"—"],
+      ["Ισχύς", `${z["ΙΣΧΥΣ ΑΠΟ"]||"?"} – ${z["ΙΣΧΥΣ ΕΩΣ"]||"?"}`],
+    ]), el("p",{class:"hint"},"Η τιμή ζώνης είναι η βάση· η τελική αντικειμενική αξία προκύπτει με συντελεστές (πρόσοψη, όροφος, παλαιότητα κ.λπ.).")));
+  }
   const o = rec.ota;
   nodes.push(el("section",{}, el("div",{class:"label"},"Περιοχή"), dl([
     ["Δήμος / ΟΤΑ", o ? `${o.OTA_NAME} (${o.CODE_OKXE})` : "—"],
@@ -223,6 +269,60 @@ function render(rec){
   setOut(...nodes);
 }
 
+function buildingTerms(rec){
+  const U = rec.udm, sec = el("section",{}, el("div",{class:"label"},"Όροι δόμησης (Ενιαίος Ψηφιακός Χάρτης ΤΕΕ)"));
+  if(!U){ sec.append(el("div",{class:"alert"},"Η υπηρεσία του ΤΕΕ δεν απάντησε. Δοκίμασε ξανά σε λίγο.")); return sec; }
+  const one = id => (U[id]||[])[0], area = rec.parcel?.AREA, rows = [];
+  const sd = one(UDM.SD);
+  if(sd){
+    const v = sd["Τιμή Σ.Δ"], tiered = sd["Κλιμακωτός Σ.Δ"]==="ΝΑΙ";
+    rows.push(["Συντελεστής δόμησης", withFek(`${v ?? "—"}${tiered?" (κλιμακωτός)":""}${sd["Τομέας Σ.Δ"]?" · τομέας "+sd["Τομέας Σ.Δ"]:""}`, sd)]);
+    if(sd["Σχόλια"]) rows.push(["Σχόλια ΣΔ", sd["Σχόλια"]]);
+    let built = tiered ? tieredTotal(sd["Σχόλια"], /Σ\.?\s?Δ\.?\s*=\s*([\d.,]+)/, area) : (area && v ? area*parseFloat(String(v).replace(",",".")) : null);
+    if(built) { rows.push(["Μέγ. εμβαδόν δόμησης*", `≈ ${fmt(built,1)} m²`]); rec._built = built; }
+  }
+  const k = one(UDM.KALYPSI);
+  if(k){
+    const pct = k["Συντελεστής Κάλυψης Οικοπέδου (%)"];
+    rows.push(["Κάλυψη", withFek(pct ? pct+"%" : (k["Περιγραφή Συνθήκης - Κριτηρίου"]||"βλ. σχόλια"), k)]);
+    const kc = k["Παρατηρήσεις - Σχόλια"]; if(kc) rows.push(["Σχόλια κάλυψης", kc]);
+    const kt = pct ? null : tieredTotal(kc, /Σ\.?\s?Κ\.?\s*=\s*([\d.,]+)/, area);
+    const kb = pct ? (area ? area*parseFloat(pct)/100 : null) : (kt ? kt/100 : null);
+    if(kb) rows.push(["Μέγ. κάλυψη*", `≈ ${fmt(kb,1)} m²`]);
+  }
+  const h = one(UDM.YPSOS);
+  if(h){
+    const parts=[]; if(h["Μέγιστο Υψος (m)"]) parts.push(`${h["Μέγιστο Υψος (m)"]} m`); if(h["Αριθμός Ορόφων"]) parts.push(`${h["Αριθμός Ορόφων"]} όροφοι`);
+    rows.push(["Ύψος / όροφοι", withFek(parts.join(" · ") || h["Σχόλια Μέγιστου Ύψους"] || "βλ. σχόλια", h)]);
+    const hc=[h["Σχόλια Μέγιστου Ύψους"],h["Σχόλια Αριθμών Ορόφων"]].filter(Boolean).join(" "); if(hc && parts.length) rows.push(["Σχόλια ύψους", hc]);
+  }
+  for(const a of (U[UDM.ARTIO]||[])){
+    const min = parseFloat(a["Ελάχιστο Εμβαδό (τ.μ.)"]), face = a["Ελάχιστο Μήκος Προσώπου (μ)"];
+    let txt = `${isNaN(min)?"—":fmt(min,1)+" m²"}${face?", πρόσωπο "+face+" m":""} (${(a["Τύπος Παρέκκλισης"]||"").toLowerCase()})`;
+    if(area && !isNaN(min)) txt += area>=min ? " ✓ το εμβαδόν καλύπτει" : " ✗ το εμβαδόν είναι μικρότερο";
+    rows.push(["Αρτιότητα", withFek(txt, a)]);
+  }
+  const sys = one(UDM.SYSTIMA);
+  if(sys){ const v = Object.entries(sys).filter(([kk])=>!META_KEYS.has(kk)).map(([,vv])=>vv).join(" · "); if(v) rows.push(["Οικοδομικό σύστημα", withFek(v, sys)]); }
+  for(const [id,lbl] of [[UDM.XG_GPS,"Χρήσεις γης (ΓΠΣ)"],[UDM.XG_ERS,"Χρήσεις γης (Ρυμοτομικό)"]]){
+    const x = one(id); if(!x) continue;
+    rows.push([lbl, withFek(x["Κατηγορία Γενικών Χρήσεων Γης"]||"—", x)]);
+    const c=[x["Σχόλια Χρήσης"],x["Παρατηρήσεις - Σχόλια"]].filter(Boolean).join(" "); if(c) rows.push(["Σχόλια χρήσεων", c]);
+  }
+  const ot = one(UDM.OT); if(ot) rows.push(["Οικοδομικό τετράγωνο", withFek(`ΟΤ ${ot["Αρίθμηση ΟΤ"]||"—"}`, ot)]);
+  if(one(UDM.EKTOS)) rows.push(["Θέση", "Περιοχή εκτός σχεδίου"]);
+  const oik = one(UDM.OIKISMOS); if(oik) rows.push(["Οικισμός", withFek("Εντός καθορισμένου ορίου οικισμού", oik)]);
+  if(one(UDM.ARXAIO)) rows.push(["Αρχαιολογική ζώνη", withFek("Ναι", one(UDM.ARXAIO))]);
+  if(one(UDM.APALLOTR)) rows.push(["Ζώνη απαλλοτρίωσης", withFek("Ναι", one(UDM.APALLOTR))]);
+  if(!rows.length){ sec.append(el("div",{class:"alert"},"Δεν υπάρχουν καταχωρισμένοι όροι δόμησης σε αυτό το σημείο. Συνήθως σημαίνει εκτός σχεδίου, μη οριοθετημένο οικισμό ή περιοχή χωρίς εγκεκριμένο ρυμοτομικό· εκεί ισχύουν γενικές διατάξεις και χρειάζεται έλεγχος από μηχανικό.")); return sec; }
+  if(!sd) rows.unshift(["Συντελεστής δόμησης","Δεν καταχωρίζεται εδώ (π.χ. ισχύουν γενικές διατάξεις)"]);
+  sec.append(dl(rows));
+  sec.append(el("p",{class:"hint"},"* Εκτίμηση: εμβαδόν γεωτεμαχίου Κτηματολογίου × συντελεστή (με τα κλιμάκια όπου υπάρχουν). Ενημερωτικά στοιχεία ΤΕΕ· δεν υποκαθιστούν βεβαίωση όρων δόμησης από ΥΔΟΜ/μηχανικό."));
+  rec._sd = sd ? (sd["Τιμή Σ.Δ"]||"") + (sd["Κλιμακωτός Σ.Δ"]==="ΝΑΙ"?" κλιμ.":"") : "";
+  rec._k = k?.["Συντελεστής Κάλυψης Οικοπέδου (%)"] || (k ? "βλ. σχόλια" : "");
+  return sec;
+}
+
 // ---------- Λίστα ----------
 const KEY="kaek-dashboard-saved";
 function loadSaved(){ try{ return JSON.parse(localStorage.getItem(KEY)||"[]"); }catch{ return []; } }
@@ -230,24 +330,24 @@ function storeSaved(a){ try{ localStorage.setItem(KEY, JSON.stringify(a)); }catc
 function save(rec,x,y){
   const p=rec.parcel, a=loadSaved().filter(r=>r.kaek!==p.KAEK);
   a.unshift({kaek:p.KAEK, status:p._status, use:p.DESCR||"", area:p.AREA, hor:p.PROP_HOR, vert:p.PROP_VERT, ota:rec.ota?.OTA_NAME||"", lat:+rec.lat.toFixed(6), lon:+rec.lon.toFixed(6), egsa_x:+x.toFixed(2), egsa_y:+y.toFixed(2),
-    forest: rec.forest.filter(f=>f.a).map(f=>f.a[f.F.field]).join(" / "), natura: rec.natura.map(n=>n.SITECODE).join(" "), source:rec.source, saved:new Date().toISOString().slice(0,10)});
+    forest: rec.forest.filter(f=>f.a).map(f=>f.a[f.F.field]).join(" / "), natura: rec.natura.map(n=>n.SITECODE).join(" "), sd:rec._sd||"", kalypsi:rec._k||"", max_domisi:rec._built?+rec._built.toFixed(1):"", zone_price:rec.zone?.["ΤΙΜΗ"]||"", source:rec.source, saved:new Date().toISOString().slice(0,10)});
   storeSaved(a);
 }
 function renderSaved(){
   const a=loadSaved();
   if(!a.length){ $("saved").replaceChildren(el("p",{class:"hint"},"Κανένα οικόπεδο ακόμη. Πάτησε «Αποθήκευση στη λίστα» μετά από μια αναζήτηση.")); return; }
-  const t=el("table",{}, el("tr",{}, el("th",{},"ΚΑΕΚ"), el("th",{},"ΟΤΑ"), el("th",{},"m²"), el("th",{},"")));
+  const t=el("table",{}, el("tr",{}, el("th",{},"ΚΑΕΚ"), el("th",{},"ΟΤΑ"), el("th",{},"m²"), el("th",{},"ΣΔ"), el("th",{},"")));
   for(const r of a){
     t.append(el("tr",{},
       el("td",{class:"mono"}, el("a",{href:"#",onclick:e=>{e.preventDefault(); lookupPoint(r.lat,r.lon,`ΚΑΕΚ ${r.kaek}`);}}, r.kaek)),
-      el("td",{}, r.ota), el("td",{class:"num"}, fmt(r.area,0)),
+      el("td",{}, r.ota), el("td",{class:"num"}, fmt(r.area,0)), el("td",{}, r.sd||"—"),
       el("td",{}, el("button",{type:"button",title:"Αφαίρεση",onclick:()=>storeSaved(loadSaved().filter(z=>z.kaek!==r.kaek))},"×"))));
   }
   $("saved").replaceChildren(el("div",{style:"overflow-x:auto"},t));
 }
 $("csv").addEventListener("click",()=>{
   const a=loadSaved(); if(!a.length) return;
-  const cols=["kaek","status","use","area","hor","vert","ota","lat","lon","egsa_x","egsa_y","forest","natura","source","saved"];
+  const cols=["kaek","status","use","area","sd","kalypsi","max_domisi","zone_price","hor","vert","ota","lat","lon","egsa_x","egsa_y","forest","natura","source","saved"];
   const esc=v=>`"${String(v??"").replace(/"/g,'""')}"`;
   const csv="﻿"+cols.join(";")+"\n"+a.map(r=>cols.map(c=>esc(r[c])).join(";")).join("\n");
   const url=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));
