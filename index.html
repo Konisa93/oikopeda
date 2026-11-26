@@ -160,7 +160,7 @@ footer{font-size:12px;line-height:1.5;color:var(--muted)}
         <button type="button" id="clear">Διαγραφή λίστας</button>
       </div>
     </section>
-    <footer>Πηγή: Ελληνικό Κτηματολόγιο (maps.ktimatologio.gr) · Όροι δόμησης & ζώνες αξιών: Ενιαίος Ψηφιακός Χάρτης ΤΕΕ (sdigmap.tee.gov.gr) · Γεωκωδικοποίηση: © OpenStreetMap contributors (Nominatim). Τα στοιχεία είναι ενδεικτικά και δεν υποκαθιστούν επίσημο απόσπασμα. Ιδιοκτήτες δεν δημοσιεύονται.</footer>
+    <footer>Πηγή: Ελληνικό Κτηματολόγιο (maps.ktimatologio.gr) · Όροι δόμησης & ζώνες αξιών: Ενιαίος Ψηφιακός Χάρτης ΤΕΕ (sdigmap.tee.gov.gr) · Διευθύνσεις &amp; χάρτης: Esri · © OpenStreetMap contributors. Τα στοιχεία είναι ενδεικτικά και δεν υποκαθιστούν επίσημο απόσπασμα. Ιδιοκτήτες δεν δημοσιεύονται.</footer>
   </aside>
 </main>
 
@@ -208,16 +208,65 @@ let marker=null, shape=null;
 map.on("click", e => lookupPoint(e.latlng.lat, e.latlng.lng, "Σημείο στον χάρτη"));
 
 // ---------- Υπηρεσίες ----------
-async function getJSON(url){ const r = await fetch(url); if(!r.ok) throw new Error("HTTP "+r.status); const j = await r.json(); if(j.error) throw new Error(j.error.message||"Σφάλμα υπηρεσίας"); return j; }
+async function getJSON(url){ let r; try{ r = await fetch(url); }catch(e){ await new Promise(ok=>setTimeout(ok,500)); r = await fetch(url); } if(!r.ok) throw new Error("HTTP "+r.status); const j = await r.json(); if(j.error) throw new Error(j.error.message||"Σφάλμα υπηρεσίας"); return j; }
 function queryUrl(svc, params){ return `${SVC}/${svc}/FeatureServer/0/query?` + new URLSearchParams({f:"json", ...params}); }
 const pointParams = (lat,lon,geom) => ({geometry:`${lon},${lat}`, geometryType:"esriGeometryPoint", inSR:"4326", spatialRel:"esriSpatialRelIntersects", outFields:"*", returnGeometry:String(!!geom), outSR:"4326"});
 
+// Γεωκωδικοποίηση: 1) Esri (ξέρει αριθμούς κτιρίων στην Ελλάδα), 2) OpenStreetMap ως εναλλακτική.
+const ESRI_GEOCODE = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates";
+const PRECISE = new Set(["PointAddress","Subaddress","StreetAddress","StreetInt","BuildingName"]);
 async function geocode(q){
-  const u = "https://nominatim.openstreetmap.org/search?" + new URLSearchParams({q, format:"json", limit:"5", countrycodes:"gr", "accept-language":"el"});
-  return getJSON(u);
+  try{
+    const j = await getJSON(ESRI_GEOCODE+"?"+new URLSearchParams({SingleLine:q, sourceCountry:"GRC", langCode:"EL", maxLocations:"5", outFields:"Addr_type", f:"json"}));
+    const c = (j.candidates||[]).filter(c=>c.score>=80).map(c=>({lat:c.location.y, lon:c.location.x, label:c.address, type:c.attributes?.Addr_type||"", score:c.score, precise:PRECISE.has(c.attributes?.Addr_type)}));
+    if(c.length) return c;
+  }catch(e){ /* πέφτουμε στο OSM */ }
+  const r = await getJSON("https://nominatim.openstreetmap.org/search?" + new URLSearchParams({q, format:"json", limit:"5", countrycodes:"gr", "accept-language":"el"}));
+  return r.map(x=>({lat:+x.lat, lon:+x.lon, label:x.display_name, type:x.addresstype, score:null, precise:x.addresstype==="building"||x.addresstype==="house"}));
 }
 
-// ---------- Ροές ----------
+// Το σημείο διεύθυνσης πέφτει συνήθως στην πρόσοψη (πεζοδρόμιο/δρόμος).
+// Βρίσκουμε το πλησιέστερο γεωτεμάχιο (όχι δρόμο/αιγιαλό) σε ακτίνα 30 m και παίρνουμε σημείο μέσα του.
+function toLocal(lat0){ const kx=111320*Math.cos(lat0*Math.PI/180), ky=110540; return ([x,y])=>[x*kx, y*ky]; }
+function inRing(pt, ring){ let inside=false; for(let i=0,j=ring.length-1;i<ring.length;j=i++){ const [xi,yi]=ring[i],[xj,yj]=ring[j]; if(((yi>pt[1])!==(yj>pt[1])) && pt[0] < (xj-xi)*(pt[1]-yi)/(yj-yi)+xi) inside=!inside; } return inside; }
+function inPoly(pt, rings){ let c=false; for(const r of rings) if(inRing(pt,r)) c=!c; return c; }
+function segDist(p,a,b){ const dx=b[0]-a[0], dy=b[1]-a[1], L2=dx*dx+dy*dy; let t=L2?((p[0]-a[0])*dx+(p[1]-a[1])*dy)/L2:0; t=Math.max(0,Math.min(1,t)); const q=[a[0]+t*dx,a[1]+t*dy]; return [Math.hypot(p[0]-q[0],p[1]-q[1]), q]; }
+async function snapToParcel(lat, lon){
+  const P = toLocal(lat), p = P([lon,lat]);
+  let best=null;
+  for (const L0 of PARCEL_LAYERS){
+    let j; try{ j = await getJSON(queryUrl(L0.svc, {...pointParams(lat,lon,true), distance:"30", units:"esriSRUnit_Meter", returnCentroid:"true"})); }catch{ continue; }
+    for (const f of j.features||[]){
+      if (BAD_USES.test(f.attributes?.DESCR||"") || !f.geometry?.rings) continue;
+      const rings = f.geometry.rings.map(r=>r.map(P));
+      let d = inPoly(p, rings) ? 0 : Math.min(...rings.flatMap(r=>r.slice(1).map((v,i)=>segDist(p,r[i],v)[0])));
+      if (!best || d<best.d) best={d, f, rings};
+    }
+    if (best) break; // κράτα το πρώτο επίπεδο κτηματολογίου που έχει γεωτεμάχια εδώ
+  }
+  if (!best) return null;
+  if (best.d===0) return {lat, lon, d:0};
+  // σημείο μέσα στο γεωτεμάχιο: το κεντροειδές αν είναι μέσα, αλλιώς λίγο μέσα από το πλησιέστερο σημείο του ορίου
+  const c = best.f.centroid; if (c && inPoly(P([c.x,c.y]), best.rings)) return {lat:c.y, lon:c.x, d:best.d};
+  const kx=111320*Math.cos(lat*Math.PI/180), ky=110540;
+  let q=null, md=Infinity; for(const r of best.rings) r.slice(1).forEach((v,i)=>{ const [dd,qq]=segDist(p,r[i],v); if(dd<md){md=dd;q=qq;} });
+  const ux=(q[0]-p[0])/md, uy=(q[1]-p[1])/md, inside=[q[0]+ux*1.5, q[1]+uy*1.5];
+  return {lat:inside[1]/ky, lon:inside[0]/kx, d:best.d};
+}
+
+async function lookupAddress(r){
+  setOut(el("p",{class:"spinner"},"Εντοπισμός οικοπέδου στη διεύθυνση…"));
+  let note = null, lat=r.lat, lon=r.lon;
+  if (!r.precise) note = "Βρέθηκε μόνο ο δρόμος ή η περιοχή, όχι ο αριθμός. Πάτησε πάνω στο οικόπεδο στον χάρτη για ακριβές αποτέλεσμα.";
+  else {
+    let s = await snapToParcel(r.lat, r.lon).catch(()=>undefined);
+    if (s===undefined) s = await snapToParcel(r.lat, r.lon).catch(()=>undefined);
+    if (s===undefined) note = "Δεν ήταν δυνατή η αναζήτηση του πλησιέστερου οικοπέδου. Αν δείχνει δρόμο, πάτησε πάνω στο οικόπεδο στον χάρτη.";
+    if (s){ lat=s.lat; lon=s.lon; if (s.d>0.5) note = `Το σημείο της διεύθυνσης ήταν στην πρόσοψη· επιλέχθηκε το πλησιέστερο οικόπεδο (${fmt(s.d,0)} m). Έλεγξε στον χάρτη ότι είναι το σωστό.`; }
+  }
+  return lookupPoint(lat, lon, r.label, note);
+}
+
 $("f").addEventListener("submit", async ev => {
   ev.preventDefault();
   const q = $("q").value.trim(); if(!q) return;
@@ -226,13 +275,14 @@ $("f").addEventListener("submit", async ev => {
   setOut(el("p",{class:"spinner"},"Αναζήτηση διεύθυνσης…"));
   try{
     const res = await geocode(q);
-    if(!res.length) return setOut(el("div",{class:"alert bad"},"Δεν βρέθηκε η διεύθυνση. Δοκίμασε πιο απλή μορφή (π.χ. «Οδός Αριθμός, Πόλη») ή πάτησε πάνω στο οικόπεδο στον χάρτη."));
-    if(res.length===1) return lookupPoint(+res[0].lat, +res[0].lon, res[0].display_name);
-    setOut(el("div",{class:"eyebrow"},"Διάλεξε αποτέλεσμα"), el("div",{class:"results"}, ...res.map(r => el("button",{type:"button",onclick:()=>lookupPoint(+r.lat,+r.lon,r.display_name)}, r.display_name))));
+    if(!res.length) return setOut(el("div",{class:"alert bad"},"Δεν βρέθηκε η διεύθυνση. Δοκίμασε «Οδός Αριθμός, Περιοχή» (π.χ. Διός 6, Βούλα) ή πάτησε πάνω στο οικόπεδο στον χάρτη."));
+    const top = res[0];
+    if(res.length===1 || (top.precise && top.score>=95 && !(res[1]?.precise && res[1].score>=95))) return lookupAddress(top);
+    setOut(el("div",{class:"eyebrow"},"Διάλεξε αποτέλεσμα"), el("div",{class:"results"}, ...res.map(r => el("button",{type:"button",onclick:()=>lookupAddress(r)}, r.label + (r.precise?"":" · μόνο δρόμος/περιοχή")))));
   }catch(e){ setOut(errBox(e)); }
 });
 
-async function lookupPoint(lat, lon, sourceLabel){
+async function lookupPoint(lat, lon, sourceLabel, note){
   setOut(el("p",{class:"spinner"},"Ανάκτηση στοιχείων από το Κτηματολόγιο…"));
   if(marker) marker.remove(); marker = L.circleMarker([lat,lon],{radius:6,color:"#fff",weight:2,fillColor:"#111",fillOpacity:1}).addTo(map);
   try{
@@ -244,7 +294,7 @@ async function lookupPoint(lat, lon, sourceLabel){
     const apaaP = teeIdentify(TEE_APAA, lat, lon, [1]).catch(()=>null);
     const [parcels, ota, forest, natura, udm, apaa] = await Promise.all([parcelP, otaP, forestP, naturaP, udmP, apaaP]);
     const hit = parcels.find(p => p.feats.length);
-    const rec = { lat, lon, source:sourceLabel, ota, forest, natura:natura.flat(), udm, zone: apaa?.[1]?.[0] || null, parcel: hit ? {...hit.feats[0].attributes, _status:hit.L0.status, _cls:hit.L0.cls} : null, geom: hit ? hit.feats[0].geometry : null };
+    const rec = { lat, lon, source:sourceLabel, note, ota, forest, natura:natura.flat(), udm, zone: apaa?.[1]?.[0] || null, parcel: hit ? {...hit.feats[0].attributes, _status:hit.L0.status, _cls:hit.L0.cls} : null, geom: hit ? hit.feats[0].geometry : null };
     drawShape(rec.geom, lat, lon);
     render(rec);
   }catch(e){ setOut(errBox(e)); }
@@ -303,6 +353,7 @@ function render(rec){
   const nodes = [];
   const terms = buildingTerms(rec);
   nodes.push(el("div",{class:"eyebrow"}, rec.source));
+  if(rec.note) nodes.push(el("div",{class:"alert"}, rec.note));
   if(p){
     const lbl = el("span",{class:"copy-label"},"Αντιγραφή");
     const kaekEl = el("span",{class:"kaek"}, p.KAEK);
