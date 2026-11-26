@@ -197,8 +197,13 @@ const fmt = (n,d=0) => n==null||isNaN(n) ? "—" : Number(n).toLocaleString("el-
 const map = L.map("map",{zoomControl:true}).setView([38.0,23.75], 7);
 const osm = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:"© OpenStreetMap"});
 const sat = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",{maxZoom:20,maxNativeZoom:19,attribution:"Esri World Imagery"});
-sat.addTo(map);
-L.control.layers({"Δορυφόρος":sat,"Χάρτης δρόμων":osm}).addTo(map);
+// Ονόματα δρόμων/περιοχών πάνω στη δορυφορική εικόνα (διαφανή επίπεδα Esri)
+const REF = "https://server.arcgisonline.com/ArcGIS/rest/services/Reference/";
+const roads = L.tileLayer(REF+"World_Transportation/MapServer/tile/{z}/{y}/{x}",{maxZoom:20,maxNativeZoom:19,pane:"overlayPane"});
+const places = L.tileLayer(REF+"World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}",{maxZoom:20,maxNativeZoom:19,pane:"overlayPane"});
+const hybrid = L.layerGroup([sat, roads, places]);
+hybrid.addTo(map);
+L.control.layers({"Δορυφόρος με δρόμους":hybrid,"Μόνο δορυφόρος":sat,"Χάρτης δρόμων (ελληνικά ονόματα)":osm}).addTo(map);
 let marker=null, shape=null;
 map.on("click", e => lookupPoint(e.latlng.lat, e.latlng.lng, "Σημείο στον χάρτη"));
 
