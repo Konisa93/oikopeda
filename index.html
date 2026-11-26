@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ευρετήριο Οικοπέδων</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,600&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.11.0/proj4.js"></script>
+<style>
+/* Layout: χάρτης αριστερά (μεγάλος), στήλη "φύλλο οικοπέδου" δεξιά· σε κινητό στοιβάζονται. */
+:root{
+  --bg:#f3f4f1; --panel:#ffffff; --ink:#1d2421; --muted:#5f6b66; --line:#d9ddd8;
+  --accent:#1f6f5c; --accent-ink:#ffffff; --parcel:#d9480f;
+  --ok:#2b7a3d; --warn:#b26a00; --bad:#b3261e; --chip:#e8ece9;
+  --display:"Fraunces",Georgia,serif; --sans:"IBM Plex Sans",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#141917; --panel:#1c2320; --ink:#e7ece9; --muted:#9aa7a1; --line:#2e3833;
+  --accent:#4fb79a; --accent-ink:#0d1412; --parcel:#ff8a4c;
+  --ok:#6cc483; --warn:#e7a73c; --bad:#f08079; --chip:#26302c; color-scheme:dark}}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font:14px/1.5 var(--sans)}
+header{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;padding:12px max(16px,2vw);border-bottom:1px solid var(--line);background:var(--panel)}
+h1{font:600 20px/1.1 var(--display);margin:0;letter-spacing:.2px}
+h1 small{display:block;font:400 12px var(--sans);color:var(--muted);margin-top:2px}
+form{flex:1;display:flex;gap:8px;min-width:280px}
+input[type=text]{flex:1;min-width:0;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);font:inherit}
+input:focus,button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+button{font:inherit;cursor:pointer;border-radius:6px;border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:8px 12px}
+button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600}
+main{display:grid;grid-template-columns:minmax(0,1fr) 420px;height:calc(100% - 66px)}
+#map{height:100%;min-height:320px}
+aside{overflow:auto;border-left:1px solid var(--line);background:var(--panel);padding:16px;display:flex;flex-direction:column;gap:16px}
+@media (max-width:860px){main{grid-template-columns:1fr;height:auto}#map{height:55vh}aside{border-left:0;border-top:1px solid var(--line)}}
+.hint{color:var(--muted);margin:0}
+.results{display:flex;flex-direction:column;gap:4px}
+.results button{text-align:left;font-size:13px}
+.kaek{font:500 26px/1.1 var(--mono);letter-spacing:1px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.kaek button{font:12px var(--sans);padding:4px 8px}
+.label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;font-weight:600;background:var(--chip)}
+.pill.ok{color:var(--ok)}.pill.warn{color:var(--warn)}.pill.bad{color:var(--bad)}
+dl{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:0}
+dt{color:var(--muted)} dd{margin:0;font-variant-numeric:tabular-nums;min-width:0;overflow-wrap:anywhere}
+section{display:flex;flex-direction:column;gap:8px}
+section+section{border-top:1px solid var(--line);padding-top:14px}
+.alert{padding:10px 12px;border-radius:6px;background:var(--chip);border-left:3px solid var(--warn)}
+.alert.bad{border-left-color:var(--bad)}
+.links{display:flex;flex-wrap:wrap;gap:8px}
+.links a{color:var(--accent);font-weight:500}
+.mono{font-family:var(--mono);font-size:13px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+td,th{padding:6px 4px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+td.num{font-variant-numeric:tabular-nums;text-align:right}
+.row-actions{display:flex;gap:8px;flex-wrap:wrap}
+.spinner{color:var(--muted)}
+footer{font-size:12px;color:var(--muted)}
+.leaflet-container{font:inherit}
+</style>
+</head>
+<body>
+<header>
+  <h1>Ευρετήριο Οικοπέδων<small>ΚΑΕΚ &amp; στοιχεία από τον δημόσιο χάρτη του Κτηματολογίου</small></h1>
+  <form id="f">
+    <input type="text" id="q" autocomplete="off" placeholder="Διεύθυνση ή συντεταγμένες (π.χ. 37.9807, 23.7326)" value="">
+    <button class="primary" type="submit">Αναζήτηση</button>
+  </form>
+</header>
+<main>
+  <div id="map"></div>
+  <aside>
+    <div id="out">
+      <p class="hint">Γράψε διεύθυνση ή συντεταγμένες (από Google Maps) και θα σου βγάλει το ΚΑΕΚ, ή <b>πάτησε απευθείας πάνω σε ένα οικόπεδο στον χάρτη</b>. Το κλικ στον χάρτη είναι το πιο ακριβές: οι διευθύνσεις συχνά πέφτουν πάνω στον δρόμο.</p>
+    </div>
+    <section id="saved-sec">
+      <div class="label">Τα οικόπεδά μου</div>
+      <div id="saved"></div>
+      <div class="row-actions">
+        <button type="button" id="csv">Εξαγωγή CSV</button>
+        <button type="button" id="clear">Καθαρισμός λίστας</button>
+      </div>
+    </section>
+    <footer>Πηγή: Ελληνικό Κτηματολόγιο (maps.ktimatologio.gr) · Γεωκωδικοποίηση: © OpenStreetMap contributors (Nominatim). Τα στοιχεία είναι ενδεικτικά και δεν υποκαθιστούν επίσημο απόσπασμα. Ιδιοκτήτες δεν δημοσιεύονται.</footer>
+  </aside>
+</main>
+
+<script>
+(() => {
+const SVC = "https://services-eu1.arcgis.com/40tFGWzosjaLJpmn/arcgis/rest/services";
+const PARCEL_LAYERS = [
+  {svc:"GEOTEMAXIA_LEITOURGOUN_ON_gdb",   status:"Λειτουργεί Κτηματολόγιο", cls:"ok"},
+  {svc:"GEOTEMAXIA_ANARTHSH_ON_gdb",      status:"Σε ανάρτηση",             cls:"warn"},
+  {svc:"GEOTEMAXIA_PROKATARKTIKA_ON_gdb", status:"Προκαταρκτικά στοιχεία",   cls:"warn"},
+  {svc:"GEOTEMAXIA_DOULEIES_ON_gdb",      status:"Σε εργασίες κτηματογράφησης", cls:"warn"},
+  {svc:"GEOTEMAXIA_APOKLEISTIKES_ON_gdb", status:"Αποκλειστικές περιοχές",   cls:"warn"},
+];
+const FOREST_LAYERS = [
+  {svc:"DASIKA_KYROSH_P_gdb",       label:"Κυρωμένος δασικός χάρτης", field:"KATHGORDX"},
+  {svc:"DASIKA_ANARTHSH_P_gdb",     label:"Δασικός χάρτης σε ανάρτηση", field:"KATHGORDX"},
+  {svc:"DASIKA_ANARTHSH_45_60_gdb", label:"Δασικός χάρτης (αεροφωτογραφίες 1945/60)", field:"KATHGOROLD"},
+];
+const NATURA_LAYERS = ["NATURA_SCI_P_gdb","NATURA_SPA_P_gdb","NATURA_SCISPA_P_gdb"];
+const FOREST_LETTER = {"Δ":"δασική","Χ":"χορτολιβαδική","Α":"άλλη (μη δασική)","Π":"ειδική κατηγορία"};
+const BAD_USES = /οδικ|αιγιαλ|θάλασσ|ρέμα|ποταμ|πλατε/i;
+proj4.defs("EPSG:2100","+proj=tmerc +lat_0=0 +lon_0=24 +k=0.9996 +x_0=500000 +y_0=0 +ellps=GRS80 +towgs84=-199.87,74.79,246.62,0,0,0,0 +units=m +no_defs");
+
+const $ = id => document.getElementById(id);
+const el = (tag, attrs={}, ...kids) => { const e=document.createElement(tag); for (const [k,v] of Object.entries(attrs)) { if(k==="class") e.className=v; else if(k.startsWith("on")) e.addEventListener(k.slice(2),v); else e.setAttribute(k,v);} for (const k of kids) if(k!=null) e.append(k instanceof Node?k:String(k)); return e; };
+const fmt = (n,d=0) => n==null||isNaN(n) ? "—" : Number(n).toLocaleString("el-GR",{maximumFractionDigits:d,minimumFractionDigits:d});
+
+// ---------- Χάρτης ----------
+const map = L.map("map",{zoomControl:true}).setView([38.0,23.75], 7);
+const osm = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:"© OpenStreetMap"});
+const sat = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",{maxZoom:20,maxNativeZoom:19,attribution:"Esri World Imagery"});
+sat.addTo(map);
+L.control.layers({"Δορυφόρος":sat,"Χάρτης δρόμων":osm}).addTo(map);
+let marker=null, shape=null;
+map.on("click", e => lookupPoint(e.latlng.lat, e.latlng.lng, "Σημείο στον χάρτη"));
+
+// ---------- Υπηρεσίες ----------
+async function getJSON(url){ const r = await fetch(url); if(!r.ok) throw new Error("HTTP "+r.status); const j = await r.json(); if(j.error) throw new Error(j.error.message||"Σφάλμα υπηρεσίας"); return j; }
+function queryUrl(svc, params){ return `${SVC}/${svc}/FeatureServer/0/query?` + new URLSearchParams({f:"json", ...params}); }
+const pointParams = (lat,lon,geom) => ({geometry:`${lon},${lat}`, geometryType:"esriGeometryPoint", inSR:"4326", spatialRel:"esriSpatialRelIntersects", outFields:"*", returnGeometry:String(!!geom), outSR:"4326"});
+
+async function geocode(q){
+  const u = "https://nominatim.openstreetmap.org/search?" + new URLSearchParams({q, format:"json", limit:"5", countrycodes:"gr", "accept-language":"el"});
+  return getJSON(u);
+}
+
+// ---------- Ροές ----------
+$("f").addEventListener("submit", async ev => {
+  ev.preventDefault();
+  const q = $("q").value.trim(); if(!q) return;
+  const coord = q.match(/^\s*(-?\d+(?:[.,]\d+)?)\s*[, ]\s*(-?\d+(?:[.,]\d+)?)\s*$/);
+  if (coord) { let a=+coord[1].replace(",","."), b=+coord[2].replace(",","."); if (a<32 && b>33) [a,b]=[b,a]; /* δόθηκε ως μήκος, πλάτος: στην Ελλάδα πλάτος 34–42, μήκος 19–30 */ return lookupPoint(a,b,`Αναζήτηση: ${a.toFixed(5)}, ${b.toFixed(5)}`); }
+  setOut(el("p",{class:"spinner"},"Αναζήτηση διεύθυνσης…"));
+  try{
+    const res = await geocode(q);
+    if(!res.length) return setOut(el("div",{class:"alert bad"},"Δεν βρέθηκε η διεύθυνση. Δοκίμασε πιο απλή μορφή (π.χ. «Οδός Αριθμός, Πόλη») ή πάτησε πάνω στο οικόπεδο στον χάρτη."));
+    if(res.length===1) return lookupPoint(+res[0].lat, +res[0].lon, res[0].display_name);
+    setOut(el("div",{class:"label"},"Διάλεξε αποτέλεσμα"), el("div",{class:"results"}, ...res.map(r => el("button",{type:"button",onclick:()=>lookupPoint(+r.lat,+r.lon,r.display_name)}, r.display_name))));
+  }catch(e){ setOut(errBox(e)); }
+});
+
+async function lookupPoint(lat, lon, sourceLabel){
+  setOut(el("p",{class:"spinner"},"Ανάκτηση στοιχείων από το Κτηματολόγιο…"));
+  if(marker) marker.remove(); marker = L.circleMarker([lat,lon],{radius:6,color:"#fff",weight:2,fillColor:"#111",fillOpacity:1}).addTo(map);
+  try{
+    const parcelP = Promise.all(PARCEL_LAYERS.map(L0 => getJSON(queryUrl(L0.svc, pointParams(lat,lon,true))).then(j=>({L0, feats:j.features||[]})).catch(()=>({L0,feats:[]}))));
+    const otaP = getJSON(queryUrl("OTA_P_gdb", pointParams(lat,lon,false))).then(j=>j.features?.[0]?.attributes||null).catch(()=>null);
+    const forestP = Promise.all(FOREST_LAYERS.map(F => getJSON(queryUrl(F.svc, pointParams(lat,lon,false))).then(j=>({F, a:j.features?.[0]?.attributes||null})).catch(()=>({F,a:null}))));
+    const naturaP = Promise.all(NATURA_LAYERS.map(s => getJSON(queryUrl(s, pointParams(lat,lon,false))).then(j=>(j.features||[]).map(f=>f.attributes)).catch(()=>[])));
+    const [parcels, ota, forest, natura] = await Promise.all([parcelP, otaP, forestP, naturaP]);
+    const hit = parcels.find(p => p.feats.length);
+    const rec = { lat, lon, source:sourceLabel, ota, forest, natura:natura.flat(), parcel: hit ? {...hit.feats[0].attributes, _status:hit.L0.status, _cls:hit.L0.cls} : null, geom: hit ? hit.feats[0].geometry : null };
+    drawShape(rec.geom, lat, lon);
+    render(rec);
+  }catch(e){ setOut(errBox(e)); }
+}
+
+function ringsToLatLngs(rings){ return (rings||[]).map(r => r.map(([x,y]) => [y,x])); }
+function drawShape(geom, lat, lon){
+  if(shape) shape.remove(); shape=null;
+  if(geom && geom.rings){ shape = L.polygon(ringsToLatLngs(geom.rings),{color:getComputedStyle(document.documentElement).getPropertyValue("--parcel").trim()||"#d9480f",weight:3,fillOpacity:.18}).addTo(map); map.fitBounds(shape.getBounds(),{maxZoom:19,padding:[40,40]}); }
+  else map.setView([lat,lon], Math.max(map.getZoom(),17));
+}
+
+// ---------- Προβολή ----------
+function setOut(...nodes){ $("out").replaceChildren(...nodes); }
+function errBox(e){ return el("div",{class:"alert bad"},"Η υπηρεσία δεν απάντησε: "+(e.message||e)+". Δοκίμασε ξανά σε λίγο."); }
+function dl(pairs){ const d=el("dl"); for(const [k,v] of pairs){ d.append(el("dt",{},k), el("dd",{},v)); } return d; }
+function forestText(code){ if(!code||!code.trim()) return "—"; const s=code.trim(); if(s.length===2) return `${s} · παλαιές αεροφωτ.: ${FOREST_LETTER[s[0]]||s[0]}, πρόσφατες: ${FOREST_LETTER[s[1]]||s[1]}`; return `${s} · ${FOREST_LETTER[s]||""}`; }
+
+function render(rec){
+  const p = rec.parcel, [x,y] = proj4("EPSG:4326","EPSG:2100",[rec.lon,rec.lat]);
+  const nodes = [];
+  nodes.push(el("div",{class:"label"}, rec.source));
+  if(p){
+    const copyBtn = el("button",{type:"button",onclick:async()=>{ try{ await navigator.clipboard.writeText(p.KAEK); copyBtn.textContent="Αντιγράφηκε"; }catch{ copyBtn.textContent="Επίλεξε & αντίγραψε"; } }},"Αντιγραφή");
+    nodes.push(el("div",{class:"kaek"}, p.KAEK, copyBtn));
+    nodes.push(el("div",{}, el("span",{class:"pill "+p._cls}, p._status)));
+    if(p.DESCR && BAD_USES.test(p.DESCR)) nodes.push(el("div",{class:"alert"},`Το σημείο πέφτει σε «${p.DESCR}». Μάλλον δεν είναι το οικόπεδο που ψάχνεις: κάνε ζουμ και πάτησε πάνω στο ίδιο το οικόπεδο.`));
+    const area = p.AREA;
+    nodes.push(el("section",{}, dl([
+      ["Χρήση", p.DESCR || "—"],
+      ["Εμβαδόν", area ? `${fmt(area,2)} m² (${fmt(area/1000,3)} στρ.)` : "—"],
+      ["Περίμετρος", p.PERIMETER ? `${fmt(p.PERIMETER,2)} m` : "—"],
+      ["Ποσοστό χρήσης", p.PERCENTAGE!=null ? p.PERCENTAGE+"%" : "—"],
+      ["Οριζόντιες ιδιοκτησίες", p.PROP_HOR ?? "—"],
+      ["Κάθετες ιδιοκτησίες", p.PROP_VERT ?? "—"],
+    ])));
+  } else {
+    nodes.push(el("div",{class:"alert bad"},"Δεν βρέθηκε γεωτεμάχιο σε αυτό το σημείο στα δημόσια επίπεδα. Η περιοχή ίσως δεν έχει ακόμη κτηματογραφηθεί ή το σημείο είναι εκτός οικοπέδου."));
+  }
+  const o = rec.ota;
+  nodes.push(el("section",{}, el("div",{class:"label"},"Περιοχή"), dl([
+    ["Δήμος / ΟΤΑ", o ? `${o.OTA_NAME} (${o.CODE_OKXE})` : "—"],
+    ["Νομός", o?.NOMOS_NAME || "—"],
+    ["Κατάσταση", o?.STATUS || "—"],
+    ["Στον ΟΤΑ", o ? `${fmt(o.PARCELS)} γεωτεμάχια · ${fmt(o.HOR)} οριζ. · ${fmt(o.VERT)} κάθ.` : "—"],
+  ])));
+  const forestRows = rec.forest.filter(f=>f.a).map(f => [f.F.label, forestText(f.a[f.F.field])]);
+  const nat = rec.natura.map(n => `${n.SITECODE} (${n.SITETYPE})`);
+  nodes.push(el("section",{}, el("div",{class:"label"},"Περιορισμοί"), dl([
+    ...(forestRows.length ? forestRows : [["Δασικός χάρτης","Δεν εμπίπτει σε δασικό πολύγωνο"]]),
+    ["Natura 2000", nat.length ? nat.join(", ") : "Όχι"],
+  ]), forestRows.length ? el("p",{class:"hint"},"Η ερμηνεία των κωδικών είναι ενδεικτική. Δες το επίσημο υπόμνημα στο maps.ktimatologio.gr.") : null));
+  nodes.push(el("section",{}, el("div",{class:"label"},"Συντεταγμένες"), dl([
+    ["WGS84", el("span",{class:"mono"}, `${rec.lat.toFixed(6)}, ${rec.lon.toFixed(6)}`)],
+    ["ΕΓΣΑ87", el("span",{class:"mono"}, `X ${fmt(x,2)} · Y ${fmt(y,2)}`)],
+  ])));
+  const links = el("div",{class:"links"},
+    el("a",{href:`https://www.google.com/maps?q=${rec.lat},${rec.lon}`,target:"_blank",rel:"noopener"},"Google Maps"),
+    el("a",{href:"https://maps.ktimatologio.gr/?locale=el",target:"_blank",rel:"noopener"},"Χάρτης Κτηματολογίου"));
+  if(p?.LINK && /^https:\/\//.test(p.LINK)) links.append(el("a",{href:p.LINK,target:"_blank",rel:"noopener"},"Σελίδα ΟΤΑ"));
+  nodes.push(el("section",{}, el("div",{class:"label"},"Σύνδεσμοι"), links,
+    el("p",{class:"hint"},"Ιδιοκτήτης: δεν δημοσιεύεται. Για στοιχεία ιδιοκτησίας χρειάζεται απόσπασμα κτηματολογικού φύλλου (e-υπηρεσίες Κτηματολογίου) ή δικηγόρος/συμβολαιογράφος, με το παραπάνω ΚΑΕΚ.")));
+  if(p) nodes.push(el("div",{class:"row-actions"}, el("button",{class:"primary",type:"button",onclick:()=>save(rec,x,y)},"Αποθήκευση στη λίστα")));
+  setOut(...nodes);
+}
+
+// ---------- Λίστα ----------
+const KEY="kaek-dashboard-saved";
+function loadSaved(){ try{ return JSON.parse(localStorage.getItem(KEY)||"[]"); }catch{ return []; } }
+function storeSaved(a){ try{ localStorage.setItem(KEY, JSON.stringify(a)); }catch{} renderSaved(); }
+function save(rec,x,y){
+  const p=rec.parcel, a=loadSaved().filter(r=>r.kaek!==p.KAEK);
+  a.unshift({kaek:p.KAEK, status:p._status, use:p.DESCR||"", area:p.AREA, hor:p.PROP_HOR, vert:p.PROP_VERT, ota:rec.ota?.OTA_NAME||"", lat:+rec.lat.toFixed(6), lon:+rec.lon.toFixed(6), egsa_x:+x.toFixed(2), egsa_y:+y.toFixed(2),
+    forest: rec.forest.filter(f=>f.a).map(f=>f.a[f.F.field]).join(" / "), natura: rec.natura.map(n=>n.SITECODE).join(" "), source:rec.source, saved:new Date().toISOString().slice(0,10)});
+  storeSaved(a);
+}
+function renderSaved(){
+  const a=loadSaved();
+  if(!a.length){ $("saved").replaceChildren(el("p",{class:"hint"},"Κανένα οικόπεδο ακόμη. Πάτησε «Αποθήκευση στη λίστα» μετά από μια αναζήτηση.")); return; }
+  const t=el("table",{}, el("tr",{}, el("th",{},"ΚΑΕΚ"), el("th",{},"ΟΤΑ"), el("th",{},"m²"), el("th",{},"")));
+  for(const r of a){
+    t.append(el("tr",{},
+      el("td",{class:"mono"}, el("a",{href:"#",onclick:e=>{e.preventDefault(); lookupPoint(r.lat,r.lon,`ΚΑΕΚ ${r.kaek}`);}}, r.kaek)),
+      el("td",{}, r.ota), el("td",{class:"num"}, fmt(r.area,0)),
+      el("td",{}, el("button",{type:"button",title:"Αφαίρεση",onclick:()=>storeSaved(loadSaved().filter(z=>z.kaek!==r.kaek))},"×"))));
+  }
+  $("saved").replaceChildren(el("div",{style:"overflow-x:auto"},t));
+}
+$("csv").addEventListener("click",()=>{
+  const a=loadSaved(); if(!a.length) return;
+  const cols=["kaek","status","use","area","hor","vert","ota","lat","lon","egsa_x","egsa_y","forest","natura","source","saved"];
+  const esc=v=>`"${String(v??"").replace(/"/g,'""')}"`;
+  const csv="﻿"+cols.join(";")+"\n"+a.map(r=>cols.map(c=>esc(r[c])).join(";")).join("\n");
+  const url=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));
+  const link=el("a",{href:url,download:`oikopeda-${new Date().toISOString().slice(0,10)}.csv`}); document.body.append(link); link.click(); link.remove();
+});
+$("clear").addEventListener("click",e=>{ const b=e.currentTarget; if(b.dataset.armed){ storeSaved([]); b.textContent="Καθαρισμός λίστας"; delete b.dataset.armed; } else { b.dataset.armed="1"; b.textContent="Σίγουρα; Πάτα ξανά"; setTimeout(()=>{ if(b.dataset.armed){ delete b.dataset.armed; b.textContent="Καθαρισμός λίστας"; } },4000); } });
+renderSaved();
+})();
+</script>
+</body>
+</html>
