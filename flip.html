@@ -172,7 +172,7 @@ footer{font-size:12px;color:var(--muted);line-height:1.5}
     <details class="box" id="arvbox">
       <summary>Τιμή πώλησης ανά περιοχή</summary>
       <div class="inner">
-        <p class="note">€/m² για <b>ανακαινισμένο</b> ακίνητο. Σειρά προτεραιότητας: η δική σου τιμή για τον δήμο → για την περιοχή → τιμή Indomio του δήμου (Αττική) + προσαύξηση → δείκτης Spitogatos της περιοχής (Θεσσαλονίκη) + προσαύξηση → αυτόματη εκτίμηση από τον διάμεσο €/m² των αγγελιών Intrum της περιοχής + προσαύξηση. Βάλε δικές σου τιμές όπου ξέρεις την αγορά: είναι το πιο κρίσιμο νούμερο.</p>
+        <p class="note">€/m² για <b>ανακαινισμένο</b> ακίνητο. Σειρά προτεραιότητας: η δική σου τιμή για τον δήμο → για την περιοχή → μέση τιμή spiti24 του δήμου (όλη η Ελλάδα) + προσαύξηση → τιμή Indomio του δήμου (Αττική) + προσαύξηση → δείκτης Spitogatos της περιοχής (Θεσσαλονίκη) + προσαύξηση → αυτόματη εκτίμηση από τον διάμεσο €/m² των αγγελιών Intrum της περιοχής + προσαύξηση. Βάλε δικές σου τιμές όπου ξέρεις την αγορά: είναι το πιο κρίσιμο νούμερο.</p>
         <input type="text" id="arv-q" placeholder="Φίλτρο περιοχών…">
         <div id="arv-table"></div>
       </div>
@@ -250,8 +250,8 @@ const ASSUMPTIONS = [
     ["taxPct", "Φόρος επί του κέρδους (%)", 0, "Ανάλογα με το αν αγοράζεις ως ιδιώτης ή εταιρεία: επιβεβαίωσε με λογιστή."],
   ]],
   ["Τιμή πώλησης", [
-    ["spiPremium", "Προσαύξηση ανακαινισμένου έναντι μέσης τιμής αγοράς (%)", 5, "Οι τιμές Indomio/Spitogatos είναι μέση ζητούμενη τιμή όλων των κατοικιών του δήμου, όχι μόνο ανακαινισμένων."],
-    ["sellNeg", "Έκπτωση διαπραγμάτευσης στην πώληση (%)", 5, "Οι τιμές αγοράς (Indomio, Spitogatos) είναι ζητούμενες· οι πωλήσεις κλείνουν συνήθως χαμηλότερα."],
+    ["spiPremium", "Προσαύξηση ανακαινισμένου έναντι μέσης τιμής αγοράς (%)", 5, "Οι τιμές spiti24/Indomio/Spitogatos είναι μέση ζητούμενη τιμή όλων των διαμερισμάτων του δήμου, όχι μόνο ανακαινισμένων."],
+    ["sellNeg", "Έκπτωση διαπραγμάτευσης στην πώληση (%)", 5, "Οι τιμές αγοράς (spiti24, Indomio, Spitogatos) είναι ζητούμενες· οι πωλήσεις κλείνουν συνήθως χαμηλότερα."],
     ["autoUplift", "Προσαύξηση αυτόματης εκτίμησης (%)", 25, "Ανακαινισμένο ακίνητο έναντι της ζητούμενης τιμής των REO της περιοχής."],
     ["auxWeight", "Βάρος βοηθητικών χώρων (%)", 30, "Αποθήκες/υπόγεια μετράνε λιγότερο από τους κύριους χώρους."],
     ["sizeAdj", "Διόρθωση μεγέθους: % ανά 10 m² πάνω από 110 m²", -2.5, "Τα μεγάλα ακίνητα πουλάνε φθηνότερα ανά m². Μέγιστη διόρθωση −30%."],
@@ -275,7 +275,7 @@ const OVR = { ...(saved.overrides || {}) };    // ακίνητο (id) → { buy,
 let excludedRegions = new Set(saved.excludedRegions || []);
 let sortKey = saved.sortKey || "roi", sortDir = saved.sortDir || -1;
 let view = "list";
-let SPI = {}, MARKET = {}, BASELINE = null, DATA = [], ROWS = [], AUTO = {}, REGIONS = [], updatedAt = null, shown = 100;
+let SPI = {}, MARKET = {}, S24 = {}, BASELINE = null, DATA = [], ROWS = [], AUTO = {}, REGIONS = [], updatedAt = null, shown = 100;
 
 function persist() {
   const filters = Object.fromEntries(FILTER_IDS.map((id) => [id, $(id).type === "checkbox" ? $(id).checked : $(id).value]));
@@ -327,17 +327,21 @@ function buildMarket() {
     MARKET_IDX[r] = idx;
   }
 }
+// Τιμή αγοράς του δήμου: πρώτα spiti24 (μέσος όρος διαμερισμάτων του δήμου), αλλιώς Indomio (Αττική).
 function marketFor(l) {
+  const s = l.area?.slug && S24.areas?.[l.area.slug];
+  if (s && s.psm && (s.listings == null || s.listings >= 5)) return { name: s.name || l.area.name, psm: s.psm, n: s.listings, src: "spiti24", url: s.url, date: S24.retrieved };
   const idx = MARKET_IDX[l.region?.slug];
   if (!idx) return null;
-  return idx[normName(l.neighborhood?.name)] || idx[normName(l.area?.name)] || null;
+  const m = idx[normName(l.neighborhood?.name)] || idx[normName(l.area?.name)];
+  return m ? { ...m, src: "Indomio", date: MARKET.retrieved } : null;
 }
 function arvFor(l) {
   const a = l.area?.slug, r = l.region?.slug;
   if (a && ARV[a]) return { psm: +ARV[a], src: `δική σου τιμή (${l.area.name})` };
   if (r && ARV[r]) return { psm: +ARV[r], src: `δική σου τιμή (${l.region.name})` };
   const mk = marketFor(l);
-  if (mk) return { psm: mk.psm * (1 + S.spiPremium / 100), src: `Indomio ${mk.name} €${nf.format(mk.psm)}/m² (${MARKET.retrieved || ""}) +${pn(S.spiPremium)}%`, market: true };
+  if (mk) return { psm: mk.psm * (1 + S.spiPremium / 100), src: `${mk.src} ${mk.name} €${nf.format(mk.psm)}/m²${mk.n ? ` (${nf.format(mk.n)} αγγελίες` + (mk.date ? `, ${mk.date})` : ")") : mk.date ? ` (${mk.date})` : ""} +${pn(S.spiPremium)}%`, market: true };
   if (r && SPI.regions?.[r]) {
     // Ο δείκτης είναι ανά μεγάλη περιοχή· τον διορθώνουμε με τη σχετική θέση του δήμου μέσα σε αυτήν (από τις αγγελίες Intrum).
     const am = a && AUTO[a]?.n >= 3 ? AUTO[a] : null, rm = AUTO[r];
@@ -504,7 +508,7 @@ function row(c) {
     el("td", { class: "num" }, l.price ? eur(l.price) : "κατ' αίτηση"),
     el("td", { class: "num" }, num(c.main)),
     el("td", { class: "num" }, num(c.ppsm)),
-    el("td", { class: "num " + (c.vsMarket < -0.2 ? "pos" : c.vsMarket > 0 ? "neg" : ""), title: c.mk ? `Αγορά ${c.mk.name}: €${nf.format(c.mk.psm)}/m²` : "" }, c.vsMarket == null ? "—" : (c.vsMarket > 0 ? "+" : "−") + Math.abs(c.vsMarket * 100).toFixed(0) + "%"),
+    el("td", { class: "num " + (c.vsMarket < -0.2 ? "pos" : c.vsMarket > 0 ? "neg" : ""), title: c.mk ? `Αγορά ${c.mk.name} (${c.mk.src}): €${nf.format(c.mk.psm)}/m²` : "" }, c.vsMarket == null ? "—" : (c.vsMarket > 0 ? "+" : "−") + Math.abs(c.vsMarket * 100).toFixed(0) + "%"),
     el("td", { class: "num" }, eur(c.arv)),
     el("td", { class: "num" }, eur(c.renoTot)),
     el("td", { class: "num " + (c.profit > 0 ? "pos" : c.profit < 0 ? "neg" : "") }, eur(c.profit)),
@@ -581,7 +585,7 @@ function renderArv() {
       el("td", {}, input(g.region.slug, spi ? spi * (1 + S.spiPremium / 100) : ra ? ra.med * (1 + S.autoUplift / 100) : null))));
     for (const a of visAreas) {
       const mk = marketFor({ region: g.region, area: a });
-      tb.append(el("tr", {}, el("td", { style: "padding-left:14px" }, a.name, el("div", { class: "note" }, [info(AUTO[a.slug]), mk ? `Indomio €${nf.format(mk.psm)}` : null].filter(Boolean).join(" · "))), el("td", {}, input(a.slug, mk ? mk.psm * (1 + S.spiPremium / 100) : null))));
+      tb.append(el("tr", {}, el("td", { style: "padding-left:14px" }, a.name, el("div", { class: "note" }, [info(AUTO[a.slug]), mk ? `${mk.src} €${nf.format(mk.psm)}` : null].filter(Boolean).join(" · "))), el("td", {}, input(a.slug, mk ? mk.psm * (1 + S.spiPremium / 100) : null))));
     }
   }
   t.append(tb);
@@ -682,7 +686,7 @@ function openDrawer(c) {
     el("div", { class: "eyebrow" }, "Στοιχεία"),
     pairs([
       ["Κωδικός", l.code], ["Διεύθυνση", l.address || "—"],
-      c.mk ? [`Αγορά ${c.mk.name} (Indomio)`, `€${nf.format(c.mk.psm)}/m² · αγγελία ${c.vsMarket > 0 ? "+" : "−"}${Math.abs(c.vsMarket * 100).toFixed(0)}%`] : null, ["Έτος κατασκευής", l.year || "—"], ["Ενεργειακή κλάση", l.energyClass || "—"],
+      c.mk ? [`Αγορά ${c.mk.name} (${c.mk.src})`, `€${nf.format(c.mk.psm)}/m² · αγγελία ${c.vsMarket > 0 ? "+" : "−"}${Math.abs(c.vsMarket * 100).toFixed(0)}%`] : null, ["Έτος κατασκευής", l.year || "—"], ["Ενεργειακή κλάση", l.energyClass || "—"],
       ["Όροφος", l.floorText || l.floorLabel || "—"], ["Υπνοδωμάτια / μπάνια", `${l.bedrooms ?? "—"} / ${l.bathrooms ?? "—"}`],
       ["Πρώτη εμφάνιση", l.firstSeen || "—"], ph && (l.priceHistory || []).length > 1 ? ["Ιστορικό τιμής", ph] : null,
       ...(l.distances || []).map((d) => [d.kind, `${d.name} · ${d.meters >= 1000 ? (d.meters / 1000).toFixed(1).replace(".", ",") + " km" : d.meters + " m"}`]),
@@ -764,6 +768,7 @@ $("f-reset").addEventListener("click", () => {
 });
 
 fetch("data/arv-defaults.json", { cache: "no-cache" }).then((r) => r.ok ? r.json() : {}).catch(() => ({})).then((j) => { SPI = j || {}; })
+.then(() => fetch("data/spiti24-prices.json", { cache: "no-cache" })).then((r) => r.ok ? r.json() : {}).catch(() => ({})).then((j) => { S24 = j || {}; })
 .then(() => fetch("data/market-prices.json", { cache: "no-cache" })).then((r) => r.ok ? r.json() : {}).catch(() => ({})).then((j) => { MARKET = j || {}; buildMarket(); })
 .then(() => fetch("data/listings.json", { cache: "no-cache" })).then((r) => { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); }).then((db) => {
   // Το Intrum μερικές φορές έχει το ίδιο ακίνητο (ίδιος κωδικός) δύο φορές· κρατάμε την πιο πρόσφατη αγγελία.
