@@ -149,12 +149,16 @@ footer{font-size:12px;color:var(--muted);line-height:1.5}
       <select id="f-type"><option value="">Όλοι</option><option value="apt">Διαμερίσματα</option><option value="house">Μονοκατοικίες / μεζονέτες</option><option value="building">Κτίρια / συγκροτήματα</option><option value="parking">Αποθήκες / θέσεις στάθμευσης</option></select>
     </label>
     <div>
-      <label class="check"><input type="checkbox" id="f-noparking" checked> Χωρίς αποθήκες / θέσεις στάθμευσης</label>
-      <label class="check"><input type="checkbox" id="f-noground"> Χωρίς ισόγεια</label>
-      <label class="check"><input type="checkbox" id="f-nobasement" checked> Χωρίς υπόγεια / ημιυπόγεια</label>
-      <label class="check"><input type="checkbox" id="f-nopor" checked> Χωρίς «τιμή κατόπιν αιτήματος»</label>
-      <label class="check"><input type="checkbox" id="f-new"> Μόνο νέες αγγελίες</label>
-      <label class="check"><input type="checkbox" id="f-drop"> Μόνο με μείωση τιμής</label>
+      <div class="field"><span>Να εμφανίζονται</span>
+        <label class="check"><input type="checkbox" id="f-showground" checked> Ισόγεια</label>
+        <label class="check"><input type="checkbox" id="f-showbasement"> Υπόγεια / ημιυπόγεια</label>
+        <label class="check"><input type="checkbox" id="f-showparking"> Αποθήκες / θέσεις στάθμευσης</label>
+        <label class="check"><input type="checkbox" id="f-showpor"> Ακίνητα με τιμή κατόπιν αιτήματος</label>
+      </div>
+      <div class="field"><span>Μόνο</span>
+        <label class="check"><input type="checkbox" id="f-new"> Νέες αγγελίες</label>
+        <label class="check"><input type="checkbox" id="f-drop"> Με μείωση τιμής</label>
+      </div>
     </div>
     <button type="button" id="f-reset">Καθαρισμός φίλτρων</button>
 
@@ -259,7 +263,7 @@ const ASSUMPTIONS = [
   ]],
 ];
 const DEFAULTS = Object.fromEntries(ASSUMPTIONS.flatMap(([, rows]) => rows.map(([k, , v]) => [k, v])));
-const FILTER_IDS = ["f-nomos", "f-q", "f-pmin", "f-pmax", "f-smin", "f-smax", "f-roi", "f-profit", "f-type", "f-noparking", "f-noground", "f-nobasement", "f-nopor", "f-new", "f-drop"];
+const FILTER_IDS = ["f-nomos", "f-q", "f-pmin", "f-pmax", "f-smin", "f-smax", "f-roi", "f-profit", "f-type", "f-showground", "f-showbasement", "f-showparking", "f-showpor", "f-new", "f-drop"];
 
 const saved = store.get();
 const S = { ...DEFAULTS, ...(saved.assumptions || {}) };
@@ -451,10 +455,10 @@ function passes(c) {
   if (v("f-roi") !== "" && !(c.roi * 100 >= +v("f-roi"))) return false;
   if (v("f-profit") !== "" && !(c.profit >= +v("f-profit"))) return false;
   if (v("f-type") && c.kind !== v("f-type")) return false;
-  if (chk("f-noparking") && c.kind === "parking") return false;
-  if (chk("f-noground") && c.fl.kind === "ground") return false;
-  if (chk("f-nobasement") && c.fl.kind === "basement") return false;
-  if (chk("f-nopor") && !l.price) return false;
+  if (!chk("f-showparking") && c.kind === "parking") return false;
+  if (!chk("f-showground") && c.fl.kind === "ground") return false;
+  if (!chk("f-showbasement") && c.fl.kind === "basement") return false;
+  if (!chk("f-showpor") && !l.price) return false;
   if (chk("f-new") && !c.isNew) return false;
   if (chk("f-drop") && !(c.drop > 0)) return false;
   return true;
@@ -704,7 +708,7 @@ for (const id of FILTER_IDS) {
   $(id).addEventListener($(id).type === "checkbox" || $(id).tagName === "SELECT" ? "change" : "input", () => { shown = 100; persist(); render(); });
 }
 $("f-reset").addEventListener("click", () => {
-  for (const id of FILTER_IDS) { if ($(id).type === "checkbox") $(id).checked = ["f-nobasement", "f-nopor", "f-noparking"].includes(id); else $(id).value = ""; }
+  for (const id of FILTER_IDS) { if ($(id).type === "checkbox") $(id).checked = id === "f-showground"; else $(id).value = ""; }
   excludedRegions.clear(); shown = 100; persist(); render();
 });
 
