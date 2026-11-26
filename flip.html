@@ -107,6 +107,8 @@ td.title small{color:var(--muted);font-size:12px}
 dl{display:grid;grid-template-columns:minmax(140px,48%) 1fr;gap:6px 14px;margin:0;font-size:13.5px}
 dt{color:var(--muted)}dd{margin:0;font-variant-numeric:tabular-nums;text-align:right}
 dd.total{font-weight:600;border-top:1px solid var(--line);padding-top:6px}dt.total{border-top:1px solid var(--line);padding-top:6px;color:var(--ink);font-weight:600}
+.dsum,.ovr{display:flex;flex-direction:column;gap:12px}
+.ovr{border:1px solid var(--line);border-radius:var(--r-m);padding:12px;background:var(--bg)}
 .desc{font-size:13.5px;line-height:1.55;white-space:pre-line;color:var(--ink)}
 .links{display:flex;flex-wrap:wrap;gap:6px 16px}
 .alert{padding:10px 12px;border-radius:var(--r-m);background:var(--chip);border-left:3px solid var(--warn);margin:0;font-size:13px}
@@ -124,6 +126,9 @@ footer{font-size:12px;color:var(--muted);line-height:1.5}
 <main>
   <aside>
     <div class="eyebrow">Φίλτρα</div>
+    <label class="field"><span>Νομός</span>
+      <select id="f-nomos"><option value="">Όλη η Ελλάδα</option><option value="attica">Αττική</option><option value="thess">Θεσσαλονίκη</option><option value="other">Υπόλοιπη Ελλάδα</option></select>
+    </label>
     <label class="field"><span>Αναζήτηση (τίτλος, περιοχή, διεύθυνση, κωδικός)</span><input type="text" id="f-q" placeholder="π.χ. Περιστέρι"></label>
     <div class="field"><span>Περιοχές</span>
       <input type="text" id="f-rq" placeholder="Φίλτρο περιοχών…">
@@ -142,9 +147,6 @@ footer{font-size:12px;color:var(--muted);line-height:1.5}
       <label class="field"><span>Ελάχ. ROI (%)</span><input type="number" id="f-roi" step="1"></label>
       <label class="field"><span>Ελάχ. κέρδος (€)</span><input type="number" id="f-profit" step="1000"></label>
     </div>
-    <label class="field"><span>Νομός</span>
-      <select id="f-nomos"><option value="">Όλη η Ελλάδα</option><option value="attica">Αττική</option><option value="thess">Θεσσαλονίκη</option><option value="other">Υπόλοιπη Ελλάδα</option></select>
-    </label>
     <label class="field"><span>Τύπος</span>
       <select id="f-type"><option value="">Όλοι</option><option value="apt">Διαμερίσματα</option><option value="house">Μονοκατοικίες / μεζονέτες</option><option value="building">Κτίρια / συγκροτήματα</option><option value="parking">Αποθήκες / θέσεις στάθμευσης</option></select>
     </label>
@@ -158,6 +160,7 @@ footer{font-size:12px;color:var(--muted);line-height:1.5}
       <div class="field"><span>Μόνο</span>
         <label class="check"><input type="checkbox" id="f-new"> Νέες αγγελίες</label>
         <label class="check"><input type="checkbox" id="f-drop"> Με μείωση τιμής</label>
+        <label class="check"><input type="checkbox" id="f-mine"> Με δικές μου τιμές</label>
       </div>
     </div>
     <button type="button" id="f-reset">Καθαρισμός φίλτρων</button>
@@ -263,11 +266,12 @@ const ASSUMPTIONS = [
   ]],
 ];
 const DEFAULTS = Object.fromEntries(ASSUMPTIONS.flatMap(([, rows]) => rows.map(([k, , v]) => [k, v])));
-const FILTER_IDS = ["f-nomos", "f-q", "f-pmin", "f-pmax", "f-smin", "f-smax", "f-roi", "f-profit", "f-type", "f-showground", "f-showbasement", "f-showparking", "f-showpor", "f-new", "f-drop"];
+const FILTER_IDS = ["f-nomos", "f-q", "f-pmin", "f-pmax", "f-smin", "f-smax", "f-roi", "f-profit", "f-type", "f-showground", "f-showbasement", "f-showparking", "f-showpor", "f-new", "f-drop", "f-mine"];
 
 const saved = store.get();
 const S = { ...DEFAULTS, ...(saved.assumptions || {}) };
 const ARV = { ...(saved.arv || {}) };          // περιοχή (slug) → €/m² ανακαινισμένου
+const OVR = { ...(saved.overrides || {}) };    // ακίνητο (id) → { buy, reno, arv } δικές σου τιμές σε €
 let excludedRegions = new Set(saved.excludedRegions || []);
 let sortKey = saved.sortKey || "roi", sortDir = saved.sortDir || -1;
 let view = "list";
@@ -275,7 +279,7 @@ let SPI = {}, MARKET = {}, BASELINE = null, DATA = [], ROWS = [], AUTO = {}, REG
 
 function persist() {
   const filters = Object.fromEntries(FILTER_IDS.map((id) => [id, $(id).type === "checkbox" ? $(id).checked : $(id).value]));
-  store.set({ assumptions: S, arv: ARV, excludedRegions: [...excludedRegions], filters, sortKey, sortDir });
+  store.set({ assumptions: S, arv: ARV, overrides: OVR, excludedRegions: [...excludedRegions], filters, sortKey, sortDir });
 }
 
 // ---------- Υπολογισμοί ----------
@@ -378,12 +382,14 @@ function calc(l) {
   const adjPct = adj.reduce((s, [, v]) => s + +v, 0);
   const arvPsm = arv0.psm ? arv0.psm * (1 + adjPct / 100) : null;
   const arvAsk = arvPsm ? arvPsm * effSqm : null;
-  const arv = arvAsk != null ? arvAsk * (1 - S.sellNeg / 100) : null; // οι τιμές αγοράς είναι ζητούμενες· η πώληση κλείνει χαμηλότερα
+  const o = OVR[l.id] || {};
+  // Δική σου τιμή πώλησης = αναμενόμενη τελική τιμή· δεν αφαιρείται διαπραγμάτευση.
+  const arv = o.arv != null ? o.arv : arvAsk != null ? arvAsk * (1 - S.sellNeg / 100) : null; // οι τιμές αγοράς είναι ζητούμενες· η πώληση κλείνει χαμηλότερα
 
   const renoPsm = { light: S.renoLight, medium: S.renoMedium, heavy: S.renoHeavy }[cond];
   const reno = renoPsm * (main + aux * 0.3);
-  const renoTot = reno * (1 + S.contingency / 100);
-  const buy = l.price ? l.price * (1 - S.discount / 100) : null;
+  const renoTot = o.reno != null ? o.reno : reno * (1 + S.contingency / 100);
+  const buy = o.buy != null ? o.buy : l.price ? l.price * (1 - S.discount / 100) : null;
   const buyCost = buy != null ? buy * S.buyPct / 100 + +S.buyFixed : null;
   const hold = S.holdMonths * S.holdMonthly;
   const sellCost = arv != null ? arv * S.sellPct / 100 + +S.sellFixed : null;
@@ -406,6 +412,7 @@ function calc(l) {
   const ppsmMain = l.price && main ? l.price / main : null;
   const vsMarket = mk && ppsmMain ? ppsmMain / mk.psm - 1 : null;
   const flags = [];
+  if (Object.keys(o).length) flags.push(["Δικές σου τιμές", "good"]);
   if (fl.kind === "basement") flags.push(["Υπόγειο", "bad"]);
   if (fl.kind === "ground") flags.push(["Ισόγειο", "warn"]);
   if (cond === "heavy" && /ημιτελ/i.test(l.title || "")) flags.push(["Ημιτελές", "warn"]);
@@ -417,7 +424,7 @@ function calc(l) {
   if (vsMarket != null && vsMarket < -0.5) flags.push(["Πολύ κάτω από αγορά: έλεγξε γιατί", "bad"]);
   if (drop > 0) flags.push([`−${(drop * 100).toFixed(0)}% τιμή`, "good"]);
   if (isNew) flags.push(["Νέα", "good"]);
-  return { l, mk, vsMarket, main, aux, effSqm, fl, cond, condWhy, arv0, adj, adjPct, arvPsm, arvAsk, arv, renoPsm, reno, renoTot, buy, buyCost, hold, sellCost, invested, pre, tax, profit, roi, annual, maxOffer, drop, isNew, flags, kind: kindOf(l), ppsm: l.price && main ? l.price / main : null };
+  return { l, o, mk, vsMarket, main, aux, effSqm, fl, cond, condWhy, arv0, adj, adjPct, arvPsm, arvAsk, arv, renoPsm, reno, renoTot, buy, buyCost, hold, sellCost, invested, pre, tax, profit, roi, annual, maxOffer, drop, isNew, flags, kind: kindOf(l), ppsm: l.price && main ? l.price / main : null };
 }
 
 function buildAuto() {
@@ -461,6 +468,7 @@ function passes(c) {
   if (!chk("f-showpor") && !l.price) return false;
   if (chk("f-new") && !c.isNew) return false;
   if (chk("f-drop") && !(c.drop > 0)) return false;
+  if (chk("f-mine") && !OVR[l.id]) return false;
   return true;
 }
 
@@ -594,6 +602,67 @@ function renderAssumptions() {
 function closeDrawer() { $("drawer").classList.remove("open"); $("scrim").classList.remove("open"); }
 $("scrim").addEventListener("click", closeDrawer);
 document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeDrawer(); });
+// Σύνοψη & ανάλυση ενός ακινήτου· ξαναχτίζεται όταν αλλάζεις τις δικές σου τιμές.
+function summaryNodes(c) {
+  const l = c.l, o = c.o;
+  const pairs = (rows) => el("dl", {}, rows.filter(Boolean).flatMap(([k, v, total]) => [el("dt", { class: total ? "total" : "" }, k), el("dd", { class: total ? "total" : "" }, v)]));
+  return [
+    el("div", { class: "facts" },
+      el("div", { class: "fact" }, el("span", { class: "eyebrow" }, "Κέρδος"), el("b", { class: c.profit > 0 ? "pos" : "neg" }, eur(c.profit))),
+      el("div", { class: "fact" }, el("span", { class: "eyebrow" }, "ROI"), el("b", { class: c.roi > 0 ? "pos" : "neg" }, pct(c.roi)), el("span", { class: "note" }, `${pct(c.annual)} ετήσιο`)),
+      el("div", { class: "fact" }, el("span", { class: "eyebrow" }, "Μέγ. προσφορά"), el("b", {}, c.maxOffer > 0 ? eur(c.maxOffer) : "—"), el("span", { class: "note" }, `για ROI ${pn(S.targetRoi)}%`))),
+    c.arv0.auto && o.arv == null ? el("p", { class: "alert" }, "Η τιμή πώλησης είναι αυτόματη εκτίμηση από τις αγγελίες Intrum. Βάλε δική σου τιμή πώλησης παρακάτω ή για την περιοχή στο «Τιμή πώλησης ανά περιοχή».") : null,
+    !c.arv0.psm && o.arv == null ? el("p", { class: "alert" }, "Δεν υπάρχει τιμή πώλησης για την περιοχή. Βάλε δική σου τιμή πώλησης παρακάτω.") : null,
+    el("div", { class: "eyebrow" }, "Ανάλυση"),
+    pairs([
+      ["Ζητούμενη τιμή", l.price ? eur(l.price) : "κατόπιν αιτήματος"],
+      o.buy != null ? ["Τιμή αγοράς (δική σου)", eur(c.buy)] : S.discount ? [`Τιμή αγοράς (${S.discount > 0 ? "−" : "+"}${pn(Math.abs(S.discount))}%)`, eur(c.buy)] : null,
+      [`Κόστη αγοράς (${pn(S.buyPct)}% + €${nf.format(S.buyFixed)})`, eur(c.buyCost)],
+      o.reno != null ? ["Ανακαίνιση (δική σου τιμή)", eur(c.renoTot)] : [`Ανακαίνιση: ${COND_LABEL[c.cond]} (${c.condWhy}) €${nf.format(c.renoPsm)}/m² + ${pn(S.contingency)}% απρόβλεπτα`, eur(c.renoTot)],
+      [`Κράτηση ${pn(S.holdMonths)} μήνες`, eur(c.hold)],
+      ["Συνολική επένδυση", eur(c.invested), true],
+      o.arv != null ? ["Τιμή πώλησης (δική σου)", eur(c.arv)] : [`Τιμή πώλησης: €${num(c.arvPsm)}/m² × ${num(c.effSqm)} m²`, eur(c.arvAsk)],
+      o.arv == null && S.sellNeg ? [`Διαπραγμάτευση στην πώληση −${pn(S.sellNeg)}%`, "−" + eur(c.arvAsk - c.arv)] : null,
+      [`Κόστη πώλησης`, "−" + eur(c.sellCost)],
+      S.taxPct ? [`Φόρος ${pn(S.taxPct)}%`, "−" + eur(c.tax)] : null,
+      ["Καθαρό κέρδος", eur(c.profit), true],
+    ]),
+    o.arv == null ? el("p", { class: "note" }, `Βάση τιμής πώλησης: ${c.arv0.src}. ` + (c.adj.length ? `Διορθώσεις: ${c.adj.map(([k, v]) => `${k} ${v > 0 ? "+" : ""}${v}%`).join(", ")}.` : "Χωρίς διορθώσεις.") +
+      (c.aux ? ` Κύριοι χώροι ${num(c.main)} m² + βοηθητικοί ${num(c.aux)} m² (με βάρος ${S.auxWeight}%).` : "")) : null,
+  ].filter(Boolean);
+}
+
+// Οι δικές σου τιμές για ένα ακίνητο (σε €). Κενό πεδίο = αυτόματη εκτίμηση.
+function overrideNodes(c) {
+  const l = c.l;
+  // Αυτόματες τιμές χωρίς τις δικές σου, για να φαίνονται ως υπόδειγμα στα πεδία.
+  const saved = OVR[l.id]; delete OVR[l.id]; const base = calc(l); if (saved) OVR[l.id] = saved;
+  const update = (key, value) => {
+    const o = { ...(OVR[l.id] || {}) };
+    if (value === "" || !isFinite(+value)) delete o[key]; else o[key] = +value;
+    if (Object.keys(o).length) OVR[l.id] = o; else delete OVR[l.id];
+    persist();
+    $("d-sum").replaceChildren(...summaryNodes(calc(l)));
+    rerenderSoon();
+  };
+  const field = (key, label, auto) => el("label", { class: "field" }, el("span", {}, label),
+    el("input", { type: "number", id: `ovr-${key}`, min: "0", step: "500", inputmode: "numeric", value: OVR[l.id]?.[key] ?? "", placeholder: auto > 0 ? `αυτόματα ${nf.format(Math.round(auto))}` : "—",
+      oninput: (e) => update(key, e.target.value) }));
+  return [
+    el("div", { class: "eyebrow" }, "Οι δικές σου τιμές"),
+    el("p", { class: "note" }, "Π.χ. μετά από αυτοψία, προσφορά συνεργείου ή γνώμη μεσίτη. Άφησε κενό για αυτόματη εκτίμηση. Αποθηκεύονται στον browser σου."),
+    el("div", { class: "row2" },
+      field("buy", "Τιμή αγοράς / προσφορά (€)", base.buy),
+      field("reno", "Ανακαίνιση συνολικά (€)", base.renoTot)),
+    field("arv", "Τιμή πώλησης μετά την ανακαίνιση (€)", base.arv),
+    el("div", { class: "btnrow" }, el("button", { type: "button", onclick: () => {
+      delete OVR[l.id]; persist();
+      $("drawer").querySelectorAll('input[id^="ovr-"]').forEach((i) => { i.value = ""; });
+      $("d-sum").replaceChildren(...summaryNodes(calc(l))); rerenderSoon();
+    } }, "Επαναφορά στις αυτόματες τιμές")),
+  ];
+}
+
 function openDrawer(c) {
   const l = c.l;
   const kq = l.address && l.area ? `${l.address}, ${l.area.name}` : (l.lat ? `${l.lat}, ${l.lng}` : null);
@@ -604,28 +673,8 @@ function openDrawer(c) {
     el("div", { class: "top" }, el("div", {}, el("div", { class: "eyebrow" }, [l.neighborhood?.name, l.area?.name, l.region?.name].filter(Boolean).join(" · ")), el("h2", { id: "d-title" }, l.title)),
       el("button", { type: "button", onclick: closeDrawer, "aria-label": "Κλείσιμο" }, "✕")),
     l.image ? el("img", { src: l.image, alt: "", loading: "lazy", onerror: (e) => e.target.remove() }) : null,
-    el("div", { class: "facts" },
-      el("div", { class: "fact" }, el("span", { class: "eyebrow" }, "Κέρδος"), el("b", { class: c.profit > 0 ? "pos" : "neg" }, eur(c.profit))),
-      el("div", { class: "fact" }, el("span", { class: "eyebrow" }, "ROI"), el("b", { class: c.roi > 0 ? "pos" : "neg" }, pct(c.roi)), el("span", { class: "note" }, `${pct(c.annual)} ετήσιο`)),
-      el("div", { class: "fact" }, el("span", { class: "eyebrow" }, "Μέγ. προσφορά"), el("b", {}, c.maxOffer > 0 ? eur(c.maxOffer) : "—"), el("span", { class: "note" }, `για ROI ${pn(S.targetRoi)}%`))),
-    c.arv0.auto ? el("p", { class: "alert" }, "Η τιμή πώλησης είναι αυτόματη εκτίμηση από τις αγγελίες Intrum. Βάλε δική σου τιμή για την περιοχή στο «Τιμή πώλησης ανά περιοχή» για αξιόπιστο αποτέλεσμα.") : null,
-    !c.arv0.psm ? el("p", { class: "alert" }, "Δεν υπάρχει τιμή πώλησης για την περιοχή. Βάλε €/m² στο «Τιμή πώλησης ανά περιοχή».") : null,
-    el("div", { class: "eyebrow" }, "Ανάλυση"),
-    pairs([
-      ["Ζητούμενη τιμή", l.price ? eur(l.price) : "κατόπιν αιτήματος"],
-      S.discount ? [`Τιμή αγοράς (${S.discount > 0 ? "−" : "+"}${pn(Math.abs(S.discount))}%)`, eur(c.buy)] : null,
-      [`Κόστη αγοράς (${pn(S.buyPct)}% + €${nf.format(S.buyFixed)})`, eur(c.buyCost)],
-      [`Ανακαίνιση: ${COND_LABEL[c.cond]} (${c.condWhy}) €${nf.format(c.renoPsm)}/m² + ${pn(S.contingency)}% απρόβλεπτα`, eur(c.renoTot)],
-      [`Κράτηση ${pn(S.holdMonths)} μήνες`, eur(c.hold)],
-      ["Συνολική επένδυση", eur(c.invested), true],
-      [`Τιμή πώλησης: €${num(c.arvPsm)}/m² × ${num(c.effSqm)} m²`, eur(c.arvAsk)],
-      S.sellNeg ? [`Διαπραγμάτευση στην πώληση −${pn(S.sellNeg)}%`, "−" + eur(c.arvAsk - c.arv)] : null,
-      [`Κόστη πώλησης`, "−" + eur(c.sellCost)],
-      S.taxPct ? [`Φόρος ${pn(S.taxPct)}%`, "−" + eur(c.tax)] : null,
-      ["Καθαρό κέρδος", eur(c.profit), true],
-    ]),
-    el("p", { class: "note" }, `Βάση τιμής πώλησης: ${c.arv0.src}. ` + (c.adj.length ? `Διορθώσεις: ${c.adj.map(([k, v]) => `${k} ${v > 0 ? "+" : ""}${v}%`).join(", ")}.` : "Χωρίς διορθώσεις.") +
-      (c.aux ? ` Κύριοι χώροι ${num(c.main)} m² + βοηθητικοί ${num(c.aux)} m² (με βάρος ${S.auxWeight}%).` : "")),
+    el("div", { id: "d-sum", class: "dsum" }, ...summaryNodes(c)),
+    el("section", { class: "ovr" }, ...overrideNodes(c)),
     el("div", { class: "links" },
       el("a", { href: l.url, target: "_blank", rel: "noopener" }, "Αγγελία στο Intrum ↗"),
       kq ? el("a", { href: "index.html?q=" + encodeURIComponent(kq), target: "_blank" }, "Κτηματολόγιο & όροι δόμησης ↗") : null,
@@ -688,7 +737,7 @@ $("export").addEventListener("click", () => {
   const esc = (v) => `"${String(v ?? "").replace(/"/g, '""')}"`;
   download(`flip-${new Date().toISOString().slice(0, 10)}.csv`, "﻿" + cols.map(([h]) => esc(h)).join(";") + "\n" + ROWS.map((c) => cols.map(([, f]) => esc(f(c))).join(";")).join("\n"), "text/csv;charset=utf-8");
 });
-$("cfg-export").addEventListener("click", () => download("flip-ρυθμίσεις.json", JSON.stringify({ assumptions: S, arv: ARV }, null, 1), "application/json"));
+$("cfg-export").addEventListener("click", () => download("flip-ρυθμίσεις.json", JSON.stringify({ assumptions: S, arv: ARV, overrides: OVR }, null, 1), "application/json"));
 $("cfg-import-btn").addEventListener("click", () => $("cfg-import").click());
 $("cfg-import").addEventListener("change", async (e) => {
   try {
@@ -696,6 +745,8 @@ $("cfg-import").addEventListener("change", async (e) => {
     Object.assign(S, DEFAULTS, j.assumptions || {});
     for (const k of Object.keys(ARV)) delete ARV[k];
     Object.assign(ARV, j.arv || {});
+    for (const k of Object.keys(OVR)) delete OVR[k];
+    Object.assign(OVR, j.overrides || {});
     persist(); renderAssumptions(); renderArv(); render();
   } catch { alert("Το αρχείο δεν είναι έγκυρο αρχείο ρυθμίσεων."); }
   e.target.value = "";
