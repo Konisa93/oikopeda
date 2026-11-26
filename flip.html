@@ -72,7 +72,7 @@ details.box>.inner{padding:2px 12px 12px;display:flex;flex-direction:column;gap:
 
 .tablewrap{padding:0 16px 24px}
 @media (max-width:900px){.tablewrap{overflow-x:auto}th{position:static!important}}
-@media (max-width:640px){#tbody td:nth-child(3),#tbody td:nth-child(4),#tbody td:nth-child(5),#tbody td:nth-child(6),#tbody td:nth-child(9),#tbody td:nth-child(7),#thead th:nth-child(7),#thead th:nth-child(3),#thead th:nth-child(4),#thead th:nth-child(5),#thead th:nth-child(6),#thead th:nth-child(9){display:none}td.title{min-width:0;max-width:170px}td.title small{display:none}.tablewrap{padding:0 8px 24px}th,td{padding:8px 3px;font-size:12.5px}}
+@media (max-width:640px){#tbody td:nth-child(3),#tbody td:nth-child(4),#tbody td:nth-child(5),#tbody td:nth-child(6),#tbody td:nth-child(7),#tbody td:nth-child(8),#tbody td:nth-child(10),#thead th:nth-child(3),#thead th:nth-child(4),#thead th:nth-child(5),#thead th:nth-child(6),#thead th:nth-child(7),#thead th:nth-child(8),#thead th:nth-child(10){display:none}td.title{min-width:0;max-width:170px}td.title small{display:none}.tablewrap{padding:0 8px 24px}th,td{padding:8px 3px;font-size:12.5px}}
 .arv-t td{white-space:normal;padding:6px 4px}.arv-t td:last-child{width:96px}.arv-t .note{font-size:11.5px}
 table{width:100%;border-collapse:collapse;font-size:13.5px}
 th,td{padding:9px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle;white-space:nowrap}
@@ -142,10 +142,14 @@ footer{font-size:12px;color:var(--muted);line-height:1.5}
       <label class="field"><span>Ελάχ. ROI (%)</span><input type="number" id="f-roi" step="1"></label>
       <label class="field"><span>Ελάχ. κέρδος (€)</span><input type="number" id="f-profit" step="1000"></label>
     </div>
+    <label class="field"><span>Νομός</span>
+      <select id="f-nomos"><option value="">Όλη η Ελλάδα</option><option value="attica">Αττική</option><option value="thess">Θεσσαλονίκη</option><option value="other">Υπόλοιπη Ελλάδα</option></select>
+    </label>
     <label class="field"><span>Τύπος</span>
-      <select id="f-type"><option value="">Όλοι</option><option value="apt">Διαμερίσματα</option><option value="house">Μονοκατοικίες / μεζονέτες</option><option value="building">Κτίρια / οικοδομές</option></select>
+      <select id="f-type"><option value="">Όλοι</option><option value="apt">Διαμερίσματα</option><option value="house">Μονοκατοικίες / μεζονέτες</option><option value="building">Κτίρια / συγκροτήματα</option><option value="parking">Αποθήκες / θέσεις στάθμευσης</option></select>
     </label>
     <div>
+      <label class="check"><input type="checkbox" id="f-noparking" checked> Χωρίς αποθήκες / θέσεις στάθμευσης</label>
       <label class="check"><input type="checkbox" id="f-noground"> Χωρίς ισόγεια</label>
       <label class="check"><input type="checkbox" id="f-nobasement" checked> Χωρίς υπόγεια / ημιυπόγεια</label>
       <label class="check"><input type="checkbox" id="f-nopor" checked> Χωρίς «τιμή κατόπιν αιτήματος»</label>
@@ -161,7 +165,7 @@ footer{font-size:12px;color:var(--muted);line-height:1.5}
     <details class="box" id="arvbox">
       <summary>Τιμή πώλησης ανά περιοχή</summary>
       <div class="inner">
-        <p class="note">€/m² για <b>ανακαινισμένο</b> ακίνητο. Σειρά προτεραιότητας: η δική σου τιμή για τον δήμο → για την περιοχή → δείκτης Spitogatos (Αττική &amp; Θεσσαλονίκη) + προσαύξηση → αυτόματη εκτίμηση από τον διάμεσο €/m² των αγγελιών Intrum της περιοχής + προσαύξηση. Βάλε δικές σου τιμές όπου ξέρεις την αγορά: είναι το πιο κρίσιμο νούμερο.</p>
+        <p class="note">€/m² για <b>ανακαινισμένο</b> ακίνητο. Σειρά προτεραιότητας: η δική σου τιμή για τον δήμο → για την περιοχή → τιμή Indomio του δήμου (Αττική) + προσαύξηση → δείκτης Spitogatos της περιοχής (Θεσσαλονίκη) + προσαύξηση → αυτόματη εκτίμηση από τον διάμεσο €/m² των αγγελιών Intrum της περιοχής + προσαύξηση. Βάλε δικές σου τιμές όπου ξέρεις την αγορά: είναι το πιο κρίσιμο νούμερο.</p>
         <input type="text" id="arv-q" placeholder="Φίλτρο περιοχών…">
         <div id="arv-table"></div>
       </div>
@@ -238,7 +242,7 @@ const ASSUMPTIONS = [
     ["taxPct", "Φόρος επί του κέρδους (%)", 0, "Ανάλογα με το αν αγοράζεις ως ιδιώτης ή εταιρεία: επιβεβαίωσε με λογιστή."],
   ]],
   ["Τιμή πώλησης", [
-    ["spiPremium", "Προσαύξηση ανακαινισμένου έναντι μέσης τιμής Spitogatos (%)", 5, "Ο δείκτης Spitogatos είναι μέση ζητούμενη τιμή όλων των κατοικιών της περιοχής, όχι μόνο ανακαινισμένων."],
+    ["spiPremium", "Προσαύξηση ανακαινισμένου έναντι μέσης τιμής αγοράς (%)", 5, "Οι τιμές Indomio/Spitogatos είναι μέση ζητούμενη τιμή όλων των κατοικιών του δήμου, όχι μόνο ανακαινισμένων."],
     ["autoUplift", "Προσαύξηση αυτόματης εκτίμησης (%)", 25, "Ανακαινισμένο ακίνητο έναντι της ζητούμενης τιμής των REO της περιοχής."],
     ["auxWeight", "Βάρος βοηθητικών χώρων (%)", 30, "Αποθήκες/υπόγεια μετράνε λιγότερο από τους κύριους χώρους."],
     ["sizeAdj", "Διόρθωση μεγέθους: % ανά 10 m² πάνω από 110 m²", -2.5, "Τα μεγάλα ακίνητα πουλάνε φθηνότερα ανά m². Μέγιστη διόρθωση −30%."],
@@ -253,7 +257,7 @@ const ASSUMPTIONS = [
   ]],
 ];
 const DEFAULTS = Object.fromEntries(ASSUMPTIONS.flatMap(([, rows]) => rows.map(([k, , v]) => [k, v])));
-const FILTER_IDS = ["f-q", "f-pmin", "f-pmax", "f-smin", "f-smax", "f-roi", "f-profit", "f-type", "f-noground", "f-nobasement", "f-nopor", "f-new", "f-drop"];
+const FILTER_IDS = ["f-nomos", "f-q", "f-pmin", "f-pmax", "f-smin", "f-smax", "f-roi", "f-profit", "f-type", "f-noparking", "f-noground", "f-nobasement", "f-nopor", "f-new", "f-drop"];
 
 const saved = store.get();
 const S = { ...DEFAULTS, ...(saved.assumptions || {}) };
@@ -261,7 +265,7 @@ const ARV = { ...(saved.arv || {}) };          // περιοχή (slug) → €/
 let excludedRegions = new Set(saved.excludedRegions || []);
 let sortKey = saved.sortKey || "roi", sortDir = saved.sortDir || -1;
 let view = "list";
-let SPI = {}, BASELINE = null, DATA = [], ROWS = [], AUTO = {}, REGIONS = [], updatedAt = null, shown = 100;
+let SPI = {}, MARKET = {}, BASELINE = null, DATA = [], ROWS = [], AUTO = {}, REGIONS = [], updatedAt = null, shown = 100;
 
 function persist() {
   const filters = Object.fromEntries(FILTER_IDS.map((id) => [id, $(id).type === "checkbox" ? $(id).checked : $(id).value]));
@@ -272,7 +276,8 @@ function persist() {
 const titleSqm = (t) => { const m = (t || "").match(/(\d[\d.]*)\s*τ\.μ/); return m ? Number(m[1].replace(/\./g, "")) : null; };
 function kindOf(l) {
   const t = (l.title || "").toLowerCase();
-  if (/κτίριο|οικοδομή|πολυκατοικία|κτήριο/.test(t)) return "building";
+  if (/(θέσ[ηε]\S* στάθμευσ|χώρος στάθμευσ|πάρκινγκ|^αποθήκη)/.test(t) && !/(διαμέρισμα|κατοικία|μεζονέτα|βίλ)/.test(t)) return "parking";
+  if (/κτίριο|οικοδομή|πολυκατοικία|κτήριο|συγκρότημα/.test(t)) return "building";
   if (/μονοκατοικία|μεζονέτα|βίλα|κατοικία\b|οικία/.test(t)) return "house";
   return "apt";
 }
@@ -295,10 +300,28 @@ function condition(l) {
 }
 const COND_LABEL = { light: "Ελαφριά", medium: "Μέτρια", heavy: "Πλήρης" };
 
+const normName = (s) => (s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-zα-ω0-9]+/g, " ").trim();
+let MARKET_IDX = {};
+function buildMarket() {
+  MARKET_IDX = {};
+  for (const [r, areas] of Object.entries(MARKET.areas || {})) {
+    const idx = {};
+    for (const [n, v] of Object.entries(areas)) idx[normName(n)] = { name: n, psm: v };
+    for (const [from, to] of Object.entries(MARKET.aliases?.[r] || {})) if (idx[normName(to)]) idx[normName(from)] = idx[normName(to)];
+    MARKET_IDX[r] = idx;
+  }
+}
+function marketFor(l) {
+  const idx = MARKET_IDX[l.region?.slug];
+  if (!idx) return null;
+  return idx[normName(l.neighborhood?.name)] || idx[normName(l.area?.name)] || null;
+}
 function arvFor(l) {
   const a = l.area?.slug, r = l.region?.slug;
   if (a && ARV[a]) return { psm: +ARV[a], src: `δική σου τιμή (${l.area.name})` };
   if (r && ARV[r]) return { psm: +ARV[r], src: `δική σου τιμή (${l.region.name})` };
+  const mk = marketFor(l);
+  if (mk) return { psm: mk.psm * (1 + S.spiPremium / 100), src: `Indomio ${mk.name} €${nf.format(mk.psm)}/m² (${MARKET.retrieved || ""}) +${S.spiPremium}%`, market: true };
   if (r && SPI.regions?.[r]) {
     // Ο δείκτης είναι ανά μεγάλη περιοχή· τον διορθώνουμε με τη σχετική θέση του δήμου μέσα σε αυτήν (από τις αγγελίες Intrum).
     const am = a && AUTO[a]?.n >= 3 ? AUTO[a] : null, rm = AUTO[r];
@@ -352,6 +375,9 @@ function calc(l) {
   const ph = l.priceHistory || [];
   const drop = ph.length > 1 && ph[ph.length - 1].price < ph[0].price ? 1 - ph[ph.length - 1].price / ph[0].price : 0;
   const isNew = /ΝΕΑ ΠΡΟΣΘΗΚΗ/i.test(l.badge || "") || (l.firstSeen && BASELINE && l.firstSeen > BASELINE && (Date.now() - Date.parse(l.firstSeen)) / 864e5 <= 7);
+  const mk = marketFor(l);
+  const ppsmMain = l.price && main ? l.price / main : null;
+  const vsMarket = mk && ppsmMain ? ppsmMain / mk.psm - 1 : null;
   const flags = [];
   if (fl.kind === "basement") flags.push(["Υπόγειο", "bad"]);
   if (fl.kind === "ground") flags.push(["Ισόγειο", "warn"]);
@@ -361,9 +387,10 @@ function calc(l) {
   if (arv0.auto) flags.push(["Αυτόματη τιμή πώλησης", ""]);
   if (!arv0.psm) flags.push(["Χωρίς τιμή πώλησης", "bad"]);
   if (main > 150) flags.push(["Μεγάλο", ""]);
+  if (vsMarket != null && vsMarket < -0.5) flags.push(["Πολύ κάτω από αγορά: έλεγξε γιατί", "bad"]);
   if (drop > 0) flags.push([`−${(drop * 100).toFixed(0)}% τιμή`, "good"]);
   if (isNew) flags.push(["Νέα", "good"]);
-  return { l, main, aux, effSqm, fl, cond, arv0, adj, adjPct, arvPsm, arv, renoPsm, reno, renoTot, buy, buyCost, hold, sellCost, invested, pre, tax, profit, roi, annual, maxOffer, drop, isNew, flags, kind: kindOf(l), ppsm: l.price && main ? l.price / main : null };
+  return { l, mk, vsMarket, main, aux, effSqm, fl, cond, arv0, adj, adjPct, arvPsm, arv, renoPsm, reno, renoTot, buy, buyCost, hold, sellCost, invested, pre, tax, profit, roi, annual, maxOffer, drop, isNew, flags, kind: kindOf(l), ppsm: l.price && main ? l.price / main : null };
 }
 
 function buildAuto() {
@@ -381,11 +408,19 @@ function buildAuto() {
 }
 
 // ---------- Φίλτρα ----------
+const ATTICA = new Set(["athens-center", "athens-north", "athens-south", "athens-west", "athens-east", "piraeus", "piraeus-suburbs", "rest-of-attica", "argosaronikos-islands"]);
+function nomosOf(l) {
+  const r = l.region?.slug || "";
+  if (ATTICA.has(r)) return "attica";
+  if (r.startsWith("thessaloniki")) return "thess";
+  return "other";
+}
 function passes(c) {
   const l = c.l, v = (id) => $(id).value, chk = (id) => $(id).checked;
   const q = v("f-q").trim().toLowerCase();
   if (q && ![l.title, l.code, l.address, l.region?.name, l.area?.name, l.neighborhood?.name].join(" ").toLowerCase().includes(q)) return false;
   if (excludedRegions.has(l.region?.slug || "_")) return false;
+  if (v("f-nomos") && nomosOf(l) !== v("f-nomos")) return false;
   if (v("f-pmin") && !(l.price >= +v("f-pmin"))) return false;
   if (v("f-pmax") && !(l.price <= +v("f-pmax"))) return false;
   if (v("f-smin") && !(c.main >= +v("f-smin"))) return false;
@@ -393,6 +428,7 @@ function passes(c) {
   if (v("f-roi") !== "" && !(c.roi * 100 >= +v("f-roi"))) return false;
   if (v("f-profit") !== "" && !(c.profit >= +v("f-profit"))) return false;
   if (v("f-type") && c.kind !== v("f-type")) return false;
+  if (chk("f-noparking") && c.kind === "parking") return false;
   if (chk("f-noground") && c.fl.kind === "ground") return false;
   if (chk("f-nobasement") && c.fl.kind === "basement") return false;
   if (chk("f-nopor") && !l.price) return false;
@@ -407,6 +443,7 @@ const COLS = [
   ["price", "Τιμή", (c) => c.l.price ?? -1],
   ["main", "m²", (c) => c.main],
   ["ppsm", "€/m²", (c) => c.ppsm ?? -1],
+  ["vsMarket", "vs αγορά", (c) => c.vsMarket ?? 9],
   ["arv", "Τιμή πώλησης", (c) => c.arv ?? -1],
   ["reno", "Ανακαίνιση", (c) => c.renoTot],
   ["profit", "Κέρδος", (c) => c.profit ?? -1e12],
@@ -418,7 +455,7 @@ function renderHead() {
     const th = el("th", { class: k === "title" ? "" : "num", scope: "col" }, label);
     if (get) {
       if (sortKey === k) th.setAttribute("aria-sort", sortDir < 0 ? "descending" : "ascending");
-      th.addEventListener("click", () => { sortDir = sortKey === k ? -sortDir : -1; sortKey = k; persist(); render(); });
+      th.addEventListener("click", () => { sortDir = sortKey === k ? -sortDir : (k === "vsMarket" ? 1 : -1); sortKey = k; persist(); render(); });
     }
     return th;
   }));
@@ -432,6 +469,7 @@ function row(c) {
     el("td", { class: "num" }, l.price ? eur(l.price) : "κατ' αίτηση"),
     el("td", { class: "num" }, num(c.main)),
     el("td", { class: "num" }, num(c.ppsm)),
+    el("td", { class: "num " + (c.vsMarket < -0.2 ? "pos" : c.vsMarket > 0 ? "neg" : ""), title: c.mk ? `Αγορά ${c.mk.name}: €${nf.format(c.mk.psm)}/m²` : "" }, c.vsMarket == null ? "—" : (c.vsMarket > 0 ? "+" : "−") + Math.abs(c.vsMarket * 100).toFixed(0) + "%"),
     el("td", { class: "num" }, eur(c.arv)),
     el("td", { class: "num" }, eur(c.renoTot)),
     el("td", { class: "num " + (c.profit > 0 ? "pos" : c.profit < 0 ? "neg" : "") }, eur(c.profit)),
@@ -469,7 +507,8 @@ function buildRegions() {
 }
 function renderRegions() {
   const q = $("f-rq").value.trim().toLowerCase();
-  $("f-regions").replaceChildren(...REGIONS.filter((r) => !q || r.name.toLowerCase().includes(q)).map((r) =>
+  const nm = $("f-nomos").value;
+  $("f-regions").replaceChildren(...REGIONS.filter((r) => (!q || r.name.toLowerCase().includes(q)) && (!nm || nomosOf({ region: { slug: r.slug } }) === nm)).map((r) =>
     el("label", { class: "check" }, el("input", { type: "checkbox", checked: !excludedRegions.has(r.slug), onchange: (e) => { e.target.checked ? excludedRegions.delete(r.slug) : excludedRegions.add(r.slug); shown = 100; persist(); render(); } }),
       el("span", {}, r.name), el("span", { class: "cnt" }, r.n))));
 }
@@ -502,7 +541,8 @@ function renderArv() {
     tb.append(el("tr", {}, el("td", {}, el("b", {}, g.region.name), el("div", { class: "note" }, [info(ra), spi ? `Spitogatos €${nf.format(spi)}` : null].filter(Boolean).join(" · "))),
       el("td", {}, input(g.region.slug, spi ? spi * (1 + S.spiPremium / 100) : ra ? ra.med * (1 + S.autoUplift / 100) : null))));
     for (const a of visAreas) {
-      tb.append(el("tr", {}, el("td", { style: "padding-left:14px" }, a.name, el("div", { class: "note" }, info(AUTO[a.slug]) || "")), el("td", {}, input(a.slug))));
+      const mk = marketFor({ region: g.region, area: a });
+      tb.append(el("tr", {}, el("td", { style: "padding-left:14px" }, a.name, el("div", { class: "note" }, [info(AUTO[a.slug]), mk ? `Indomio €${nf.format(mk.psm)}` : null].filter(Boolean).join(" · "))), el("td", {}, input(a.slug, mk ? mk.psm * (1 + S.spiPremium / 100) : null))));
     }
   }
   t.append(tb);
@@ -560,7 +600,8 @@ function openDrawer(c) {
       l.lat ? el("a", { href: `https://www.google.com/maps/search/?api=1&query=${l.lat},${l.lng}`, target: "_blank", rel: "noopener" }, "Google Maps ↗") : null),
     el("div", { class: "eyebrow" }, "Στοιχεία"),
     pairs([
-      ["Κωδικός", l.code], ["Διεύθυνση", l.address || "—"], ["Έτος κατασκευής", l.year || "—"], ["Ενεργειακή κλάση", l.energyClass || "—"],
+      ["Κωδικός", l.code], ["Διεύθυνση", l.address || "—"],
+      c.mk ? [`Αγορά ${c.mk.name} (Indomio)`, `€${nf.format(c.mk.psm)}/m² · αγγελία ${c.vsMarket > 0 ? "+" : "−"}${Math.abs(c.vsMarket * 100).toFixed(0)}%`] : null, ["Έτος κατασκευής", l.year || "—"], ["Ενεργειακή κλάση", l.energyClass || "—"],
       ["Όροφος", l.floorText || l.floorLabel || "—"], ["Υπνοδωμάτια / μπάνια", `${l.bedrooms ?? "—"} / ${l.bathrooms ?? "—"}`],
       ["Πρώτη εμφάνιση", l.firstSeen || "—"], ph && (l.priceHistory || []).length > 1 ? ["Ιστορικό τιμής", ph] : null,
       ...(l.distances || []).map((d) => [d.kind, `${d.name} · ${d.meters >= 1000 ? (d.meters / 1000).toFixed(1).replace(".", ",") + " km" : d.meters + " m"}`]),
@@ -635,11 +676,12 @@ for (const id of FILTER_IDS) {
   $(id).addEventListener($(id).type === "checkbox" || $(id).tagName === "SELECT" ? "change" : "input", () => { shown = 100; persist(); render(); });
 }
 $("f-reset").addEventListener("click", () => {
-  for (const id of FILTER_IDS) { if ($(id).type === "checkbox") $(id).checked = ["f-nobasement", "f-nopor"].includes(id); else $(id).value = ""; }
+  for (const id of FILTER_IDS) { if ($(id).type === "checkbox") $(id).checked = ["f-nobasement", "f-nopor", "f-noparking"].includes(id); else $(id).value = ""; }
   excludedRegions.clear(); shown = 100; persist(); render();
 });
 
 fetch("data/arv-defaults.json", { cache: "no-cache" }).then((r) => r.ok ? r.json() : {}).catch(() => ({})).then((j) => { SPI = j || {}; })
+.then(() => fetch("data/market-prices.json", { cache: "no-cache" })).then((r) => r.ok ? r.json() : {}).catch(() => ({})).then((j) => { MARKET = j || {}; buildMarket(); })
 .then(() => fetch("data/listings.json", { cache: "no-cache" })).then((r) => { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); }).then((db) => {
   DATA = db.listings.filter((l) => !l.removedAt);
   updatedAt = db.updatedAt;
