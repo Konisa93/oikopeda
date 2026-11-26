@@ -5,71 +5,139 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Ευρετήριο Οικοπέδων</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Commissioner:wght@400;500;600;650&family=JetBrains+Mono:wght@500&display=swap">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.11.0/proj4.js"></script>
 <style>
-/* Layout: χάρτης αριστερά (μεγάλος), στήλη "φύλλο οικοπέδου" δεξιά· σε κινητό στοιβάζονται. */
+/* Layout: εργαλείο δύο ζωνών — χάρτης (εργασία) αριστερά, «φύλλο οικοπέδου» (αποτέλεσμα) δεξιά· σε κινητό στοιβάζονται.
+   Ένα σύστημα: μία κλίμακα ακτίνων (4/6px), ένα ζεύγος κουμπιών, ένας τρόπος συνδέσμου. Κίνηση: μόνο transform/opacity/clip-path. */
 :root{
-  --bg:#f3f4f1; --panel:#ffffff; --ink:#1d2421; --muted:#5f6b66; --line:#d9ddd8;
-  --accent:#1f6f5c; --accent-ink:#ffffff; --parcel:#d9480f;
-  --ok:#2b7a3d; --warn:#b26a00; --bad:#b3261e; --chip:#e8ece9;
-  --display:"Fraunces",Georgia,serif; --sans:"IBM Plex Sans",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,monospace;
+  --bg:#f4f3ef; --panel:#fffefb; --ink:#1b1f1d; --muted:#5d6561; --line:#dedbd3; --chip:#efede7;
+  --accent:#1d5f4f; --accent-hi:#174d40; --accent-ink:#ffffff; --parcel:#d4520f; --danger:#b3261e;
+  --ok:#2b7a3d; --warn:#9a5b00;
+  --r-s:4px; --r-m:6px;
+  --ease-out:cubic-bezier(0.23,1,0.32,1); --ease-in-out:cubic-bezier(0.77,0,0.175,1);
+  --sans:"Commissioner",system-ui,-apple-system,"Segoe UI",sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
 }
 @media (prefers-color-scheme:dark){:root{
-  --bg:#141917; --panel:#1c2320; --ink:#e7ece9; --muted:#9aa7a1; --line:#2e3833;
-  --accent:#4fb79a; --accent-ink:#0d1412; --parcel:#ff8a4c;
-  --ok:#6cc483; --warn:#e7a73c; --bad:#f08079; --chip:#26302c; color-scheme:dark}}
+  --bg:#121614; --panel:#191e1c; --ink:#e8ebe9; --muted:#9ba6a1; --line:#2c3431; --chip:#222927;
+  --accent:#5cc0a2; --accent-hi:#79d0b5; --accent-ink:#08130f; --parcel:#ff8a4c; --danger:#f08079;
+  --ok:#6cc483; --warn:#e7a73c; color-scheme:dark}}
 *{box-sizing:border-box}
 html,body{height:100%;margin:0}
-body{background:var(--bg);color:var(--ink);font:14px/1.5 var(--sans)}
-header{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;padding:12px max(16px,2vw);border-bottom:1px solid var(--line);background:var(--panel)}
-h1{font:600 20px/1.1 var(--display);margin:0;letter-spacing:.2px}
-h1 small{display:block;font:400 12px var(--sans);color:var(--muted);margin-top:2px}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
+header{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;padding-block:12px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));border-bottom:1px solid var(--line);background:var(--panel)}
+h1{font:650 19px/1.15 var(--sans);margin:0;letter-spacing:-.01em;text-wrap:balance}
+h1 small{display:block;font:400 12.5px/1.3 var(--sans);color:var(--muted);margin-top:3px;letter-spacing:0}
 form{flex:1;display:flex;gap:8px;min-width:280px}
-input[type=text]{flex:1;min-width:0;padding:10px 12px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);font:inherit}
-input:focus,button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
-button{font:inherit;cursor:pointer;border-radius:6px;border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:8px 12px}
+input[type=text]{flex:1;min-width:0;min-height:44px;padding:0 14px;border:1px solid var(--line);border-radius:var(--r-m);background:var(--bg);color:var(--ink);font:inherit;transition:border-color 150ms ease}
+input[type=text]::placeholder{color:var(--muted)}
+input:focus-visible,button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+input:focus-visible{outline-offset:0;border-color:var(--accent)}
+
+/* Κουμπιά: ένα ζεύγος (κύριο / δευτερεύον). Πάτημα scale(.97) 160ms ease-out· hover μόνο με ποντίκι. */
+button{font:500 14.5px/1 var(--sans);cursor:pointer;min-height:44px;padding:0 16px;border-radius:var(--r-m);border:1px solid var(--line);background:var(--panel);color:var(--ink);
+  transition:transform 160ms var(--ease-out),background-color 150ms ease,border-color 150ms ease;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600}
-main{display:grid;grid-template-columns:minmax(0,1fr) 420px;height:calc(100% - 66px)}
+button:active{transform:scale(.97)}
+button.small{min-height:32px;padding:0 10px;font-size:13px}
+@media (hover:hover) and (pointer:fine){
+  button:hover{border-color:var(--muted)}
+  button.primary:hover{background:var(--accent-hi);border-color:var(--accent-hi)}
+}
+
+/* Σύνδεσμοι: μία εμφάνιση· η υπογράμμιση «σχεδιάζεται» στο hover. */
+a{color:var(--accent);text-decoration:none;font-weight:500;background:linear-gradient(currentColor,currentColor) 0 100%/0% 1px no-repeat;transition:background-size 200ms var(--ease-out)}
+@media (hover:hover) and (pointer:fine){a:hover{background-size:100% 1px}}
+@media (hover:none){a{background-size:100% 1px}}
+
+main{display:grid;grid-template-columns:minmax(0,1fr) 440px;height:calc(100% - 69px)}
 #map{height:100%;min-height:320px}
-aside{overflow:auto;border-left:1px solid var(--line);background:var(--panel);padding:16px;display:flex;flex-direction:column;gap:16px}
-@media (max-width:860px){main{grid-template-columns:1fr;height:auto}#map{height:55vh}aside{border-left:0;border-top:1px solid var(--line)}}
-.hint{color:var(--muted);margin:0}
-.results{display:flex;flex-direction:column;gap:4px}
-.results button{text-align:left;font-size:13px}
-.kaek{font:500 26px/1.1 var(--mono);letter-spacing:1px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.kaek button{font:12px var(--sans);padding:4px 8px}
-.label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
-.pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;font-weight:600;background:var(--chip)}
-.pill.ok{color:var(--ok)}.pill.warn{color:var(--warn)}.pill.bad{color:var(--bad)}
-dl{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:0}
-dt{color:var(--muted)} dd{margin:0;font-variant-numeric:tabular-nums;min-width:0;overflow-wrap:anywhere}
-section{display:flex;flex-direction:column;gap:8px}
-section+section{border-top:1px solid var(--line);padding-top:14px}
-.alert{padding:10px 12px;border-radius:6px;background:var(--chip);border-left:3px solid var(--warn)}
-.alert.bad{border-left-color:var(--bad)}
-.links{display:flex;flex-wrap:wrap;gap:8px}
-.links a{color:var(--accent);font-weight:500}
+aside{overflow:auto;border-left:1px solid var(--line);background:var(--panel);padding-block:18px 24px;padding-inline:20px;display:flex;flex-direction:column;gap:20px}
+@media (max-width:860px){main{grid-template-columns:1fr;height:auto}#map{height:55vh}aside{border-left:0;border-top:1px solid var(--line);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}}
+
+#out{display:flex;flex-direction:column;gap:16px;scroll-margin-top:8px}
+/* Νέο αποτέλεσμα: σύντομη είσοδος (180ms ease-out, 4px) — αλλαγή κατάστασης, όχι διακόσμηση. */
+#out.enter > *{animation:rise 180ms var(--ease-out) both}
+@keyframes rise{from{opacity:0;transform:translateY(4px)}}
+.hint{color:var(--muted);margin:0;max-width:60ch}
+.results{display:flex;flex-direction:column;gap:6px}
+.results button{text-align:left;font:400 13.5px/1.35 var(--sans);padding:10px 12px;height:auto}
+
+/* Φόρτωση: λεπτή γραμμή με γραμμική συνεχή κίνηση. */
+.spinner{color:var(--muted);margin:0;display:flex;flex-direction:column;gap:10px}
+.spinner::before{content:"";display:block;height:2px;border-radius:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent) 0 0/40% 100% no-repeat,var(--chip);animation:scan 1s linear infinite}
+@keyframes scan{from{background-position:-40% 0,0 0}to{background-position:140% 0,0 0}}
+
+.eyebrow,.label{font:600 11px/1.2 var(--sans);text-transform:uppercase;letter-spacing:.09em;color:var(--muted)}
+.kaek-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.kaek{font:500 28px/1.05 var(--mono);letter-spacing:.02em;font-variant-numeric:tabular-nums}
+.copy-label{display:inline-block;transition:filter 200ms ease,opacity 200ms ease}
+.copy-label.swap{filter:blur(2px);opacity:.6}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;font-size:12.5px;font-weight:600;background:var(--chip)}
+.pill::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.pill.ok{color:var(--ok)}.pill.warn{color:var(--warn)}.pill.bad{color:var(--danger)}
+
+/* Σύνοψη πριν τη λεπτομέρεια: 4 κύρια μεγέθη. */
+.facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border:1px solid var(--line);border-radius:var(--r-m);overflow:hidden}
+.fact{padding:12px 14px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.fact:nth-child(odd){border-right:1px solid var(--line)}
+.fact:nth-child(-n+2){border-bottom:1px solid var(--line)}
+.fact b{font:600 19px/1.15 var(--sans);font-variant-numeric:tabular-nums;letter-spacing:-.01em;overflow-wrap:anywhere}
+.fact span.sub{font-size:12px;color:var(--muted)}
+
+dl{display:grid;grid-template-columns:minmax(120px,38%) 1fr;gap:8px 16px;margin:0}
+dt{color:var(--muted);font-size:13.5px}
+dd{margin:0;font-variant-numeric:tabular-nums;min-width:0;overflow-wrap:anywhere}
+dd .note{display:block;color:var(--muted);font-size:13px;line-height:1.45;margin-top:2px}
+section{display:flex;flex-direction:column;gap:10px}
+section+section{border-top:1px solid var(--line);padding-top:16px}
+details.more{font-size:13px;color:var(--muted)}
+details.more summary{cursor:pointer;list-style:none;display:inline-flex;align-items:center;gap:6px;color:var(--accent);font-weight:500;min-height:32px}
+details.more summary::-webkit-details-marker{display:none}
+details.more summary::after{content:"";width:6px;height:6px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg) translateY(-2px);transition:transform 200ms var(--ease-out)}
+details.more[open] summary::after{transform:rotate(-135deg) translateY(-1px)}
+details.more p{margin:6px 0 0;line-height:1.5}
+.alert{padding:12px 14px;border-radius:var(--r-m);background:var(--chip);border-left:3px solid var(--warn);margin:0}
+.alert.bad{border-left-color:var(--danger)}
+.links{display:flex;flex-wrap:wrap;gap:6px 16px}
 .mono{font-family:var(--mono);font-size:13px}
-table{width:100%;border-collapse:collapse;font-size:13px}
-td,th{padding:6px 4px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+td,th{padding:8px 4px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
+th{font:600 11px/1.2 var(--sans);text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
 td.num{font-variant-numeric:tabular-nums;text-align:right}
+td .x{min-height:32px;width:32px;padding:0;color:var(--muted)}
 .row-actions{display:flex;gap:8px;flex-wrap:wrap}
-.spinner{color:var(--muted)}
-footer{font-size:12px;color:var(--muted)}
-.leaflet-container{font:inherit}
-a{color:var(--accent)}
-#loc{white-space:nowrap}
+.saved-ok{color:var(--ok);font-size:13px;align-self:center}
+
+/* Κράτα πατημένο για άδειασμα: γέμισμα 2s γραμμικά, επαναφορά 200ms ease-out. */
+.hold{position:relative;overflow:hidden}
+.hold .fill{position:absolute;inset:0;background:var(--danger);color:#fff;display:flex;align-items:center;justify-content:center;clip-path:inset(0 100% 0 0);transition:clip-path 200ms var(--ease-out);pointer-events:none}
+.hold.holding .fill{clip-path:inset(0 0 0 0);transition:clip-path 2s linear}
+
+footer{font-size:12px;line-height:1.5;color:var(--muted)}
+.leaflet-container{font:inherit;background:var(--chip)}
+.leaflet-container a{background:none}
+.leaflet-bar a,.leaflet-control-layers{background-color:var(--panel);color:var(--ink);border-color:var(--line)}
+.leaflet-bar a:hover{background-color:var(--chip)}
+.leaflet-bar,.leaflet-control-layers{border:1px solid var(--line)!important;box-shadow:none!important;border-radius:var(--r-s)!important}
+.leaflet-control-attribution{background:color-mix(in srgb,var(--panel) 85%,transparent)!important;color:var(--muted)}
+
 @media (max-width:560px){
-  header{padding-block:10px}
   form{min-width:0;flex-basis:100%;flex-wrap:wrap}
   form input[type=text]{flex-basis:100%}
   form button{flex:1}
   dl{grid-template-columns:1fr;gap:2px}
-  dt{font-size:12px;margin-top:8px}
-  .kaek{font-size:22px}
+  dt{font-size:12.5px;margin-top:10px}
+  .kaek{font-size:24px}
+}
+@media (prefers-reduced-motion:reduce){
+  #out.enter > *{animation:fade 150ms ease both}
+  @keyframes fade{from{opacity:0}}
+  button:active{transform:none}
+  .spinner::before{animation-duration:2.5s}
+  .hold.holding .fill{transition:clip-path 2s linear}
 }
 </style>
 </head>
@@ -78,8 +146,8 @@ a{color:var(--accent)}
   <h1>Ευρετήριο Οικοπέδων<small>ΚΑΕΚ &amp; στοιχεία από τον δημόσιο χάρτη του Κτηματολογίου</small></h1>
   <form id="f">
     <input type="text" id="q" autocomplete="off" placeholder="Διεύθυνση ή συντεταγμένες (π.χ. 37.9807, 23.7326)" value="">
-    <button class="primary" type="submit">Αναζήτηση</button>
-    <button type="button" id="loc" title="Χρησιμοποίησε τη θέση της συσκευής">Η θέση μου</button>
+    <button class="primary" type="submit">Βρες ΚΑΕΚ</button>
+    <button type="button" id="loc" title="Βρες το οικόπεδο όπου στέκεσαι">Από τη θέση μου</button>
   </form>
 </header>
 <main>
@@ -89,11 +157,11 @@ a{color:var(--accent)}
       <p class="hint">Γράψε διεύθυνση ή συντεταγμένες (από Google Maps) και θα σου βγάλει το ΚΑΕΚ, ή <b>πάτησε απευθείας πάνω σε ένα οικόπεδο στον χάρτη</b>. Το κλικ στον χάρτη είναι το πιο ακριβές: οι διευθύνσεις συχνά πέφτουν πάνω στον δρόμο.</p>
     </div>
     <section id="saved-sec">
-      <div class="label">Τα οικόπεδά μου</div>
+      <div class="eyebrow">Τα οικόπεδά μου</div>
       <div id="saved"></div>
       <div class="row-actions">
         <button type="button" id="csv">Εξαγωγή CSV</button>
-        <button type="button" id="clear">Καθαρισμός λίστας</button>
+        <button type="button" id="clear" class="hold" aria-label="Κράτα πατημένο για να αδειάσει η λίστα">Κράτα για άδειασμα<span class="fill" aria-hidden="true">Αδειάζει…</span></button>
       </div>
     </section>
     <footer>Πηγή: Ελληνικό Κτηματολόγιο (maps.ktimatologio.gr) · Όροι δόμησης & ζώνες αξιών: Ενιαίος Ψηφιακός Χάρτης ΤΕΕ (sdigmap.tee.gov.gr) · Γεωκωδικοποίηση: © OpenStreetMap contributors (Nominatim). Τα στοιχεία είναι ενδεικτικά και δεν υποκαθιστούν επίσημο απόσπασμα. Ιδιοκτήτες δεν δημοσιεύονται.</footer>
@@ -159,7 +227,7 @@ $("f").addEventListener("submit", async ev => {
     const res = await geocode(q);
     if(!res.length) return setOut(el("div",{class:"alert bad"},"Δεν βρέθηκε η διεύθυνση. Δοκίμασε πιο απλή μορφή (π.χ. «Οδός Αριθμός, Πόλη») ή πάτησε πάνω στο οικόπεδο στον χάρτη."));
     if(res.length===1) return lookupPoint(+res[0].lat, +res[0].lon, res[0].display_name);
-    setOut(el("div",{class:"label"},"Διάλεξε αποτέλεσμα"), el("div",{class:"results"}, ...res.map(r => el("button",{type:"button",onclick:()=>lookupPoint(+r.lat,+r.lon,r.display_name)}, r.display_name))));
+    setOut(el("div",{class:"eyebrow"},"Διάλεξε αποτέλεσμα"), el("div",{class:"results"}, ...res.map(r => el("button",{type:"button",onclick:()=>lookupPoint(+r.lat,+r.lon,r.display_name)}, r.display_name))));
   }catch(e){ setOut(errBox(e)); }
 });
 
@@ -217,7 +285,14 @@ function drawShape(geom, lat, lon){
 }
 
 // ---------- Προβολή ----------
-function setOut(...nodes){ $("out").replaceChildren(...nodes); }
+function setOut(...nodes){
+  const o=$("out"); o.replaceChildren(...nodes);
+  const isResult = !(nodes.length===1 && nodes[0].classList?.contains("spinner"));
+  o.classList.remove("enter"); if(isResult){ void o.offsetWidth; o.classList.add("enter"); }
+}
+// Σχόλια ΦΕΚ: κρυμμένα πίσω από «Λεπτομέρειες», για να διαβάζεται πρώτα η τιμή.
+function withMore(node, text){ if(!text) return node; const w=el("span",{}, node); w.append(el("details",{class:"more"}, el("summary",{},"Λεπτομέρειες"), el("p",{},text))); return w; }
+function fact(label, value, sub){ return el("div",{class:"fact"}, el("span",{class:"eyebrow"},label), el("b",{},value), sub?el("span",{class:"sub"},sub):null); }
 function errBox(e){ return el("div",{class:"alert bad"},"Η υπηρεσία δεν απάντησε: "+(e.message||e)+". Δοκίμασε ξανά σε λίγο."); }
 function dl(pairs){ const d=el("dl"); for(const [k,v] of pairs){ d.append(el("dt",{},k), el("dd",{},v)); } return d; }
 function forestText(code){ if(!code||!code.trim()) return "—"; const s=code.trim(); if(s.length===2) return `${s} · παλαιές αεροφωτ.: ${FOREST_LETTER[s[0]]||s[0]}, πρόσφατες: ${FOREST_LETTER[s[1]]||s[1]}`; return `${s} · ${FOREST_LETTER[s]||""}`; }
@@ -225,16 +300,28 @@ function forestText(code){ if(!code||!code.trim()) return "—"; const s=code.tr
 function render(rec){
   const p = rec.parcel, [x,y] = proj4("EPSG:4326","EPSG:2100",[rec.lon,rec.lat]);
   const nodes = [];
-  nodes.push(el("div",{class:"label"}, rec.source));
+  const terms = buildingTerms(rec);
+  nodes.push(el("div",{class:"eyebrow"}, rec.source));
   if(p){
-    const copyBtn = el("button",{type:"button",onclick:async()=>{ try{ await navigator.clipboard.writeText(p.KAEK); copyBtn.textContent="Αντιγράφηκε"; }catch{ copyBtn.textContent="Επίλεξε & αντίγραψε"; } }},"Αντιγραφή");
-    nodes.push(el("div",{class:"kaek"}, p.KAEK, copyBtn));
+    const lbl = el("span",{class:"copy-label"},"Αντιγραφή");
+    const kaekEl = el("span",{class:"kaek"}, p.KAEK);
+    const swap = t => { lbl.classList.add("swap"); setTimeout(()=>{ lbl.textContent=t; lbl.classList.remove("swap"); },120); };
+    const copyBtn = el("button",{type:"button",class:"small",onclick:async()=>{
+      try{ await navigator.clipboard.writeText(p.KAEK); swap("Αντιγράφηκε"); }
+      catch{ const r=document.createRange(); r.selectNodeContents(kaekEl); const sel=getSelection(); sel.removeAllRanges(); sel.addRange(r); swap("Επιλέχθηκε"); }
+      clearTimeout(copyBtn._t); copyBtn._t=setTimeout(()=>swap("Αντιγραφή"),1600);
+    }}, lbl);
+    nodes.push(el("div",{class:"kaek-row"}, kaekEl, copyBtn));
     nodes.push(el("div",{}, el("span",{class:"pill "+p._cls}, p._status)));
     if(p.DESCR && BAD_USES.test(p.DESCR)) nodes.push(el("div",{class:"alert"},`Το σημείο πέφτει σε «${p.DESCR}». Μάλλον δεν είναι το οικόπεδο που ψάχνεις: κάνε ζουμ και πάτησε πάνω στο ίδιο το οικόπεδο.`));
-    const area = p.AREA;
+    const area = p.AREA, zp = parseFloat(rec.zone?.["ΤΙΜΗ"]);
+    nodes.push(el("div",{class:"facts"},
+      fact("Εμβαδόν", area?`${fmt(area,2)} m²`:"—", area?`${fmt(area/1000,3)} στρέμματα`:null),
+      fact("Συντ. δόμησης", rec._sd ? String(rec._sd).replace(".",",") : "—", rec._sd ? "ΤΕΕ" : "δεν καταχωρίζεται"),
+      fact("Μέγ. δόμηση", rec._built?`≈ ${fmt(rec._built,0)} m²`:"—", rec._built?"εκτίμηση*":null),
+      fact("Τιμή ζώνης", isNaN(zp)?"—":`${fmt(zp)} €/m²`, rec.zone?.["ΟΝΟΜΑ"]?`ζώνη ${rec.zone["ΟΝΟΜΑ"]}`:null)));
     nodes.push(el("section",{}, dl([
       ["Χρήση", p.DESCR || "—"],
-      ["Εμβαδόν", area ? `${fmt(area,2)} m² (${fmt(area/1000,3)} στρ.)` : "—"],
       ["Περίμετρος", p.PERIMETER ? `${fmt(p.PERIMETER,2)} m` : "—"],
       ["Ποσοστό χρήσης", p.PERCENTAGE!=null ? p.PERCENTAGE+"%" : "—"],
       ["Οριζόντιες ιδιοκτησίες", p.PROP_HOR ?? "—"],
@@ -243,19 +330,19 @@ function render(rec){
   } else {
     nodes.push(el("div",{class:"alert bad"},"Δεν βρέθηκε γεωτεμάχιο σε αυτό το σημείο στα δημόσια επίπεδα. Η περιοχή ίσως δεν έχει ακόμη κτηματογραφηθεί ή το σημείο είναι εκτός οικοπέδου."));
   }
-  nodes.push(buildingTerms(rec));
+  nodes.push(terms);
   if(rec.zone){
     const z=rec.zone, price=parseFloat(z["ΤΙΜΗ"]);
-    const zl=el("span",{}, `${z["ΟΝΟΜΑ"]||""} · ${isNaN(price)?"—":fmt(price)+" €/m²"}`);
+    const zl=el("span",{}, `${z["ΟΝΟΜΑ"]||"—"}`);
     if(/^https:\/\//.test(z["ΠΙΝΑΚΑΣ_ΑΝΤΙΚΕΙΜΕΝΙΚΟΥ"]||"")){ zl.append(" · "); zl.append(el("a",{href:z["ΠΙΝΑΚΑΣ_ΑΝΤΙΚΕΙΜΕΝΙΚΟΥ"],target:"_blank",rel:"noopener"},"Πίνακας")); }
-    nodes.push(el("section",{}, el("div",{class:"label"},"Αντικειμενική αξία"), dl([
-      ["Ζώνη / τιμή ζώνης", zl],
+    nodes.push(el("section",{}, el("div",{class:"eyebrow"},"Αντικειμενική αξία"), dl([
+      ["Ζώνη", zl],
       ["Περιγραφή", z["ΠΕΡΙΓΡΑΦΗ"]||"—"],
       ["Ισχύς", `${z["ΙΣΧΥΣ ΑΠΟ"]||"?"} – ${z["ΙΣΧΥΣ ΕΩΣ"]||"?"}`],
     ]), el("p",{class:"hint"},"Η τιμή ζώνης είναι η βάση· η τελική αντικειμενική αξία προκύπτει με συντελεστές (πρόσοψη, όροφος, παλαιότητα κ.λπ.).")));
   }
   const o = rec.ota;
-  nodes.push(el("section",{}, el("div",{class:"label"},"Περιοχή"), dl([
+  nodes.push(el("section",{}, el("div",{class:"eyebrow"},"Περιοχή"), dl([
     ["Δήμος / ΟΤΑ", o ? `${o.OTA_NAME} (${o.CODE_OKXE})` : "—"],
     ["Νομός", o?.NOMOS_NAME || "—"],
     ["Κατάσταση", o?.STATUS || "—"],
@@ -263,11 +350,11 @@ function render(rec){
   ])));
   const forestRows = rec.forest.filter(f=>f.a).map(f => [f.F.label, forestText(f.a[f.F.field])]);
   const nat = rec.natura.map(n => `${n.SITECODE} (${n.SITETYPE})`);
-  nodes.push(el("section",{}, el("div",{class:"label"},"Περιορισμοί"), dl([
+  nodes.push(el("section",{}, el("div",{class:"eyebrow"},"Περιορισμοί"), dl([
     ...(forestRows.length ? forestRows : [["Δασικός χάρτης","Δεν εμπίπτει σε δασικό πολύγωνο"]]),
     ["Natura 2000", nat.length ? nat.join(", ") : "Όχι"],
   ]), forestRows.length ? el("p",{class:"hint"},"Η ερμηνεία των κωδικών είναι ενδεικτική. Δες το επίσημο υπόμνημα στο maps.ktimatologio.gr.") : null));
-  nodes.push(el("section",{}, el("div",{class:"label"},"Συντεταγμένες"), dl([
+  nodes.push(el("section",{}, el("div",{class:"eyebrow"},"Συντεταγμένες"), dl([
     ["WGS84", el("span",{class:"mono"}, `${rec.lat.toFixed(6)}, ${rec.lon.toFixed(6)}`)],
     ["ΕΓΣΑ87", el("span",{class:"mono"}, `X ${fmt(x,2)} · Y ${fmt(y,2)}`)],
   ])));
@@ -275,39 +362,38 @@ function render(rec){
     el("a",{href:`https://www.google.com/maps?q=${rec.lat},${rec.lon}`,target:"_blank",rel:"noopener"},"Google Maps"),
     el("a",{href:"https://maps.ktimatologio.gr/?locale=el",target:"_blank",rel:"noopener"},"Χάρτης Κτηματολογίου"));
   if(p?.LINK && /^https:\/\//.test(p.LINK)) links.append(el("a",{href:p.LINK,target:"_blank",rel:"noopener"},"Σελίδα ΟΤΑ"));
-  nodes.push(el("section",{}, el("div",{class:"label"},"Σύνδεσμοι"), links,
+  nodes.push(el("section",{}, el("div",{class:"eyebrow"},"Σύνδεσμοι"), links,
     el("p",{class:"hint"},"Ιδιοκτήτης: δεν δημοσιεύεται. Για στοιχεία ιδιοκτησίας χρειάζεται απόσπασμα κτηματολογικού φύλλου (e-υπηρεσίες Κτηματολογίου) ή δικηγόρος/συμβολαιογράφος, με το παραπάνω ΚΑΕΚ.")));
-  if(p) nodes.push(el("div",{class:"row-actions"}, el("button",{class:"primary",type:"button",onclick:()=>save(rec,x,y)},"Αποθήκευση στη λίστα")));
+  if(p) nodes.push(el("div",{class:"row-actions"}, el("button",{class:"primary",type:"button",onclick:e=>{ save(rec,x,y); const b=e.currentTarget; b.textContent="Αποθηκεύτηκε στη λίστα"; b.disabled=true; }},"Αποθήκευση στη λίστα")));
   setOut(...nodes);
   if (window.matchMedia("(max-width:860px)").matches) $("out").scrollIntoView({behavior:"smooth", block:"start"});
 }
 
 function buildingTerms(rec){
-  const U = rec.udm, sec = el("section",{}, el("div",{class:"label"},"Όροι δόμησης (Ενιαίος Ψηφιακός Χάρτης ΤΕΕ)"));
+  const U = rec.udm, sec = el("section",{}, el("div",{class:"eyebrow"},"Όροι δόμησης (Ενιαίος Ψηφιακός Χάρτης ΤΕΕ)"));
   if(!U){ sec.append(el("div",{class:"alert"},"Η υπηρεσία του ΤΕΕ δεν απάντησε. Δοκίμασε ξανά σε λίγο.")); return sec; }
   const one = id => (U[id]||[])[0], area = rec.parcel?.AREA, rows = [];
   const sd = one(UDM.SD);
   if(sd){
     const v = sd["Τιμή Σ.Δ"], tiered = sd["Κλιμακωτός Σ.Δ"]==="ΝΑΙ";
-    rows.push(["Συντελεστής δόμησης", withFek(`${v ?? "—"}${tiered?" (κλιμακωτός)":""}${sd["Τομέας Σ.Δ"]?" · τομέας "+sd["Τομέας Σ.Δ"]:""}`, sd)]);
-    if(sd["Σχόλια"]) rows.push(["Σχόλια ΣΔ", sd["Σχόλια"]]);
+    rows.push(["Συντελεστής δόμησης", withMore(withFek(`${v!=null ? String(v).replace(".",",") : "—"}${tiered?" (κλιμακωτός)":""}${sd["Τομέας Σ.Δ"]?" · τομέας "+sd["Τομέας Σ.Δ"]:""}`, sd), sd["Σχόλια"])]);
     let built = tiered ? tieredTotal(sd["Σχόλια"], /Σ\.?\s?Δ\.?\s*=\s*([\d.,]+)/, area) : (area && v ? area*parseFloat(String(v).replace(",",".")) : null);
-    if(built) { rows.push(["Μέγ. εμβαδόν δόμησης*", `≈ ${fmt(built,1)} m²`]); rec._built = built; }
+    if(built) rec._built = built;
   }
   const k = one(UDM.KALYPSI);
   if(k){
     const pct = k["Συντελεστής Κάλυψης Οικοπέδου (%)"];
-    rows.push(["Κάλυψη", withFek(pct ? pct+"%" : (k["Περιγραφή Συνθήκης - Κριτηρίου"]||"βλ. σχόλια"), k)]);
-    const kc = k["Παρατηρήσεις - Σχόλια"]; if(kc) rows.push(["Σχόλια κάλυψης", kc]);
+    const kc = k["Παρατηρήσεις - Σχόλια"];
+    rows.push(["Κάλυψη", withMore(withFek(pct ? pct+"%" : (kc ? "κλιμακωτή" : (k["Περιγραφή Συνθήκης - Κριτηρίου"]||"—")), k), kc)]);
     const kt = pct ? null : tieredTotal(kc, /Σ\.?\s?Κ\.?\s*=\s*([\d.,]+)/, area);
     const kb = pct ? (area ? area*parseFloat(pct)/100 : null) : (kt ? kt/100 : null);
     if(kb) rows.push(["Μέγ. κάλυψη*", `≈ ${fmt(kb,1)} m²`]);
   }
   const h = one(UDM.YPSOS);
   if(h){
-    const parts=[]; if(h["Μέγιστο Υψος (m)"]) parts.push(`${h["Μέγιστο Υψος (m)"]} m`); if(h["Αριθμός Ορόφων"]) parts.push(`${h["Αριθμός Ορόφων"]} όροφοι`);
-    rows.push(["Ύψος / όροφοι", withFek(parts.join(" · ") || h["Σχόλια Μέγιστου Ύψους"] || "βλ. σχόλια", h)]);
-    const hc=[h["Σχόλια Μέγιστου Ύψους"],h["Σχόλια Αριθμών Ορόφων"]].filter(Boolean).join(" "); if(hc && parts.length) rows.push(["Σχόλια ύψους", hc]);
+    const parts=[]; if(h["Μέγιστο Υψος (m)"]) parts.push(`${String(h["Μέγιστο Υψος (m)"]).replace(".",",")} m`); if(h["Αριθμός Ορόφων"]) parts.push(`${h["Αριθμός Ορόφων"]} όροφοι`);
+    const hc=[h["Σχόλια Μέγιστου Ύψους"],h["Σχόλια Αριθμών Ορόφων"]].filter(Boolean).join(" ");
+    rows.push(["Ύψος / όροφοι", withMore(withFek(parts.join(" · ") || h["Σχόλια Μέγιστου Ύψους"] || "—", h), parts.length ? hc : null)]);
   }
   for(const a of (U[UDM.ARTIO]||[])){
     const min = parseFloat(a["Ελάχιστο Εμβαδό (τ.μ.)"]), face = a["Ελάχιστο Μήκος Προσώπου (μ)"];
@@ -319,8 +405,8 @@ function buildingTerms(rec){
   if(sys){ const v = Object.entries(sys).filter(([kk])=>!META_KEYS.has(kk)).map(([,vv])=>vv).join(" · "); if(v) rows.push(["Οικοδομικό σύστημα", withFek(v, sys)]); }
   for(const [id,lbl] of [[UDM.XG_GPS,"Χρήσεις γης (ΓΠΣ)"],[UDM.XG_ERS,"Χρήσεις γης (Ρυμοτομικό)"]]){
     const x = one(id); if(!x) continue;
-    rows.push([lbl, withFek(x["Κατηγορία Γενικών Χρήσεων Γης"]||"—", x)]);
-    const c=[x["Σχόλια Χρήσης"],x["Παρατηρήσεις - Σχόλια"]].filter(Boolean).join(" "); if(c) rows.push(["Σχόλια χρήσεων", c]);
+    const c=[x["Σχόλια Χρήσης"],x["Παρατηρήσεις - Σχόλια"]].filter(Boolean).join(" ");
+    rows.push([lbl, withMore(withFek(x["Κατηγορία Γενικών Χρήσεων Γης"]||"—", x), c)]);
   }
   const ot = one(UDM.OT); if(ot) rows.push(["Οικοδομικό τετράγωνο", withFek(`ΟΤ ${ot["Αρίθμηση ΟΤ"]||"—"}`, ot)]);
   if(one(UDM.EKTOS)) rows.push(["Θέση", "Περιοχή εκτός σχεδίου"]);
@@ -330,7 +416,7 @@ function buildingTerms(rec){
   if(!rows.length){ sec.append(el("div",{class:"alert"},"Δεν υπάρχουν καταχωρισμένοι όροι δόμησης σε αυτό το σημείο. Συνήθως σημαίνει εκτός σχεδίου, μη οριοθετημένο οικισμό ή περιοχή χωρίς εγκεκριμένο ρυμοτομικό· εκεί ισχύουν γενικές διατάξεις και χρειάζεται έλεγχος από μηχανικό.")); return sec; }
   if(!sd) rows.unshift(["Συντελεστής δόμησης","Δεν καταχωρίζεται εδώ (π.χ. ισχύουν γενικές διατάξεις)"]);
   sec.append(dl(rows));
-  sec.append(el("p",{class:"hint"},"* Εκτίμηση: εμβαδόν γεωτεμαχίου Κτηματολογίου × συντελεστή (με τα κλιμάκια όπου υπάρχουν). Ενημερωτικά στοιχεία ΤΕΕ· δεν υποκαθιστούν βεβαίωση όρων δόμησης από ΥΔΟΜ/μηχανικό."));
+  sec.append(el("p",{class:"hint"},"* Μέγ. δόμηση και κάλυψη: εκτίμηση από εμβαδόν γεωτεμαχίου Κτηματολογίου × συντελεστή (με τα κλιμάκια όπου υπάρχουν). Ενημερωτικά στοιχεία ΤΕΕ· δεν υποκαθιστούν βεβαίωση όρων δόμησης από ΥΔΟΜ/μηχανικό."));
   rec._sd = sd ? (sd["Τιμή Σ.Δ"]||"") + (sd["Κλιμακωτός Σ.Δ"]==="ΝΑΙ"?" κλιμ.":"") : "";
   rec._k = k?.["Συντελεστής Κάλυψης Οικοπέδου (%)"] || (k ? "βλ. σχόλια" : "");
   return sec;
@@ -354,7 +440,7 @@ function renderSaved(){
     t.append(el("tr",{},
       el("td",{class:"mono"}, el("a",{href:"#",onclick:e=>{e.preventDefault(); lookupPoint(r.lat,r.lon,`ΚΑΕΚ ${r.kaek}`);}}, r.kaek)),
       el("td",{}, r.ota), el("td",{class:"num"}, fmt(r.area,0)), el("td",{}, r.sd||"—"),
-      el("td",{}, el("button",{type:"button",title:"Αφαίρεση",onclick:()=>storeSaved(loadSaved().filter(z=>z.kaek!==r.kaek))},"×"))));
+      el("td",{}, el("button",{type:"button",class:"x","aria-label":`Αφαίρεση ${r.kaek}`,title:"Αφαίρεση",onclick:()=>storeSaved(loadSaved().filter(z=>z.kaek!==r.kaek))},"×"))));
   }
   $("saved").replaceChildren(el("div",{style:"overflow-x:auto"},t));
 }
@@ -366,7 +452,15 @@ $("csv").addEventListener("click",()=>{
   const url=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));
   const link=el("a",{href:url,download:`oikopeda-${new Date().toISOString().slice(0,10)}.csv`}); document.body.append(link); link.click(); link.remove();
 });
-$("clear").addEventListener("click",e=>{ const b=e.currentTarget; if(b.dataset.armed){ storeSaved([]); b.textContent="Καθαρισμός λίστας"; delete b.dataset.armed; } else { b.dataset.armed="1"; b.textContent="Σίγουρα; Πάτα ξανά"; setTimeout(()=>{ if(b.dataset.armed){ delete b.dataset.armed; b.textContent="Καθαρισμός λίστας"; } },4000); } });
+(() => {
+  const b=$("clear"); let t=null;
+  const start=e=>{ if(e.button>0 || !loadSaved().length) return; b.classList.add("holding"); t=setTimeout(()=>{ storeSaved([]); b.classList.remove("holding"); },2000); };
+  const stop=()=>{ clearTimeout(t); b.classList.remove("holding"); };
+  b.addEventListener("pointerdown",start); ["pointerup","pointerleave","pointercancel"].forEach(ev=>b.addEventListener(ev,stop));
+  b.addEventListener("keydown",e=>{ if((e.key==="Enter"||e.key===" ") && !e.repeat){ e.preventDefault(); start(e); } });
+  b.addEventListener("keyup",e=>{ if(e.key==="Enter"||e.key===" ") stop(); });
+  b.addEventListener("contextmenu",e=>e.preventDefault());
+})();
 renderSaved();
 $("loc").addEventListener("click", () => {
   if (!navigator.geolocation) return setOut(el("div",{class:"alert bad"},"Η συσκευή δεν υποστηρίζει εντοπισμό θέσης."));
