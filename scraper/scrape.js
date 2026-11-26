@@ -264,7 +264,7 @@ async function scrapeDetail(page, id) {
   db.total = total;
   save(db);
 
-  const stale = (l) => REFRESH || !l.detailFetchedAt || (Date.now() - Date.parse(l.detailFetchedAt)) / 864e5 > DETAIL_MAX_AGE_DAYS;
+  const stale = (l) => REFRESH || !l.detailFetchedAt || !!l.detailError || (Date.now() - Date.parse(l.detailFetchedAt)) / 864e5 > DETAIL_MAX_AGE_DAYS;
   const queue = db.listings.filter((l) => !l.removedAt && stale(l))
     .sort((a, b) => (a.detailFetchedAt ? 1 : 0) - (b.detailFetchedAt ? 1 : 0) || b.id - a.id)
     .slice(0, MAX_DETAILS);

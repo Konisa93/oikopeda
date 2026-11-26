@@ -1,5 +1,5 @@
 {
- "updatedAt": "2026-11-26T11:32:50.177Z",
+ "updatedAt": "2026-11-26T11:41:31.546Z",
  "source": "https://marketplace.intrum.gr",
  "listings": [
   {
@@ -1463,7 +1463,7 @@
   },
   {
    "id": 2560,
-   "badge": "ΝΕΑ ΠΡΟΣΘΗΚΗ",
+   "badge": null,
    "code": "PHO-0048851",
    "title": "Διαμέρισμα ισογείου 54 τ.μ. στον Άγιο Παντελεήμονα, Αθήνα",
    "price": 60000,
@@ -5321,8 +5321,8 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Αυτόνομη",
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:47:18.038Z",
-   "detailError": "page.goto: net::ERR_ABORTED at https://marketplace.intrum.gr/el/listings/2504"
+   "detailFetchedAt": "2026-11-26T11:41:31.238Z",
+   "detailError": null
   },
   {
    "id": 2501,
@@ -73554,7 +73554,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:59:12.028Z",
+   "detailFetchedAt": "2026-11-26T11:32:50.474Z",
    "detailError": null
   },
   {
@@ -73644,7 +73644,7 @@
    "stage": null,
    "heating": "Κεντρική",
    "glazing": "Μονοί",
-   "detailFetchedAt": "2026-11-26T10:59:11.707Z",
+   "detailFetchedAt": "2026-11-26T11:32:50.380Z",
    "detailError": null
   },
   {
@@ -73734,7 +73734,7 @@
    "stage": null,
    "heating": null,
    "glazing": "Μονοί",
-   "detailFetchedAt": "2026-11-26T10:59:13.543Z",
+   "detailFetchedAt": "2026-11-26T11:32:50.914Z",
    "detailError": null
   },
   {
@@ -73798,7 +73798,7 @@
    "stage": null,
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:59:15.809Z",
+   "detailFetchedAt": "2026-11-26T11:32:54.244Z",
    "detailError": null
   },
   {
@@ -73883,7 +73883,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:59:15.894Z",
+   "detailFetchedAt": "2026-11-26T11:32:53.947Z",
    "detailError": null
   },
   {
@@ -73972,7 +73972,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:59:16.200Z",
+   "detailFetchedAt": "2026-11-26T11:32:55.017Z",
    "detailError": null
   },
   {
@@ -74057,7 +74057,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:59:17.445Z",
+   "detailFetchedAt": "2026-11-26T11:32:55.417Z",
    "detailError": null
   },
   {
@@ -74133,7 +74133,7 @@
    "stage": null,
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:59:19.962Z",
+   "detailFetchedAt": "2026-11-26T11:32:58.198Z",
    "detailError": null
   },
   {
@@ -74201,7 +74201,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:59:19.926Z",
+   "detailFetchedAt": "2026-11-26T11:32:58.278Z",
    "detailError": null
   },
   {
@@ -74285,7 +74285,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:59:20.285Z",
+   "detailFetchedAt": "2026-11-26T11:32:58.823Z",
    "detailError": null
   },
   {
@@ -74369,7 +74369,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:59:21.528Z",
+   "detailFetchedAt": "2026-11-26T11:32:59.230Z",
    "detailError": null
   },
   {
@@ -74449,7 +74449,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:59:23.121Z",
+   "detailFetchedAt": "2026-11-26T11:33:01.103Z",
    "detailError": null
   },
   {
@@ -74541,7 +74541,7 @@
    "stage": null,
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:59:23.954Z",
+   "detailFetchedAt": "2026-11-26T11:33:01.980Z",
    "detailError": null
   },
   {
@@ -74636,7 +74636,7 @@
    "stage": null,
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:59:23.833Z",
+   "detailFetchedAt": "2026-11-26T11:33:02.998Z",
    "detailError": null
   },
   {
@@ -74724,7 +74724,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:59:25.967Z",
+   "detailFetchedAt": "2026-11-26T11:33:05.000Z",
    "detailError": null
   },
   {
@@ -74810,7 +74810,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:59:26.887Z",
+   "detailFetchedAt": "2026-11-26T11:33:05.217Z",
    "detailError": null
   },
   {
@@ -74884,7 +74884,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:59:27.243Z",
+   "detailFetchedAt": "2026-11-26T11:33:05.063Z",
    "detailError": null
   },
   {
@@ -74970,7 +74970,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:59:27.563Z",
+   "detailFetchedAt": "2026-11-26T11:33:06.778Z",
    "detailError": null
   },
   {
@@ -75064,7 +75064,7 @@
    "stage": null,
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:59:30.420Z",
+   "detailFetchedAt": "2026-11-26T11:33:08.238Z",
    "detailError": null
   },
   {
@@ -75141,7 +75141,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:59:31.205Z",
+   "detailFetchedAt": "2026-11-26T11:33:08.979Z",
    "detailError": null
   },
   {
@@ -75222,7 +75222,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:59:30.461Z",
+   "detailFetchedAt": "2026-11-26T11:33:09.489Z",
    "detailError": null
   },
   {
@@ -75297,7 +75297,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:59:30.555Z",
+   "detailFetchedAt": "2026-11-26T11:33:10.552Z",
    "detailError": null
   },
   {
@@ -75376,7 +75376,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:59:34.579Z",
+   "detailFetchedAt": "2026-11-26T11:33:11.298Z",
    "detailError": null
   },
   {
@@ -75466,7 +75466,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:59:34.960Z",
+   "detailFetchedAt": "2026-11-26T11:33:12.930Z",
    "detailError": null
   },
   {
@@ -75543,7 +75543,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:59:34.794Z",
+   "detailFetchedAt": "2026-11-26T11:33:13.619Z",
    "detailError": null
   },
   {
@@ -75630,7 +75630,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:59:35.228Z",
+   "detailFetchedAt": "2026-11-26T11:33:13.516Z",
    "detailError": null
   },
   {
@@ -75740,7 +75740,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Αυτόνομη",
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:59:38.660Z",
+   "detailFetchedAt": "2026-11-26T11:33:15.068Z",
    "detailError": null
   },
   {
@@ -75832,7 +75832,7 @@
    "stage": "Ημιτελές",
    "heating": "Αυτόνομη",
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:59:39.333Z",
+   "detailFetchedAt": "2026-11-26T11:33:16.778Z",
    "detailError": null
   },
   {
@@ -75932,7 +75932,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:59:38.293Z",
+   "detailFetchedAt": "2026-11-26T11:33:17.399Z",
    "detailError": null
   },
   {
@@ -76024,7 +76024,7 @@
    "stage": null,
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:59:39.159Z",
+   "detailFetchedAt": "2026-11-26T11:33:17.361Z",
    "detailError": null
   },
   {
@@ -76110,7 +76110,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:59:41.902Z",
+   "detailFetchedAt": "2026-11-26T11:33:18.170Z",
    "detailError": null
   },
   {
@@ -76199,7 +76199,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:59:42.854Z",
+   "detailFetchedAt": "2026-11-26T11:33:21.011Z",
    "detailError": null
   },
   {
@@ -76291,7 +76291,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:59:43.771Z",
+   "detailFetchedAt": "2026-11-26T11:33:20.824Z",
    "detailError": null
   },
   {
@@ -76362,7 +76362,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:59:43.234Z",
+   "detailFetchedAt": "2026-11-26T11:33:21.514Z",
    "detailError": null
   },
   {
@@ -76443,7 +76443,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:59:45.435Z",
+   "detailFetchedAt": "2026-11-26T11:33:21.589Z",
    "detailError": null
   },
   {
@@ -76518,7 +76518,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:59:46.741Z",
+   "detailFetchedAt": "2026-11-26T11:33:24.690Z",
    "detailError": null
   },
   {
@@ -76595,7 +76595,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:59:46.665Z",
+   "detailFetchedAt": "2026-11-26T11:33:25.777Z",
    "detailError": null
   },
   {
@@ -76675,7 +76675,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:59:47.870Z",
+   "detailFetchedAt": "2026-11-26T11:33:25.086Z",
    "detailError": null
   },
   {
@@ -76754,7 +76754,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:59:49.729Z",
+   "detailFetchedAt": "2026-11-26T11:33:24.988Z",
    "detailError": null
   },
   {
@@ -76839,7 +76839,7 @@
    "stage": null,
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:59:49.890Z",
+   "detailFetchedAt": "2026-11-26T11:33:27.791Z",
    "detailError": null
   },
   {
@@ -76920,7 +76920,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:59:51.359Z",
+   "detailFetchedAt": "2026-11-26T11:33:28.345Z",
    "detailError": null
   },
   {
@@ -76999,7 +76999,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:59:51.966Z",
+   "detailFetchedAt": "2026-11-26T11:33:29.077Z",
    "detailError": null
   },
   {
@@ -77079,7 +77079,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:59:53.671Z",
+   "detailFetchedAt": "2026-11-26T11:33:28.832Z",
    "detailError": null
   },
   {
@@ -77169,7 +77169,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:59:54.151Z",
+   "detailFetchedAt": "2026-11-26T11:33:31.617Z",
    "detailError": null
   },
   {
@@ -77247,7 +77247,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:59:55.479Z",
+   "detailFetchedAt": "2026-11-26T11:33:31.869Z",
    "detailError": null
   },
   {
@@ -77329,7 +77329,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:59:55.695Z",
+   "detailFetchedAt": "2026-11-26T11:33:32.511Z",
    "detailError": null
   },
   {
@@ -77420,7 +77420,7 @@
    "stage": null,
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T10:59:57.822Z",
+   "detailFetchedAt": "2026-11-26T11:33:32.898Z",
    "detailError": null
   },
   {
@@ -77519,7 +77519,7 @@
    "stage": null,
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T11:00:00.080Z",
+   "detailFetchedAt": "2026-11-26T11:33:35.495Z",
    "detailError": null
   },
   {
@@ -77604,7 +77604,7 @@
    "stage": null,
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T11:00:00.034Z",
+   "detailFetchedAt": "2026-11-26T11:33:35.095Z",
    "detailError": null
   },
   {
@@ -77689,7 +77689,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T10:59:58.741Z",
+   "detailFetchedAt": "2026-11-26T11:33:36.077Z",
    "detailError": null
   },
   {
@@ -77759,7 +77759,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:00:01.999Z",
+   "detailFetchedAt": "2026-11-26T11:33:36.550Z",
    "detailError": null
   },
   {
@@ -77846,7 +77846,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:00:02.805Z",
+   "detailFetchedAt": "2026-11-26T11:33:38.875Z",
    "detailError": null
   },
   {
@@ -77944,7 +77944,7 @@
    "stage": null,
    "heating": "Κεντρική",
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T11:00:05.353Z",
+   "detailFetchedAt": "2026-11-26T11:33:39.706Z",
    "detailError": null
   },
   {
@@ -78032,7 +78032,7 @@
    "stage": null,
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T11:00:05.074Z",
+   "detailFetchedAt": "2026-11-26T11:33:39.851Z",
    "detailError": null
   },
   {
@@ -78120,7 +78120,7 @@
    "stage": null,
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T11:00:06.500Z",
+   "detailFetchedAt": "2026-11-26T11:33:39.136Z",
    "detailError": null
   },
   {
@@ -78209,7 +78209,7 @@
    "stage": null,
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T11:00:06.678Z",
+   "detailFetchedAt": "2026-11-26T11:33:42.883Z",
    "detailError": null
   },
   {
@@ -78291,7 +78291,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:00:09.486Z",
+   "detailFetchedAt": "2026-11-26T11:33:42.854Z",
    "detailError": null
   },
   {
@@ -78391,7 +78391,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T11:00:09.530Z",
+   "detailFetchedAt": "2026-11-26T11:33:43.492Z",
    "detailError": null
   },
   {
@@ -78487,7 +78487,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T11:00:10.139Z",
+   "detailFetchedAt": "2026-11-26T11:33:43.140Z",
    "detailError": null
   },
   {
@@ -78571,7 +78571,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T11:00:10.700Z",
+   "detailFetchedAt": "2026-11-26T11:33:46.639Z",
    "detailError": null
   },
   {
@@ -78667,7 +78667,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T11:00:13.459Z",
+   "detailFetchedAt": "2026-11-26T11:33:46.523Z",
    "detailError": null
   },
   {
@@ -78748,7 +78748,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:00:13.721Z",
+   "detailFetchedAt": "2026-11-26T11:33:47.199Z",
    "detailError": null
   },
   {
@@ -78837,7 +78837,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T11:00:14.108Z",
+   "detailFetchedAt": "2026-11-26T11:33:47.227Z",
    "detailError": null
   },
   {
@@ -78918,7 +78918,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:00:15.028Z",
+   "detailFetchedAt": "2026-11-26T11:33:50.276Z",
    "detailError": null
   },
   {
@@ -79010,7 +79010,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T11:00:17.040Z",
+   "detailFetchedAt": "2026-11-26T11:33:50.991Z",
    "detailError": null
   },
   {
@@ -79111,7 +79111,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T11:00:18.121Z",
+   "detailFetchedAt": "2026-11-26T11:33:50.952Z",
    "detailError": null
   },
   {
@@ -79211,7 +79211,7 @@
    "stage": "Ημιτελές",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T11:00:18.115Z",
+   "detailFetchedAt": "2026-11-26T11:33:50.527Z",
    "detailError": null
   },
   {
@@ -79300,7 +79300,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:00:20.039Z",
+   "detailFetchedAt": "2026-11-26T11:33:54.445Z",
    "detailError": null
   },
   {
@@ -79391,7 +79391,7 @@
    "stage": null,
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T11:00:21.461Z",
+   "detailFetchedAt": "2026-11-26T11:33:54.373Z",
    "detailError": null
   },
   {
@@ -79451,7 +79451,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:00:22.591Z",
+   "detailFetchedAt": "2026-11-26T11:33:54.252Z",
    "detailError": null
   },
   {
@@ -79546,7 +79546,7 @@
    "stage": null,
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T11:00:22.371Z",
+   "detailFetchedAt": "2026-11-26T11:33:54.347Z",
    "detailError": null
   },
   {
@@ -79633,7 +79633,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:00:23.643Z",
+   "detailFetchedAt": "2026-11-26T11:33:58.266Z",
    "detailError": null
   },
   {
@@ -79718,7 +79718,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:00:25.873Z",
+   "detailFetchedAt": "2026-11-26T11:33:58.216Z",
    "detailError": null
   },
   {
@@ -79813,7 +79813,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:00:26.564Z",
+   "detailFetchedAt": "2026-11-26T11:33:58.155Z",
    "detailError": null
   },
   {
@@ -79914,7 +79914,7 @@
    "stage": null,
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T11:00:27.489Z",
+   "detailFetchedAt": "2026-11-26T11:33:58.233Z",
    "detailError": null
   },
   {
@@ -80007,7 +80007,7 @@
    "stage": null,
    "heating": null,
    "glazing": "Μονοί",
-   "detailFetchedAt": "2026-11-26T11:00:27.097Z",
+   "detailFetchedAt": "2026-11-26T11:34:01.842Z",
    "detailError": null
   },
   {
@@ -80101,7 +80101,7 @@
    "stage": null,
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T11:00:32.927Z",
+   "detailFetchedAt": "2026-11-26T11:34:02.610Z",
    "detailError": null
   },
   {
@@ -80196,7 +80196,7 @@
    "stage": "Ημιτελές",
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:00:30.627Z",
+   "detailFetchedAt": "2026-11-26T11:34:01.348Z",
    "detailError": null
   },
   {
@@ -80267,7 +80267,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:00:31.039Z",
+   "detailFetchedAt": "2026-11-26T11:34:02.533Z",
    "detailError": null
   },
   {
@@ -80336,7 +80336,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:00:30.775Z",
+   "detailFetchedAt": "2026-11-26T11:34:05.593Z",
    "detailError": null
   },
   {
@@ -80406,7 +80406,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:00:34.841Z",
+   "detailFetchedAt": "2026-11-26T11:34:06.147Z",
    "detailError": null
   },
   {
@@ -80488,7 +80488,7 @@
    "stage": "Ημιτελές",
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:00:34.430Z",
+   "detailFetchedAt": "2026-11-26T11:34:06.344Z",
    "detailError": null
   },
   {
@@ -80558,7 +80558,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:00:35.886Z",
+   "detailFetchedAt": "2026-11-26T11:34:05.744Z",
    "detailError": null
   },
   {
@@ -80630,7 +80630,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:00:36.998Z",
+   "detailFetchedAt": "2026-11-26T11:34:09.299Z",
    "detailError": null
   },
   {
@@ -80715,7 +80715,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:00:38.186Z",
+   "detailFetchedAt": "2026-11-26T11:34:09.181Z",
    "detailError": null
   },
   {
@@ -80809,7 +80809,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:00:38.889Z",
+   "detailFetchedAt": "2026-11-26T11:34:09.519Z",
    "detailError": null
   },
   {
@@ -80896,7 +80896,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:00:39.078Z",
+   "detailFetchedAt": "2026-11-26T11:34:09.554Z",
    "detailError": null
   },
   {
@@ -80977,7 +80977,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:00:40.367Z",
+   "detailFetchedAt": "2026-11-26T11:34:13.285Z",
    "detailError": null
   },
   {
@@ -81061,7 +81061,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:00:41.826Z",
+   "detailFetchedAt": "2026-11-26T11:34:13.081Z",
    "detailError": null
   },
   {
@@ -81146,7 +81146,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:00:41.978Z",
+   "detailFetchedAt": "2026-11-26T11:34:13.700Z",
    "detailError": null
   },
   {
@@ -81225,7 +81225,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:00:44.000Z",
+   "detailFetchedAt": "2026-11-26T11:34:13.205Z",
    "detailError": null
   },
   {
@@ -81291,7 +81291,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:00:43.658Z",
+   "detailFetchedAt": "2026-11-26T11:34:16.493Z",
    "detailError": null
   },
   {
@@ -81362,7 +81362,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:00:45.283Z",
+   "detailFetchedAt": "2026-11-26T11:34:16.620Z",
    "detailError": null
   },
   {
@@ -81449,7 +81449,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:00:45.420Z",
+   "detailFetchedAt": "2026-11-26T11:34:17.224Z",
    "detailError": null
   },
   {
@@ -81537,7 +81537,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:00:48.001Z",
+   "detailFetchedAt": "2026-11-26T11:34:16.723Z",
    "detailError": null
   },
   {
@@ -81621,7 +81621,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:00:47.749Z",
+   "detailFetchedAt": "2026-11-26T11:34:19.916Z",
    "detailError": null
   },
   {
@@ -81703,7 +81703,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:00:50.392Z",
+   "detailFetchedAt": "2026-11-26T11:34:20.174Z",
    "detailError": null
   },
   {
@@ -81778,7 +81778,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:00:49.554Z",
+   "detailFetchedAt": "2026-11-26T11:34:19.853Z",
    "detailError": null
   },
   {
@@ -81864,7 +81864,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:00:51.366Z",
+   "detailFetchedAt": "2026-11-26T11:34:20.978Z",
    "detailError": null
   },
   {
@@ -81950,7 +81950,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:00:51.689Z",
+   "detailFetchedAt": "2026-11-26T11:34:24.403Z",
    "detailError": null
   },
   {
@@ -82032,7 +82032,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:00:53.593Z",
+   "detailFetchedAt": "2026-11-26T11:34:23.524Z",
    "detailError": null
   },
   {
@@ -82112,7 +82112,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:00:54.632Z",
+   "detailFetchedAt": "2026-11-26T11:34:24.000Z",
    "detailError": null
   },
   {
@@ -82189,7 +82189,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:00:55.292Z",
+   "detailFetchedAt": "2026-11-26T11:34:24.196Z",
    "detailError": null
   },
   {
@@ -82260,7 +82260,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:00:55.842Z",
+   "detailFetchedAt": "2026-11-26T11:34:27.646Z",
    "detailError": null
   },
   {
@@ -82337,7 +82337,7 @@
    "stage": null,
    "heating": "Αυτόνομη",
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:00:58.046Z",
+   "detailFetchedAt": "2026-11-26T11:34:27.194Z",
    "detailError": null
   },
   {
@@ -82422,7 +82422,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:00:58.494Z",
+   "detailFetchedAt": "2026-11-26T11:34:28.068Z",
    "detailError": null
   },
   {
@@ -82496,7 +82496,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:00:58.427Z",
+   "detailFetchedAt": "2026-11-26T11:34:27.827Z",
    "detailError": null
   },
   {
@@ -82582,7 +82582,7 @@
    "stage": null,
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T11:00:59.149Z",
+   "detailFetchedAt": "2026-11-26T11:34:31.164Z",
    "detailError": null
   },
   {
@@ -82658,7 +82658,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:02.463Z",
+   "detailFetchedAt": "2026-11-26T11:34:31.836Z",
    "detailError": null
   },
   {
@@ -82745,7 +82745,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:02.214Z",
+   "detailFetchedAt": "2026-11-26T11:34:34.690Z",
    "detailError": null
   },
   {
@@ -82833,7 +82833,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:03.099Z",
+   "detailFetchedAt": "2026-11-26T11:34:31.544Z",
    "detailError": null
   },
   {
@@ -82920,7 +82920,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:02.922Z",
+   "detailFetchedAt": "2026-11-26T11:34:38.310Z",
    "detailError": null
   },
   {
@@ -83005,7 +83005,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:06.344Z",
+   "detailFetchedAt": "2026-11-26T11:34:35.138Z",
    "detailError": null
   },
   {
@@ -83091,7 +83091,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:06.391Z",
+   "detailFetchedAt": "2026-11-26T11:34:35.224Z",
    "detailError": null
   },
   {
@@ -83178,7 +83178,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:06.479Z",
+   "detailFetchedAt": "2026-11-26T11:34:37.924Z",
    "detailError": null
   },
   {
@@ -83262,7 +83262,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:06.744Z",
+   "detailFetchedAt": "2026-11-26T11:34:39.324Z",
    "detailError": null
   },
   {
@@ -83349,7 +83349,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:10.445Z",
+   "detailFetchedAt": "2026-11-26T11:34:39.624Z",
    "detailError": null
   },
   {
@@ -83425,7 +83425,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:10.805Z",
+   "detailFetchedAt": "2026-11-26T11:34:41.968Z",
    "detailError": null
   },
   {
@@ -83512,7 +83512,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:10.154Z",
+   "detailFetchedAt": "2026-11-26T11:34:42.663Z",
    "detailError": null
   },
   {
@@ -83592,7 +83592,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:10.155Z",
+   "detailFetchedAt": "2026-11-26T11:34:43.198Z",
    "detailError": null
   },
   {
@@ -83673,7 +83673,7 @@
    "stage": "Ημιτελές",
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:14.133Z",
+   "detailFetchedAt": "2026-11-26T11:34:43.928Z",
    "detailError": null
   },
   {
@@ -83756,7 +83756,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:14.121Z",
+   "detailFetchedAt": "2026-11-26T11:34:45.879Z",
    "detailError": null
   },
   {
@@ -83836,7 +83836,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:15.046Z",
+   "detailFetchedAt": "2026-11-26T11:34:46.959Z",
    "detailError": null
   },
   {
@@ -83916,7 +83916,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:14.514Z",
+   "detailFetchedAt": "2026-11-26T11:34:46.921Z",
    "detailError": null
   },
   {
@@ -83996,7 +83996,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:17.577Z",
+   "detailFetchedAt": "2026-11-26T11:34:47.646Z",
    "detailError": null
   },
   {
@@ -84077,7 +84077,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:17.897Z",
+   "detailFetchedAt": "2026-11-26T11:34:49.465Z",
    "detailError": null
   },
   {
@@ -84167,7 +84167,7 @@
    "stage": null,
    "heating": null,
    "glazing": "Τριπλό",
-   "detailFetchedAt": "2026-11-26T11:01:18.194Z",
+   "detailFetchedAt": "2026-11-26T11:34:51.005Z",
    "detailError": null
   },
   {
@@ -84269,7 +84269,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Κεντρική",
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T11:01:19.354Z",
+   "detailFetchedAt": "2026-11-26T11:34:50.144Z",
    "detailError": null
   },
   {
@@ -84353,7 +84353,7 @@
    "stage": null,
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T11:01:22.277Z",
+   "detailFetchedAt": "2026-11-26T11:34:50.970Z",
    "detailError": null
   },
   {
@@ -84444,7 +84444,7 @@
    "stage": "Ημιτελές",
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:21.855Z",
+   "detailFetchedAt": "2026-11-26T11:34:52.830Z",
    "detailError": null
   },
   {
@@ -84531,7 +84531,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:22.126Z",
+   "detailFetchedAt": "2026-11-26T11:34:53.808Z",
    "detailError": null
   },
   {
@@ -84607,7 +84607,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:22.489Z",
+   "detailFetchedAt": "2026-11-26T11:34:54.453Z",
    "detailError": null
   },
   {
@@ -84678,7 +84678,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:25.901Z",
+   "detailFetchedAt": "2026-11-26T11:34:54.154Z",
    "detailError": null
   },
   {
@@ -84759,7 +84759,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:26.015Z",
+   "detailFetchedAt": "2026-11-26T11:34:56.160Z",
    "detailError": null
   },
   {
@@ -84840,7 +84840,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:26.006Z",
+   "detailFetchedAt": "2026-11-26T11:34:58.049Z",
    "detailError": null
   },
   {
@@ -84917,7 +84917,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:26.526Z",
+   "detailFetchedAt": "2026-11-26T11:34:58.170Z",
    "detailError": null
   },
   {
@@ -84999,7 +84999,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:30.117Z",
+   "detailFetchedAt": "2026-11-26T11:34:58.051Z",
    "detailError": null
   },
   {
@@ -85072,7 +85072,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:29.743Z",
+   "detailFetchedAt": "2026-11-26T11:34:59.881Z",
    "detailError": null
   },
   {
@@ -85152,7 +85152,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:30.171Z",
+   "detailFetchedAt": "2026-11-26T11:35:01.861Z",
    "detailError": null
   },
   {
@@ -85232,7 +85232,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:29.920Z",
+   "detailFetchedAt": "2026-11-26T11:35:02.275Z",
    "detailError": null
   },
   {
@@ -85309,7 +85309,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:33.732Z",
+   "detailFetchedAt": "2026-11-26T11:35:02.010Z",
    "detailError": null
   },
   {
@@ -85397,7 +85397,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:33.762Z",
+   "detailFetchedAt": "2026-11-26T11:35:04.162Z",
    "detailError": null
   },
   {
@@ -85477,7 +85477,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:37.764Z",
+   "detailFetchedAt": "2026-11-26T11:35:05.848Z",
    "detailError": null
   },
   {
@@ -85554,7 +85554,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:34.089Z",
+   "detailFetchedAt": "2026-11-26T11:35:05.443Z",
    "detailError": null
   },
   {
@@ -85641,7 +85641,7 @@
    "stage": null,
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T11:01:37.160Z",
+   "detailFetchedAt": "2026-11-26T11:35:06.109Z",
    "detailError": null
   },
   {
@@ -85740,7 +85740,7 @@
    "stage": null,
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T11:01:37.944Z",
+   "detailFetchedAt": "2026-11-26T11:35:07.705Z",
    "detailError": null
   },
   {
@@ -85820,7 +85820,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:38.458Z",
+   "detailFetchedAt": "2026-11-26T11:35:08.210Z",
    "detailError": null
   },
   {
@@ -85924,7 +85924,7 @@
    "stage": null,
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T11:01:41.379Z",
+   "detailFetchedAt": "2026-11-26T11:35:09.746Z",
    "detailError": null
   },
   {
@@ -86010,7 +86010,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:41.940Z",
+   "detailFetchedAt": "2026-11-26T11:35:10.027Z",
    "detailError": null
   },
   {
@@ -86102,7 +86102,7 @@
    "stage": null,
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T11:01:42.210Z",
+   "detailFetchedAt": "2026-11-26T11:35:11.345Z",
    "detailError": null
   },
   {
@@ -86181,7 +86181,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:42.623Z",
+   "detailFetchedAt": "2026-11-26T11:35:12.032Z",
    "detailError": null
   },
   {
@@ -86255,7 +86255,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:45.941Z",
+   "detailFetchedAt": "2026-11-26T11:35:13.694Z",
    "detailError": null
   },
   {
@@ -86335,7 +86335,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:46.332Z",
+   "detailFetchedAt": "2026-11-26T11:35:13.867Z",
    "detailError": null
   },
   {
@@ -86421,7 +86421,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:46.017Z",
+   "detailFetchedAt": "2026-11-26T11:35:15.349Z",
    "detailError": null
   },
   {
@@ -86502,7 +86502,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:47.605Z",
+   "detailFetchedAt": "2026-11-26T11:35:15.210Z",
    "detailError": null
   },
   {
@@ -86591,7 +86591,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:50.220Z",
+   "detailFetchedAt": "2026-11-26T11:35:17.829Z",
    "detailError": null
   },
   {
@@ -86671,7 +86671,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:50.033Z",
+   "detailFetchedAt": "2026-11-26T11:35:17.647Z",
    "detailError": null
   },
   {
@@ -86761,7 +86761,7 @@
    "stage": null,
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T11:01:50.659Z",
+   "detailFetchedAt": "2026-11-26T11:35:19.021Z",
    "detailError": null
   },
   {
@@ -86838,7 +86838,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:51.133Z",
+   "detailFetchedAt": "2026-11-26T11:35:19.278Z",
    "detailError": null
   },
   {
@@ -86940,7 +86940,7 @@
    "stage": null,
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T11:01:54.206Z",
+   "detailFetchedAt": "2026-11-26T11:35:21.396Z",
    "detailError": null
   },
   {
@@ -87018,7 +87018,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:54.187Z",
+   "detailFetchedAt": "2026-11-26T11:35:21.666Z",
    "detailError": null
   },
   {
@@ -87089,7 +87089,7 @@
    "stage": null,
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T11:01:54.610Z",
+   "detailFetchedAt": "2026-11-26T11:35:22.348Z",
    "detailError": null
   },
   {
@@ -87190,7 +87190,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T11:01:54.483Z",
+   "detailFetchedAt": "2026-11-26T11:35:22.702Z",
    "detailError": null
   },
   {
@@ -87272,7 +87272,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:58.261Z",
+   "detailFetchedAt": "2026-11-26T11:35:24.754Z",
    "detailError": null
   },
   {
@@ -87354,7 +87354,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:58.457Z",
+   "detailFetchedAt": "2026-11-26T11:35:25.014Z",
    "detailError": null
   },
   {
@@ -87442,7 +87442,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:58.290Z",
+   "detailFetchedAt": "2026-11-26T11:35:25.557Z",
    "detailError": null
   },
   {
@@ -87523,7 +87523,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:01:58.624Z",
+   "detailFetchedAt": "2026-11-26T11:35:25.996Z",
    "detailError": null
   },
   {
@@ -87609,7 +87609,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:02.462Z",
+   "detailFetchedAt": "2026-11-26T11:35:28.690Z",
    "detailError": null
   },
   {
@@ -87679,7 +87679,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:01.751Z",
+   "detailFetchedAt": "2026-11-26T11:35:28.652Z",
    "detailError": null
   },
   {
@@ -87758,7 +87758,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:02.723Z",
+   "detailFetchedAt": "2026-11-26T11:35:29.357Z",
    "detailError": null
   },
   {
@@ -87842,7 +87842,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:02.462Z",
+   "detailFetchedAt": "2026-11-26T11:35:30.091Z",
    "detailError": null
   },
   {
@@ -87938,7 +87938,7 @@
    "stage": null,
    "heating": "Αυτόνομη",
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T11:02:06.095Z",
+   "detailFetchedAt": "2026-11-26T11:35:32.219Z",
    "detailError": null
   },
   {
@@ -88014,7 +88014,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:06.271Z",
+   "detailFetchedAt": "2026-11-26T11:35:32.587Z",
    "detailError": null
   },
   {
@@ -88101,7 +88101,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:06.676Z",
+   "detailFetchedAt": "2026-11-26T11:35:32.639Z",
    "detailError": null
   },
   {
@@ -88182,7 +88182,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:06.321Z",
+   "detailFetchedAt": "2026-11-26T11:35:33.549Z",
    "detailError": null
   },
   {
@@ -88265,7 +88265,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:09.965Z",
+   "detailFetchedAt": "2026-11-26T11:35:36.410Z",
    "detailError": null
   },
   {
@@ -88346,7 +88346,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:09.629Z",
+   "detailFetchedAt": "2026-11-26T11:35:35.673Z",
    "detailError": null
   },
   {
@@ -88421,7 +88421,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:11.388Z",
+   "detailFetchedAt": "2026-11-26T11:35:36.747Z",
    "detailError": null
   },
   {
@@ -88496,7 +88496,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:10.434Z",
+   "detailFetchedAt": "2026-11-26T11:35:36.956Z",
    "detailError": null
   },
   {
@@ -88571,7 +88571,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:13.299Z",
+   "detailFetchedAt": "2026-11-26T11:35:39.351Z",
    "detailError": null
   },
   {
@@ -88638,7 +88638,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:14.162Z",
+   "detailFetchedAt": "2026-11-26T11:35:39.595Z",
    "detailError": null
   },
   {
@@ -88711,7 +88711,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:14.179Z",
+   "detailFetchedAt": "2026-11-26T11:35:40.655Z",
    "detailError": null
   },
   {
@@ -88804,7 +88804,7 @@
    "stage": "Ημιτελές",
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:15.362Z",
+   "detailFetchedAt": "2026-11-26T11:35:40.527Z",
    "detailError": null
   },
   {
@@ -88875,7 +88875,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:17.642Z",
+   "detailFetchedAt": "2026-11-26T11:35:43.455Z",
    "detailError": null
   },
   {
@@ -88976,7 +88976,7 @@
    "stage": null,
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T11:02:17.870Z",
+   "detailFetchedAt": "2026-11-26T11:35:43.677Z",
    "detailError": null
   },
   {
@@ -89052,7 +89052,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:18.006Z",
+   "detailFetchedAt": "2026-11-26T11:35:44.160Z",
    "detailError": null
   },
   {
@@ -89128,7 +89128,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:18.714Z",
+   "detailFetchedAt": "2026-11-26T11:35:43.934Z",
    "detailError": null
   },
   {
@@ -89209,7 +89209,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:21.336Z",
+   "detailFetchedAt": "2026-11-26T11:35:47.478Z",
    "detailError": null
   },
   {
@@ -89290,7 +89290,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:21.772Z",
+   "detailFetchedAt": "2026-11-26T11:35:47.479Z",
    "detailError": null
   },
   {
@@ -89377,7 +89377,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:21.867Z",
+   "detailFetchedAt": "2026-11-26T11:35:47.560Z",
    "detailError": null
   },
   {
@@ -89454,7 +89454,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:22.794Z",
+   "detailFetchedAt": "2026-11-26T11:35:47.683Z",
    "detailError": null
   },
   {
@@ -89534,7 +89534,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:25.962Z",
+   "detailFetchedAt": "2026-11-26T11:35:51.483Z",
    "detailError": null
   },
   {
@@ -89610,7 +89610,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:24.747Z",
+   "detailFetchedAt": "2026-11-26T11:35:51.604Z",
    "detailError": null
   },
   {
@@ -89695,7 +89695,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:25.744Z",
+   "detailFetchedAt": "2026-11-26T11:35:50.862Z",
    "detailError": null
   },
   {
@@ -89776,7 +89776,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:26.187Z",
+   "detailFetchedAt": "2026-11-26T11:35:51.821Z",
    "detailError": null
   },
   {
@@ -89857,7 +89857,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:28.111Z",
+   "detailFetchedAt": "2026-11-26T11:35:55.289Z",
    "detailError": null
   },
   {
@@ -89959,7 +89959,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": "Αυτόνομη",
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T11:02:29.236Z",
+   "detailFetchedAt": "2026-11-26T11:35:55.063Z",
    "detailError": null
   },
   {
@@ -90039,7 +90039,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:29.738Z",
+   "detailFetchedAt": "2026-11-26T11:35:55.135Z",
    "detailError": null
   },
   {
@@ -90124,7 +90124,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:29.342Z",
+   "detailFetchedAt": "2026-11-26T11:35:54.809Z",
    "detailError": null
   },
   {
@@ -90204,7 +90204,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:32.118Z",
+   "detailFetchedAt": "2026-11-26T11:35:58.263Z",
    "detailError": null
   },
   {
@@ -90299,7 +90299,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T11:02:32.139Z",
+   "detailFetchedAt": "2026-11-26T11:35:58.854Z",
    "detailError": null
   },
   {
@@ -90371,7 +90371,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:33.390Z",
+   "detailFetchedAt": "2026-11-26T11:35:58.872Z",
    "detailError": null
   },
   {
@@ -90454,7 +90454,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:33.602Z",
+   "detailFetchedAt": "2026-11-26T11:35:59.202Z",
    "detailError": null
   },
   {
@@ -90532,7 +90532,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:36.082Z",
+   "detailFetchedAt": "2026-11-26T11:36:02.331Z",
    "detailError": null
   },
   {
@@ -90614,7 +90614,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:36.138Z",
+   "detailFetchedAt": "2026-11-26T11:36:02.402Z",
    "detailError": null
   },
   {
@@ -90690,7 +90690,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:36.748Z",
+   "detailFetchedAt": "2026-11-26T11:36:03.317Z",
    "detailError": null
   },
   {
@@ -90766,7 +90766,7 @@
    "stage": null,
    "heating": "Αυτόνομη",
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T11:02:37.328Z",
+   "detailFetchedAt": "2026-11-26T11:36:02.898Z",
    "detailError": null
   },
   {
@@ -90843,7 +90843,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:39.599Z",
+   "detailFetchedAt": "2026-11-26T11:36:06.921Z",
    "detailError": null
   },
   {
@@ -90926,7 +90926,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:40.192Z",
+   "detailFetchedAt": "2026-11-26T11:36:06.097Z",
    "detailError": null
   },
   {
@@ -91015,7 +91015,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:40.514Z",
+   "detailFetchedAt": "2026-11-26T11:36:06.712Z",
    "detailError": null
   },
   {
@@ -91090,7 +91090,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:40.924Z",
+   "detailFetchedAt": "2026-11-26T11:36:07.195Z",
    "detailError": null
   },
   {
@@ -91164,7 +91164,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:43.612Z",
+   "detailFetchedAt": "2026-11-26T11:36:09.904Z",
    "detailError": null
   },
   {
@@ -91232,7 +91232,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:43.886Z",
+   "detailFetchedAt": "2026-11-26T11:36:09.990Z",
    "detailError": null
   },
   {
@@ -91315,7 +91315,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:44.506Z",
+   "detailFetchedAt": "2026-11-26T11:36:10.320Z",
    "detailError": null
   },
   {
@@ -91385,7 +91385,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:44.829Z",
+   "detailFetchedAt": "2026-11-26T11:36:11.313Z",
    "detailError": null
   },
   {
@@ -91470,7 +91470,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:46.951Z",
+   "detailFetchedAt": "2026-11-26T11:36:13.720Z",
    "detailError": null
   },
   {
@@ -91546,7 +91546,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:47.618Z",
+   "detailFetchedAt": "2026-11-26T11:36:13.455Z",
    "detailError": null
   },
   {
@@ -91630,7 +91630,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:47.377Z",
+   "detailFetchedAt": "2026-11-26T11:36:14.656Z",
    "detailError": null
   },
   {
@@ -91710,7 +91710,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:48.803Z",
+   "detailFetchedAt": "2026-11-26T11:36:14.433Z",
    "detailError": null
   },
   {
@@ -91788,7 +91788,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:50.526Z",
+   "detailFetchedAt": "2026-11-26T11:36:16.330Z",
    "detailError": null
   },
   {
@@ -91870,7 +91870,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:51.250Z",
+   "detailFetchedAt": "2026-11-26T11:36:17.191Z",
    "detailError": null
   },
   {
@@ -91939,7 +91939,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:52.280Z",
+   "detailFetchedAt": "2026-11-26T11:36:17.963Z",
    "detailError": null
   },
   {
@@ -92020,7 +92020,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:52.746Z",
+   "detailFetchedAt": "2026-11-26T11:36:17.574Z",
    "detailError": null
   },
   {
@@ -92096,7 +92096,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:54.414Z",
+   "detailFetchedAt": "2026-11-26T11:36:19.655Z",
    "detailError": null
   },
   {
@@ -92172,7 +92172,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:55.274Z",
+   "detailFetchedAt": "2026-11-26T11:36:20.738Z",
    "detailError": null
   },
   {
@@ -92248,7 +92248,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:55.437Z",
+   "detailFetchedAt": "2026-11-26T11:36:20.941Z",
    "detailError": null
   },
   {
@@ -92341,7 +92341,7 @@
    "stage": "Ολοκληρωμένο",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T11:02:55.689Z",
+   "detailFetchedAt": "2026-11-26T11:36:21.248Z",
    "detailError": null
   },
   {
@@ -92418,7 +92418,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:58.403Z",
+   "detailFetchedAt": "2026-11-26T11:36:23.625Z",
    "detailError": null
   },
   {
@@ -92491,7 +92491,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:59.824Z",
+   "detailFetchedAt": "2026-11-26T11:36:24.652Z",
    "detailError": null
   },
   {
@@ -92573,7 +92573,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:59.175Z",
+   "detailFetchedAt": "2026-11-26T11:36:23.882Z",
    "detailError": null
   },
   {
@@ -92658,7 +92658,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:02:59.794Z",
+   "detailFetchedAt": "2026-11-26T11:36:24.476Z",
    "detailError": null
   },
   {
@@ -92717,7 +92717,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:03:02.608Z",
+   "detailFetchedAt": "2026-11-26T11:36:27.313Z",
    "detailError": null
   },
   {
@@ -92794,7 +92794,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:03:02.903Z",
+   "detailFetchedAt": "2026-11-26T11:36:27.550Z",
    "detailError": null
   },
   {
@@ -92875,7 +92875,7 @@
    "stage": "Ημιτελές",
    "heating": null,
    "glazing": "Διπλά",
-   "detailFetchedAt": "2026-11-26T11:03:03.880Z",
+   "detailFetchedAt": "2026-11-26T11:36:27.849Z",
    "detailError": null
   },
   {
@@ -92957,7 +92957,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:03:03.636Z",
+   "detailFetchedAt": "2026-11-26T11:36:28.990Z",
    "detailError": null
   },
   {
@@ -93040,7 +93040,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:03:06.801Z",
+   "detailFetchedAt": "2026-11-26T11:36:30.481Z",
    "detailError": null
   },
   {
@@ -93114,7 +93114,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:03:06.836Z",
+   "detailFetchedAt": "2026-11-26T11:36:31.821Z",
    "detailError": null
   },
   {
@@ -93185,7 +93185,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:03:07.401Z",
+   "detailFetchedAt": "2026-11-26T11:36:31.790Z",
    "detailError": null
   },
   {
@@ -93269,7 +93269,7 @@
    "stage": null,
    "heating": null,
    "glazing": "Μονοί",
-   "detailFetchedAt": "2026-11-26T11:03:07.468Z",
+   "detailFetchedAt": "2026-11-26T11:36:33.052Z",
    "detailError": null
   },
   {
@@ -93354,7 +93354,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:03:10.701Z",
+   "detailFetchedAt": "2026-11-26T11:36:34.555Z",
    "detailError": null
   },
   {
@@ -93437,7 +93437,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:03:11.074Z",
+   "detailFetchedAt": "2026-11-26T11:36:35.439Z",
    "detailError": null
   },
   {
@@ -93512,7 +93512,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:03:10.888Z",
+   "detailFetchedAt": "2026-11-26T11:36:35.836Z",
    "detailError": null
   },
   {
@@ -93593,7 +93593,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:03:11.433Z",
+   "detailFetchedAt": "2026-11-26T11:36:37.340Z",
    "detailError": null
   },
   {
@@ -93667,7 +93667,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:03:14.684Z",
+   "detailFetchedAt": "2026-11-26T11:36:38.523Z",
    "detailError": null
   },
   {
@@ -93742,7 +93742,7 @@
    "stage": null,
    "heating": null,
    "glazing": null,
-   "detailFetchedAt": "2026-11-26T11:03:14.666Z",
+   "detailFetchedAt": "2026-11-26T11:36:38.610Z",
    "detailError": null
   }
  ],
