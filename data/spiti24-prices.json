@@ -2434,5 +2434,16 @@
    "type": "diamerismata",
    "url": "https://www.spiti24.gr/pwliseis/diamerismata/soligeia"
   }
+ },
+ "hoods": {
+  "athens-center-kentro": {
+   "Πλατεία Βάθης": {
+    "psm": 2351.34,
+    "listings": 290,
+    "type": "katoikies",
+    "url": "https://www.spiti24.gr/pwliseis/katoikies/plateia-vathis-kentro",
+    "why": "Ο «Κέντρο» Αθήνας περιλαμβάνει Σύνταγμα/Πλάκα (4.304 €/τ.μ.)· η Πλατεία Βάθης είναι πολύ φθηνότερη."
+   }
+  }
  }
 }
