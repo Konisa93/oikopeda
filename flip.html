@@ -829,7 +829,11 @@ function renderAssumptions() {
   const inner = $("assump-inner");
   inner.replaceChildren(...ASSUMPTIONS.map(([group, rows]) => el("div", { class: "field" }, el("div", { class: "eyebrow" }, group),
     ...rows.map(([k, label, def, help]) => el("label", { class: "field" }, el("span", { title: help || "" }, label + (help ? " ⓘ" : "")),
-      el("input", { type: "number", step: "any", value: S[k], oninput: (e) => { const v = e.target.value === "" ? def : +e.target.value; if (v === S[k] || !isFinite(v)) return; S[k] = v; persist(); rerenderSoon(); } }))))),
+      el("input", { type: "number", step: "any", id: "s-" + k, value: S[k], oninput: (e) => { const v = e.target.value === "" ? def : +e.target.value; if (v === S[k] || !isFinite(v)) return; S[k] = v; persist(); rerenderSoon(); } }))),
+    // Γρήγορη επιλογή φόρου ανάλογα με το πώς αγοράζεις.
+    group === "Κράτηση & πώληση" ? el("div", { class: "btnrow", role: "group", "aria-label": "Αγοράζω ως" },
+      ...[["Ιδιώτης 15%", 15], ["Ιδιώτης 0%", 0], ["Εταιρεία 25,9%", 25.9]].map(([t, v]) => el("button", { type: "button", "aria-pressed": String(S.taxPct === v),
+        onclick: () => { S.taxPct = v; persist(); renderAssumptions(); render(); } }, t))) : null)),
     el("button", { type: "button", onclick: () => { Object.assign(S, DEFAULTS); persist(); renderAssumptions(); render(); } }, "Επαναφορά προεπιλογών"));
 }
 
