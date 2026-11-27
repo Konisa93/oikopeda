@@ -46,6 +46,7 @@ main{display:grid;grid-template-columns:330px minmax(0,1fr);flex:1;min-height:0}
 aside{overflow:auto;border-right:1px solid var(--line);background:var(--panel);padding:16px 18px 28px;display:flex;flex-direction:column;gap:14px}
 #content{overflow:auto;display:flex;flex-direction:column;min-width:0}
 @media (max-width:900px){
+  textarea{font-size:16px}
   body{display:block}
   main{grid-template-columns:1fr;height:auto}
   #content{overflow:visible}
@@ -142,6 +143,14 @@ th{cursor:default}
 @media (min-width:901px){.sheethead{display:none}}
 .empty{padding:40px 16px;color:var(--muted)}
 .empty ul{margin:8px 0 12px;padding-left:18px}
+textarea{width:100%;min-height:76px;padding:8px 10px;border:1px solid var(--line);border-radius:var(--r-m);background:var(--bg);color:var(--ink);font:inherit;font-size:14px;line-height:1.45;resize:vertical}
+textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.mylist{border:1px solid var(--line);border-radius:var(--r-m);padding:12px;background:var(--bg);display:flex;flex-direction:column;gap:10px}
+.whatif{width:100%;border-collapse:collapse;font-size:13px}
+.whatif th,.whatif td{padding:6px 4px;border-bottom:1px solid var(--line);white-space:normal;position:static;cursor:default}
+.whatif th{background:none;top:auto}
+.whatif td:first-child{color:var(--muted)}
+.whatif tr.base td{font-weight:600;color:var(--ink)}
 .dim{color:var(--muted)!important;font-weight:400!important}
 .facts.shaky b{color:var(--muted)}
 .stale{color:var(--warn)}
@@ -217,10 +226,12 @@ footer{font-size:12px;color:var(--muted);line-height:1.5}
         <label class="check"><input type="checkbox" id="f-showparking"> Αποθήκες / θέσεις στάθμευσης</label>
         <label class="check"><input type="checkbox" id="f-showpor"> Ακίνητα με τιμή κατόπιν αιτήματος</label>
         <label class="check"><input type="checkbox" id="f-showoffer" checked> Σε διαδικασία προσφοράς</label>
+        <label class="check"><input type="checkbox" id="f-showrejected" checked> Όσα απέρριψα</label>
       </div>
       <div class="field"><span>Μόνο</span>
         <label class="check"><input type="checkbox" id="f-new"> Νέες αγγελίες</label>
         <label class="check"><input type="checkbox" id="f-drop"> Με μείωση τιμής</label>
+        <label class="check"><input type="checkbox" id="f-fav"> Στη λίστα μου</label>
         <label class="check"><input type="checkbox" id="f-mine"> Με δικές μου τιμές</label>
       </div>
     </div>
@@ -361,7 +372,8 @@ const ASSUMPTIONS = [
   ]],
 ];
 const DEFAULTS = Object.fromEntries(ASSUMPTIONS.flatMap(([, rows]) => rows.map(([k, , v]) => [k, v])));
-const FILTER_IDS = ["f-nomos", "f-q", "f-pmin", "f-pmax", "f-smin", "f-smax", "f-roi", "f-profit", "f-liq", "f-score", "f-type", "f-showground", "f-showbasement", "f-showparking", "f-showpor", "f-showoffer", "f-new", "f-drop", "f-mine"];
+const FILTER_IDS = ["f-nomos", "f-q", "f-pmin", "f-pmax", "f-smin", "f-smax", "f-roi", "f-profit", "f-liq", "f-score", "f-type", "f-showground", "f-showbasement", "f-showparking", "f-showpor", "f-showoffer", "f-showrejected", "f-new", "f-drop", "f-fav", "f-mine"];
+const DEFAULT_ON = new Set(["f-showground", "f-showoffer", "f-showrejected"]);
 
 const saved = store.get();
 // Οι ρυθμίσεις αποθηκεύονται μόνο όσες διαφέρουν από τις προεπιλογές, ώστε οι αλλαγές στις προεπιλογές να φτάνουν σε όλους.
@@ -373,7 +385,10 @@ if (saved.v !== SETTINGS_VERSION) for (const k of Object.keys(savedAssump)) if (
 const S = { ...DEFAULTS, ...savedAssump };
 const changedSettings = () => Object.fromEntries(Object.keys(DEFAULTS).filter((k) => S[k] !== DEFAULTS[k]).map((k) => [k, S[k]]));
 const ARV = { ...(saved.arv || {}) };          // περιοχή (slug) → €/m² ανακαινισμένου
-const OVR = { ...(saved.overrides || {}) };    // ακίνητο (id) → { buy, reno, arv } δικές σου τιμές σε €
+const OVR = { ...(saved.overrides || {}) };
+// Η λίστα μου: κωδικός Intrum → { status, note, at }. Με τον κωδικό, ώστε να μη χάνεται αν το ακίνητο ξαναμπεί με νέα αγγελία.
+const FAV = { ...(saved.favs || {}) };
+const FAV_STATUS = { watch: "Παρακολουθώ", visited: "Το είδα", offer: "Έκανα προσφορά", rejected: "Απέρριψα" };    // ακίνητο (id) → { buy, reno, arv } δικές σου τιμές σε €
 let excludedRegions = new Set(saved.excludedRegions || []);
 let sortKey = saved.sortKey || "score", sortDir = saved.sortDir || -1;
 let view = "list";
@@ -381,7 +396,7 @@ let SPI = {}, MARKET = {}, S24 = {}, BASELINE = null, DATA = [], ROWS = [], AUTO
 
 function persist() {
   const filters = Object.fromEntries(FILTER_IDS.map((id) => [id, $(id).type === "checkbox" ? $(id).checked : $(id).value]));
-  store.set({ v: SETTINGS_VERSION, assumptions: changedSettings(), arv: ARV, overrides: OVR, excludedRegions: [...excludedRegions], filters, sortKey, sortDir });
+  store.set({ v: SETTINGS_VERSION, assumptions: changedSettings(), arv: ARV, overrides: OVR, favs: FAV, excludedRegions: [...excludedRegions], filters, sortKey, sortDir });
 }
 
 // ---------- Υπολογισμοί ----------
@@ -549,7 +564,9 @@ function liquidityOf(l, main, arv, kind, fl, mk) {
 }
 const LIQ_LABEL = { high: "Υψηλή", mid: "Μέτρια", low: "Χαμηλή" };
 
-function calc(l) {
+// sc: σενάριο «τι γίνεται αν» { arvMul, renoMul, extraMonths }.
+function calc(l, sc = {}) {
+  const am = sc.arvMul ?? 1, rm = sc.renoMul ?? 1, xm = sc.extraMonths ?? 0;
   const main = mainSqmOf(l);
   // Βοηθητικοί χώροι το πολύ όσο οι κύριοι: σε μερικές αγγελίες το συνολικό εμβαδόν περιλαμβάνει αυλή ή οικόπεδο.
   const aux = Math.min(main, Math.max(0, (l.sqm || 0) - main));
@@ -571,16 +588,17 @@ function calc(l) {
   const arvAsk = arvPsm ? arvPsm * effSqm : null;
   const o = OVR[l.id] || {};
   // Δική σου τιμή πώλησης = αναμενόμενη τελική τιμή· δεν αφαιρείται διαπραγμάτευση.
-  const arv = o.arv != null ? o.arv : arvAsk != null ? arvAsk * (1 - S.sellNeg / 100) : null; // οι τιμές αγοράς είναι ζητούμενες· η πώληση κλείνει χαμηλότερα
+  const arvBase = o.arv != null ? o.arv : arvAsk != null ? arvAsk * (1 - S.sellNeg / 100) : null; // οι τιμές αγοράς είναι ζητούμενες· η πώληση κλείνει χαμηλότερα
+  const arv = arvBase != null ? arvBase * am : null;
 
   const renoPsm = { light: S.renoLight, medium: S.renoMedium, heavy: S.renoHeavy }[cond];
   const reno = renoPsm * (main + aux * 0.3);
-  const renoTot = o.reno != null ? o.reno : reno * (1 + S.contingency / 100);
+  const renoTot = (o.reno != null ? o.reno : reno * (1 + S.contingency / 100)) * rm;
   const buy = o.buy != null ? o.buy : l.price ? l.price * (1 - S.discount / 100) : null;
   const mk = marketFor(l);
   const kind = kindOf(l);
-  const liq = liquidityOf(l, main, arv, kind, fl, mk);
-  const months = +S.renoMonths + liq.months;
+  const liq = liquidityOf(l, main, arvBase, kind, fl, mk);
+  const months = +S.renoMonths + liq.months + xm;
   const hold = months * S.holdMonthly;
   const sellCost = arv != null ? arv * S.sellPct / 100 + +S.sellFixed : null;
   const fin = (b) => {
@@ -625,6 +643,9 @@ function calc(l) {
   const drop = ph.length > 1 && ph[ph.length - 1].price < ph[0].price ? 1 - ph[ph.length - 1].price / ph[0].price : 0;
   const isNew = /ΝΕΑ ΠΡΟΣΘΗΚΗ/i.test(l.badge || "") || (l.firstSeen && BASELINE && l.firstSeen > BASELINE && (Date.now() - Date.parse(l.firstSeen)) / 864e5 <= 7);
   const flags = [];
+  const fv = FAV[l.code];
+  if (fv?.status) flags.push([FAV_STATUS[fv.status], fv.status === "rejected" ? "bad" : "good"]);
+  if (fv?.note) flags.push(["Σημείωση", ""]);
   if (underOffer) flags.push(["Σε διαδικασία προσφοράς", "warn"]);
   if (Object.keys(o).length) flags.push(["Δικές σου τιμές", "good"]);
   if (fl.kind === "basement") flags.push(["Υπόγειο", "bad"]);
@@ -689,6 +710,8 @@ function passes(c) {
   if (chk("f-new") && !c.isNew) return false;
   if (chk("f-drop") && !(c.drop > 0)) return false;
   if (chk("f-mine") && !OVR[l.id]) return false;
+  if (chk("f-fav") && !FAV[l.code]?.status) return false;
+  if (!chk("f-showrejected") && FAV[l.code]?.status === "rejected") return false;
   return true;
 }
 
@@ -823,7 +846,7 @@ function activeFilters() {
     const f = $(id);
     if (f.type === "checkbox") {
       const lab = f.closest("label").textContent.trim();
-      if (f.checked !== (id === "f-showground" || id === "f-showoffer")) active.push(f.checked ? `Μόνο: ${lab}` : `Κρυμμένα: ${lab}`);
+      if (f.checked !== (DEFAULT_ON.has(id))) active.push(f.checked ? `Μόνο: ${lab}` : `Κρυμμένα: ${lab}`);
     } else if (f.value) {
       const lab = f.closest("label").querySelector("span").textContent;
       active.push(`${lab}: ${f.tagName === "SELECT" ? f.selectedOptions[0].textContent : f.value}`);
@@ -914,6 +937,7 @@ function closeDrawer() {
   const d = $("drawer");
   if (!d.classList.contains("open")) return;
   d.classList.remove("open"); $("scrim").classList.remove("open"); d.inert = true;
+  history.replaceState(null, "", location.pathname);
   if (lastFocus && lastFocus.isConnected) lastFocus.focus();
 }
 $("scrim").addEventListener("click", closeDrawer);
@@ -964,8 +988,48 @@ function summaryNodes(c) {
       S.taxPct ? [`Φόρος ${pn(S.taxPct)}%`, "−" + eur(c.tax)] : null,
       ["Καθαρό κέρδος", eur(c.profit), true],
     ]),
+    ...whatIfNodes(c),
     o.arv == null ? el("p", { class: "note" }, `Βάση τιμής πώλησης: ${c.arv0.src}. ` + (c.mk?.conflict ? `Προσοχή: ${c.mk.conflict}. ` : "") + (c.adj.length ? `Διορθώσεις: ${c.adj.map(([k, v]) => `${k} ${v > 0 ? "+" : ""}${v}%`).join(", ")}.` : "Χωρίς διορθώσεις.") +
       (c.aux ? ` Κύριοι χώροι ${num(c.main)} m² + βοηθητικοί ${num(c.aux)} m² (με βάρος ${S.auxWeight}%).` : "")) : null,
+  ].filter(Boolean);
+}
+
+// «Τι γίνεται αν»: πόσο αντέχει το κέρδος όταν τα πράγματα πάνε χειρότερα από την εκτίμηση.
+function whatIfNodes(c) {
+  if (c.profit == null) return [];
+  const SC = [["Όπως εκτιμάται", {}], ["Πώληση −10%", { arvMul: 0.9 }], ["Πώληση −20%", { arvMul: 0.8 }],
+    ["Ανακαίνιση +30%", { renoMul: 1.3 }], ["+6 μήνες καθυστέρηση", { extraMonths: 6 }],
+    ["Όλα μαζί: −10%, +30%, +6 μήνες", { arvMul: 0.9, renoMul: 1.3, extraMonths: 6 }]];
+  const t = el("table", { class: "whatif" },
+    el("thead", {}, el("tr", {}, el("th", { scope: "col" }, "Σενάριο"), el("th", { scope: "col", class: "num" }, "Κέρδος"), el("th", { scope: "col", class: "num" }, "ROI"))),
+    el("tbody", {}, SC.map(([name, sc], i) => {
+      const r = i ? calc(c.l, sc) : c;
+      return el("tr", { class: i ? "" : "base" }, el("td", {}, name),
+        el("td", { class: "num " + (r.profit > 0 ? "pos" : "neg") }, eur(r.profit)),
+        el("td", { class: "num " + (r.roi > 0 ? "pos" : "neg") }, pct(r.roi)));
+    })));
+  return [el("div", { class: "eyebrow" }, "Τι γίνεται αν"), t];
+}
+
+// Η λίστα μου: κατάσταση και σημειώσεις ανά ακίνητο, αποθηκεύονται στον browser και στο αρχείο ρυθμίσεων.
+function setFav(code, patch, quiet) {
+  const f = { ...(FAV[code] || {}), ...patch };
+  if (!f.status && !f.note) delete FAV[code];
+  else { f.at = new Date().toISOString().slice(0, 10); FAV[code] = f; }
+  persist();
+  if (quiet) rerenderSoon(); else render();
+}
+function listNodes(c) {
+  const code = c.l.code, f = FAV[code] || {};
+  return [
+    el("div", { class: "eyebrow" }, "Η λίστα μου"),
+    el("label", { class: "field" }, el("span", {}, "Κατάσταση"),
+      el("select", { id: "fav-status", onchange: (e) => setFav(code, { status: e.target.value || undefined }) },
+        el("option", { value: "" }, "Όχι στη λίστα μου"),
+        ...Object.entries(FAV_STATUS).map(([k, t]) => el("option", { value: k, selected: f.status === k }, t)))),
+    el("label", { class: "field" }, el("span", {}, "Σημειώσεις"),
+      el("textarea", { id: "fav-note", rows: "3", placeholder: "π.χ. αυτοψία, τι είπε ο μεσίτης, προσφορά συνεργείου", oninput: (e) => setFav(code, { note: e.target.value || undefined }, true) }, f.note || "")),
+    f.at ? el("p", { class: "note" }, `Τελευταία αλλαγή ${f.at}`) : null,
   ].filter(Boolean);
 }
 
@@ -1011,9 +1075,14 @@ function openDrawer(c) {
       el("button", { type: "button", onclick: closeDrawer, "aria-label": "Κλείσιμο" }, "✕")),
     l.image ? el("img", { src: l.image, alt: `Φωτογραφία: ${l.title}`, loading: "lazy", onerror: (e) => e.target.remove() }) : null,
     el("div", { id: "d-sum", class: "dsum" }, ...summaryNodes(c)),
+    el("section", { class: "mylist" }, ...listNodes(c)),
     el("section", { class: "ovr" }, ...overrideNodes(c)),
     el("div", { class: "links" },
       el("a", { href: l.url, target: "_blank", rel: "noopener" }, "Αγγελία στο Intrum ↗"),
+      el("button", { type: "button", onclick: (e) => {
+        const url = location.origin + location.pathname + "?code=" + encodeURIComponent(l.code);
+        (navigator.clipboard ? navigator.clipboard.writeText(url) : Promise.reject()).then(() => { e.target.textContent = "Ο σύνδεσμος αντιγράφηκε"; }, () => { prompt("Σύνδεσμος για αυτό το ακίνητο:", url); });
+      } }, "Αντιγραφή συνδέσμου"),
       kq ? el("a", { href: "index.html?q=" + encodeURIComponent(kq), target: "_blank" }, "Κτηματολόγιο & όροι δόμησης ↗") : null,
       l.lat ? el("a", { href: `https://www.google.com/maps/search/?api=1&query=${l.lat},${l.lng}`, target: "_blank", rel: "noopener" }, "Google Maps ↗") : null),
     el("div", { class: "eyebrow" }, "Στοιχεία"),
@@ -1029,6 +1098,7 @@ function openDrawer(c) {
     !l.detailFetchedAt ? el("p", { class: "note" }, "Τα αναλυτικά στοιχεία αυτού του ακινήτου δεν έχουν διαβαστεί ακόμα· θα συμπληρωθούν στην επόμενη ενημέρωση.") : null,
   ].filter(Boolean));
   if (!$("drawer").classList.contains("open")) lastFocus = document.activeElement;
+  history.replaceState(null, "", "?code=" + encodeURIComponent(l.code));
   $("drawer").inert = false;
   $("drawer").classList.add("open"); $("scrim").classList.add("open");
   $("drawer").scrollTop = 0; $("drawer").querySelector("button").focus();
@@ -1081,12 +1151,17 @@ function download(name, text, type) {
 $("export").addEventListener("click", () => {
   const cols = [["Κωδικός", (c) => c.l.code], ["Τίτλος", (c) => c.l.title], ["Περιοχή", (c) => c.l.region?.name], ["Δήμος", (c) => c.l.area?.name], ["Διεύθυνση", (c) => c.l.address],
     ["Τιμή", (c) => c.l.price], ["m²", (c) => c.main], ["Έτος", (c) => c.l.year], ["Ενεργ. κλάση", (c) => c.l.energyClass], ["Τιμή πώλησης", (c) => Math.round(c.arv || 0)],
-    ["Ανακαίνιση", (c) => Math.round(c.renoTot)], ["Επένδυση", (c) => Math.round(c.invested || 0)], ["Κέρδος", (c) => Math.round(c.profit || 0)], ["ROI %", (c) => c.roi != null ? (c.roi * 100).toFixed(1) : ""],
-    ["Μέγ. προσφορά", (c) => c.maxOffer > 0 ? Math.round(c.maxOffer) : ""], ["Βάση τιμής πώλησης", (c) => c.arv0.src], ["URL", (c) => c.l.url]];
+    ["Ανακαίνιση", (c) => Math.round(c.renoTot)], ["Επένδυση", (c) => Math.round(c.invested || 0)], ["Κέρδος", (c) => Math.round(c.profit || 0)], ["ROI %", (c) => dec(c.roi)],
+    ["Βαθμός", (c) => c.score ?? ""], ["Ρευστότητα", (c) => c.liq.score], ["Αντοχή %", (c) => dec(c.safety)], ["vs αγορά %", (c) => dec(c.vsMarket)],
+    ["Μέγ. προσφορά", (c) => c.maxOffer > 0 ? Math.round(Math.min(c.maxOffer, c.l.price || Infinity)) : ""], ["Σε προσφορά", (c) => c.underOffer ? "ναι" : ""],
+    ["Αβέβαιο", (c) => c.shaky ? "ναι" : ""], ["Κατάσταση", (c) => FAV_STATUS[FAV[c.l.code]?.status] || ""], ["Σημειώσεις", (c) => FAV[c.l.code]?.note || ""],
+    ["Βάση τιμής πώλησης", (c) => c.arv0.src], ["URL", (c) => c.l.url]];
+  // Ελληνικό Excel: ερωτηματικό ως διαχωριστικό και κόμμα στα δεκαδικά.
+  function dec(v) { return v == null || !isFinite(v) ? "" : (v * 100).toFixed(1).replace(".", ","); }
   const esc = (v) => `"${String(v ?? "").replace(/"/g, '""')}"`;
   download(`flip-${new Date().toISOString().slice(0, 10)}.csv`, "﻿" + cols.map(([h]) => esc(h)).join(";") + "\n" + ROWS.map((c) => cols.map(([, f]) => esc(f(c))).join(";")).join("\n"), "text/csv;charset=utf-8");
 });
-$("cfg-export").addEventListener("click", () => download("flip-ρυθμίσεις.json", JSON.stringify({ v: SETTINGS_VERSION, assumptions: changedSettings(), arv: ARV, overrides: OVR }, null, 1), "application/json"));
+$("cfg-export").addEventListener("click", () => download("flip-ρυθμίσεις.json", JSON.stringify({ v: SETTINGS_VERSION, assumptions: changedSettings(), arv: ARV, overrides: OVR, favs: FAV }, null, 1), "application/json"));
 $("cfg-import-btn").addEventListener("click", () => $("cfg-import").click());
 $("cfg-import").addEventListener("change", async (e) => {
   try {
@@ -1099,6 +1174,7 @@ $("cfg-import").addEventListener("change", async (e) => {
     Object.assign(ARV, j.arv || {});
     for (const k of Object.keys(OVR)) delete OVR[k];
     Object.assign(OVR, j.overrides || {});
+    if (j.favs && typeof j.favs === "object") { for (const k of Object.keys(FAV)) delete FAV[k]; Object.assign(FAV, j.favs); }
     persist(); renderAssumptions(); renderArv(); render();
   } catch { alert("Το αρχείο δεν είναι έγκυρο αρχείο ρυθμίσεων."); }
   e.target.value = "";
@@ -1127,7 +1203,7 @@ $("picks").querySelector("summary").addEventListener("click", () => setTimeout((
   try { localStorage.setItem(UI, JSON.stringify({ ...ui, picksOpen: $("picks").open })); } catch {}
 }, 0));
 $("f-reset").addEventListener("click", () => {
-  for (const id of FILTER_IDS) { if ($(id).type === "checkbox") $(id).checked = id === "f-showground" || id === "f-showoffer"; else $(id).value = ""; }
+  for (const id of FILTER_IDS) { if ($(id).type === "checkbox") $(id).checked = DEFAULT_ON.has(id); else $(id).value = ""; }
   excludedRegions.clear(); shown = 100; persist(); render();
 });
 
@@ -1147,6 +1223,10 @@ fetch("data/arv-defaults.json", { cache: "no-cache" }).then((r) => r.ok ? r.json
   const age = updatedAt ? Math.floor((Date.now() - Date.parse(updatedAt)) / 864e5) : null;
   if (age != null && age >= 7) $("sub").append(" · ", el("span", { class: "stale" }, `⚠ τα δεδομένα είναι ${age} ημερών: τρέξε ανανέωση`));
   buildAuto(); buildRegions(); renderAssumptions(); renderArv(); render();
+  // Σύνδεσμος ?code=… ανοίγει κατευθείαν το ακίνητο.
+  const qc = new URLSearchParams(location.search).get("code");
+  const ql = qc && DATA.find((x) => x.code === qc);
+  if (ql) openDrawer(calc(ql));
 }).catch((e) => {
   $("sub").textContent = "Δεν φορτώθηκαν οι αγγελίες";
   $("tbody").replaceChildren(el("tr", {}, el("td", { class: "empty" }, `Σφάλμα φόρτωσης data/listings.json: ${e.message}. Άνοιξε τη σελίδα από web server (π.χ. GitHub Pages), όχι ως αρχείο.`)));
