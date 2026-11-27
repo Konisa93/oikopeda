@@ -45,8 +45,7 @@ Dashboard που, με διεύθυνση ή συντεταγμένες, εμφ�
 διαβάζει τη λίστα (50 ανά σελίδα) και μετά τη σελίδα κάθε ακινήτου που είναι νέο, άλλαξε τιμή ή έχει να ελεγχθεί 30 μέρες.
 Κρατά ιστορικό τιμών και σημειώνει όσα αποσύρθηκαν.
 
-Το GitHub Action `.github/workflows/scrape-intrum.yml` το τρέχει κάθε πρωί και κάνει commit τις αλλαγές.
-Χειροκίνητα: Actions → «Ανανέωση αγγελιών Intrum» → Run workflow, ή τοπικά:
+Το GitHub Action `.github/workflows/scrape-intrum.yml` το τρέχει μόνο όταν το ξεκινήσεις και κάνει commit τις αλλαγές: Actions → «Ανανέωση αγγελιών Intrum» → Run workflow, ή τοπικά:
 
 ```bash
 npm install --no-save playwright && npx playwright install chromium

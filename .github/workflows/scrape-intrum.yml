@@ -1,8 +1,7 @@
 name: Ανανέωση αγγελιών Intrum
 
 on:
-  schedule:
-    - cron: "17 4 * * *"   # κάθε μέρα 04:17 UTC (07:17 ώρα Ελλάδας το χειμώνα)
+  # Τρέχει μόνο χειροκίνητα (Actions → Run workflow).
   workflow_dispatch:
     inputs:
       minutes:
