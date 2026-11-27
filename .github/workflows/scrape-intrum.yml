@@ -34,6 +34,16 @@ jobs:
       - name: Συλλογή αγγελιών
         run: node scraper/scrape.js --minutes "${{ github.event.inputs.minutes || '300' }}" --concurrency 4
 
+      - name: Έλεγχος δεδομένων
+        run: |
+          node -e '
+            const db = require("./data/listings.json");
+            const act = db.listings.filter((l) => !l.removedAt);
+            const ok = act.filter((l) => l.region && l.price).length;
+            console.log(`Ενεργές ${act.length}, με περιοχή και τιμή ${ok}`);
+            if (act.length < 100 || ok < act.length * 0.9) { console.error("Ύποπτα δεδομένα, δεν αποθηκεύω."); process.exit(1); }
+          '
+
       - name: Αποθήκευση στο repo
         run: |
           git config user.name "github-actions[bot]"
@@ -43,5 +53,6 @@ jobs:
             echo "Καμία αλλαγή."
           else
             git commit -m "Ανανέωση αγγελιών Intrum $(date -u +%Y-%m-%d)"
+            git pull --rebase
             git push
           fi

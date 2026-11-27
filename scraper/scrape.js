@@ -240,8 +240,10 @@ async function scrapeDetail(page, id) {
   const browser = await chromium.launch();
 
   const { cards, total } = await scrapeList(browser);
-  if (total && cards.length < total * 0.9) {
-    console.warn(`Προσοχή: βρέθηκαν ${cards.length} από ${total}. Δεν σημειώνω τίποτα ως αποσυρμένο.`);
+  // Σημειώνουμε αποσύρσεις μόνο όταν ξέρουμε το σύνολο του site και η λίστα είναι σχεδόν πλήρης.
+  const complete = total != null && cards.length >= total * 0.98;
+  if (!complete) {
+    console.warn(`Προσοχή: βρέθηκαν ${cards.length} από ${total ?? '?'}. Δεν σημειώνω τίποτα ως αποσυρμένο.`);
   }
   const live = new Set(cards.map((c) => c.id));
 
@@ -255,10 +257,15 @@ async function scrapeDetail(page, id) {
       prev.priceHistory = [...(prev.priceHistory || []), { date: today, price: c.price }];
       prev.detailFetchedAt = null; // ξαναδιάβασε τη σελίδα του
     }
-    Object.assign(prev, c, { lastSeen: today, removedAt: null });
+    Object.assign(prev, c, { lastSeen: today, removedAt: null, missing: 0 });
   }
-  if (!total || cards.length >= total * 0.9) {
-    for (const l of byId.values()) if (!live.has(l.id) && !l.removedAt) l.removedAt = today;
+  if (complete) {
+    // Αποσυρμένο μόνο αν λείπει σε δύο συνεχόμενες πλήρεις ανανεώσεις.
+    for (const l of byId.values()) {
+      if (live.has(l.id) || l.removedAt) continue;
+      l.missing = (l.missing || 0) + 1;
+      if (l.missing >= 2) l.removedAt = today;
+    }
   }
   db.listings = [...byId.values()];
   db.total = total;

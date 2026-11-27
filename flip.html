@@ -104,6 +104,10 @@ td.title small{color:var(--muted);font-size:12px}
 .liq{display:inline-block;min-width:2.2em;text-align:center;padding:1px 6px;border-radius:999px;background:var(--chip);font-variant-numeric:tabular-nums}.liq.high{color:var(--ok)}.liq.mid{color:var(--warn)}.liq.low{color:var(--danger)}
 .liqbox{border:1px solid var(--line);border-left:4px solid var(--muted);border-radius:8px;padding:10px 12px;margin:12px 0}.liqbox.high{border-left-color:var(--ok)}.liqbox.mid{border-left-color:var(--warn)}.liqbox.low{border-left-color:var(--danger)}.liqbox ul{margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--muted)}
 .empty{padding:40px 16px;color:var(--muted)}
+.empty ul{margin:8px 0 12px;padding-left:18px}
+.dim{color:var(--muted)!important;font-weight:400!important}
+.facts.shaky b{color:var(--muted)}
+.stale{color:var(--warn)}
 .more-row td{text-align:center;cursor:default}
 
 #map{height:calc(100vh - 140px);min-height:420px;margin:0 16px 16px;border:1px solid var(--line);border-radius:var(--r-m)}
@@ -173,6 +177,7 @@ footer{font-size:12px;color:var(--muted);line-height:1.5}
         <label class="check"><input type="checkbox" id="f-showbasement"> Υπόγεια / ημιυπόγεια</label>
         <label class="check"><input type="checkbox" id="f-showparking"> Αποθήκες / θέσεις στάθμευσης</label>
         <label class="check"><input type="checkbox" id="f-showpor"> Ακίνητα με τιμή κατόπιν αιτήματος</label>
+        <label class="check"><input type="checkbox" id="f-showoffer" checked> Σε διαδικασία προσφοράς</label>
       </div>
       <div class="field"><span>Μόνο</span>
         <label class="check"><input type="checkbox" id="f-new"> Νέες αγγελίες</label>
@@ -199,7 +204,7 @@ footer{font-size:12px;color:var(--muted);line-height:1.5}
       <button type="button" id="cfg-export">Αποθήκευση ρυθμίσεων</button>
       <label class="btnrow"><button type="button" id="cfg-import-btn">Φόρτωση ρυθμίσεων</button><input type="file" id="cfg-import" accept="application/json" hidden></label>
     </div>
-    <footer>Πηγή αγγελιών: Intrum Marketplace (δημόσιες σελίδες), ανανεώνεται καθημερινά. Οι υπολογισμοί είναι ενδεικτικοί, βασίζονται σε ζητούμενες τιμές και στις δικές σου ρυθμίσεις κόστους. Πριν από προσφορά: αυτοψία, έλεγχος τίτλων, αυθαιρέτων και βαρών. Οι φωτογραφίες του Intrum μπορεί να είναι επεξεργασμένες.</footer>
+    <footer>Πηγή αγγελιών: Intrum Marketplace (δημόσιες σελίδες). Η λίστα ανανεώνεται όταν ξεκινήσεις την ενημέρωση από το GitHub (Actions → «Ανανέωση αγγελιών Intrum»). Οι υπολογισμοί είναι ενδεικτικοί, βασίζονται σε ζητούμενες τιμές και στις δικές σου ρυθμίσεις κόστους. Πριν από προσφορά: αυτοψία, έλεγχος τίτλων, αυθαιρέτων και βαρών. Οι φωτογραφίες του Intrum μπορεί να είναι επεξεργασμένες.</footer>
   </aside>
 
   <div id="content">
@@ -269,7 +274,12 @@ const ASSUMPTIONS = [
     ["holdMonthly", "Κόστος κράτησης / μήνα (€)", 120, "ΕΝΦΙΑ, κοινόχρηστα, ρεύμα, ασφάλεια."],
     ["sellPct", "Κόστη πώλησης (% τιμής)", 2.48, "Μεσίτης 2% + ΦΠΑ."],
     ["sellFixed", "Κόστη πώλησης σταθερά (€)", 500, ""],
-    ["taxPct", "Φόρος επί του κέρδους (%)", 0, "Ανάλογα με το αν αγοράζεις ως ιδιώτης ή εταιρεία: επιβεβαίωσε με λογιστή."],
+    ["taxPct", "Φόρος επί του κέρδους (%)", 15, "Ιδιώτης: 15% υπεραξία (η αναστολή ισχύει έως 31/12/2026, ενώ ένα flip που ξεκινά τώρα πουλιέται το 2027). Εταιρεία: 22% + 5% στο μέρισμα ≈ 25,9%. Επιβεβαίωσε με λογιστή."],
+  ]],
+  ["Χρηματοδότηση", [
+    ["loanPct", "Δάνειο (% της τιμής αγοράς)", 0, "0 = αγορά με μετρητά. Το ROI υπολογίζεται επί των δικών σου χρημάτων."],
+    ["loanRate", "Επιτόκιο δανείου (% τον χρόνο)", 4.5, "Τόκοι για όσους μήνες κρατάς το ακίνητο."],
+    ["loanFees", "Έξοδα δανείου (% του δανείου)", 1.5, "Εκτίμηση ακινήτου, φάκελος, προσημείωση."],
   ]],
   ["Τιμή πώλησης", [
     ["spiPremium", "Προσαύξηση ανακαινισμένου έναντι μέσης τιμής αγοράς (%)", 5, "Οι τιμές spiti24/Indomio/Spitogatos είναι μέση ζητούμενη τιμή όλων των διαμερισμάτων του δήμου, όχι μόνο ανακαινισμένων."],
@@ -298,10 +308,17 @@ const ASSUMPTIONS = [
   ]],
 ];
 const DEFAULTS = Object.fromEntries(ASSUMPTIONS.flatMap(([, rows]) => rows.map(([k, , v]) => [k, v])));
-const FILTER_IDS = ["f-nomos", "f-q", "f-pmin", "f-pmax", "f-smin", "f-smax", "f-roi", "f-profit", "f-liq", "f-score", "f-type", "f-showground", "f-showbasement", "f-showparking", "f-showpor", "f-new", "f-drop", "f-mine"];
+const FILTER_IDS = ["f-nomos", "f-q", "f-pmin", "f-pmax", "f-smin", "f-smax", "f-roi", "f-profit", "f-liq", "f-score", "f-type", "f-showground", "f-showbasement", "f-showparking", "f-showpor", "f-showoffer", "f-new", "f-drop", "f-mine"];
 
 const saved = store.get();
-const S = { ...DEFAULTS, ...(saved.assumptions || {}) };
+// Οι ρυθμίσεις αποθηκεύονται μόνο όσες διαφέρουν από τις προεπιλογές, ώστε οι αλλαγές στις προεπιλογές να φτάνουν σε όλους.
+// Παλιά αποθήκευση (χωρίς έκδοση) κρατούσε ολόκληρο το αντικείμενο: πετάμε όσες τιμές ήταν απλώς οι προεπιλογές της εποχής.
+const LEGACY_DEFAULTS = { age70Adj: -12, age85Adj: -8, autoUplift: 25, auxWeight: 30, basementAdj: -35, buyFixed: 800, buyPct: 5.6, contingency: 15, discount: 0, groundAdj: -10, highNoLiftAdj: -10, holdMonthly: 120, liqEasyPrice: 250000, liqHardPrice: 600000, liqSizeMax: 110, newAdj: 5, renoHeavy: 700, renoLight: 250, renoMedium: 450, renoMonths: 4, s24Adj: -10, sellEasy: 3, sellFixed: 500, sellHard: 12, sellMid: 6, sellNeg: 5, sellPct: 2.48, sizeAdj: -2.5, spiPremium: 5, targetRoi: 20, taxPct: 0 };
+const SETTINGS_VERSION = 2;
+const savedAssump = { ...(saved.assumptions || {}) };
+if (saved.v !== SETTINGS_VERSION) for (const k of Object.keys(savedAssump)) if (!(k in DEFAULTS) || savedAssump[k] === LEGACY_DEFAULTS[k]) delete savedAssump[k];
+const S = { ...DEFAULTS, ...savedAssump };
+const changedSettings = () => Object.fromEntries(Object.keys(DEFAULTS).filter((k) => S[k] !== DEFAULTS[k]).map((k) => [k, S[k]]));
 const ARV = { ...(saved.arv || {}) };          // περιοχή (slug) → €/m² ανακαινισμένου
 const OVR = { ...(saved.overrides || {}) };    // ακίνητο (id) → { buy, reno, arv } δικές σου τιμές σε €
 let excludedRegions = new Set(saved.excludedRegions || []);
@@ -311,7 +328,7 @@ let SPI = {}, MARKET = {}, S24 = {}, BASELINE = null, DATA = [], ROWS = [], AUTO
 
 function persist() {
   const filters = Object.fromEntries(FILTER_IDS.map((id) => [id, $(id).type === "checkbox" ? $(id).checked : $(id).value]));
-  store.set({ assumptions: S, arv: ARV, overrides: OVR, excludedRegions: [...excludedRegions], filters, sortKey, sortDir });
+  store.set({ v: SETTINGS_VERSION, assumptions: changedSettings(), arv: ARV, overrides: OVR, excludedRegions: [...excludedRegions], filters, sortKey, sortDir });
 }
 
 // ---------- Υπολογισμοί ----------
@@ -507,18 +524,31 @@ function calc(l) {
   const reno = renoPsm * (main + aux * 0.3);
   const renoTot = o.reno != null ? o.reno : reno * (1 + S.contingency / 100);
   const buy = o.buy != null ? o.buy : l.price ? l.price * (1 - S.discount / 100) : null;
-  const buyCost = buy != null ? buy * S.buyPct / 100 + +S.buyFixed : null;
   const mk = marketFor(l);
   const kind = kindOf(l);
   const liq = liquidityOf(l, main, arv, kind, fl, mk);
   const months = +S.renoMonths + liq.months;
   const hold = months * S.holdMonthly;
   const sellCost = arv != null ? arv * S.sellPct / 100 + +S.sellFixed : null;
-  const invested = buy != null ? buy + buyCost + renoTot + hold : null;
-  const pre = arv != null && invested != null ? arv - sellCost - invested : null;
-  const tax = pre != null ? Math.max(0, pre) * S.taxPct / 100 : null;
-  const profit = pre != null ? pre - tax : null;
-  const roi = profit != null ? profit / invested : null;
+  const fin = (b) => {
+    // Δάνειο ως ποσοστό της τιμής αγοράς· τόκοι για όλη την κράτηση, έξοδα δανείου μία φορά.
+    const bc = b * S.buyPct / 100 + +S.buyFixed;
+    const loan = b * Math.max(0, Math.min(100, S.loanPct)) / 100;
+    const interest = loan * S.loanRate / 100 * months / 12;
+    const loanFee = loan * S.loanFees / 100;
+    const cost = b + bc + renoTot + hold + interest + loanFee;
+    const own = cost - loan;
+    const pre = arv != null ? arv - sellCost - cost : null;
+    const tax = pre != null ? Math.max(0, pre) * S.taxPct / 100 : null;
+    const profit = pre != null ? pre - tax : null;
+    return { bc, loan, interest, loanFee, cost, own, pre, tax, profit, roi: profit != null && own > 0 ? profit / own : null };
+  };
+  const F = buy != null ? fin(buy) : null;
+  const invested = F ? F.own : null;
+  const pre = F ? F.pre : null;
+  const tax = F ? F.tax : null;
+  const profit = F ? F.profit : null;
+  const roi = F ? F.roi : null;
   const annual = roi != null && months > 0 ? Math.pow(1 + roi, 12 / months) - 1 : null;
   // Περιθώριο ασφαλείας: πόσο μπορεί να πέσει η τιμή πώλησης πριν το κέρδος γίνει μηδέν.
   const safety = pre != null && arv ? pre / (arv * (1 - S.sellPct / 100)) : null;
@@ -528,16 +558,21 @@ function calc(l) {
   // Τιμή πάνω από 60% κάτω από την αγορά είναι συνήθως ένδειξη κρυφού προβλήματος ή λάθους δεδομένων: ο βαθμός μειώνεται 25%.
   const doubt = vsMarket != null && vsMarket < -0.6;
   const score = roi == null ? null : Math.round(100 * Math.max(0, Math.min(1, roi / 0.4)) * (0.3 + 0.7 * liq.score / 100) * (doubt ? 0.75 : 1));
+  const buyCost = F ? F.bc : null;
+  // Μέγιστη προσφορά: η τιμή αγοράς που δίνει ακριβώς τον στόχο ROI (το ROI πέφτει όσο ανεβαίνει η τιμή, άρα διχοτόμηση).
   let maxOffer = null;
   if (arv != null) {
-    const t = S.taxPct / 100, r = S.targetRoi / 100;
-    const inv = (arv - sellCost) * (1 - t) / (1 - t + r);
-    maxOffer = (inv - S.buyFixed - renoTot - hold) / (1 + S.buyPct / 100);
+    const r = S.targetRoi / 100, ok = (b) => { const f = fin(b); return f.roi != null && f.roi >= r; };
+    if (ok(1)) { let lo = 1, hi = arv; for (let i = 0; i < 40; i++) { const m = (lo + hi) / 2; if (ok(m)) lo = m; else hi = m; } maxOffer = lo; }
   }
+  const underOffer = /ΠΡΟΣΦΟΡ/i.test(l.badge || "");
+  // Νούμερα που το ίδιο το μοντέλο αμφισβητεί: πολύ κάτω από την αγορά, πολύ δύσκολη πώληση ή αυτόματη τιμή πώλησης.
+  const shaky = doubt || liq.level === "low" || (!!arv0.auto && o.arv == null);
   const ph = l.priceHistory || [];
   const drop = ph.length > 1 && ph[ph.length - 1].price < ph[0].price ? 1 - ph[ph.length - 1].price / ph[0].price : 0;
   const isNew = /ΝΕΑ ΠΡΟΣΘΗΚΗ/i.test(l.badge || "") || (l.firstSeen && BASELINE && l.firstSeen > BASELINE && (Date.now() - Date.parse(l.firstSeen)) / 864e5 <= 7);
   const flags = [];
+  if (underOffer) flags.push(["Σε διαδικασία προσφοράς", "warn"]);
   if (Object.keys(o).length) flags.push(["Δικές σου τιμές", "good"]);
   if (fl.kind === "basement") flags.push(["Υπόγειο", "bad"]);
   if (fl.kind === "ground") flags.push(["Ισόγειο", "warn"]);
@@ -553,7 +588,7 @@ function calc(l) {
   if (drop > 0) flags.push([`−${(drop * 100).toFixed(0)}% τιμή`, "good"]);
   if (isNew) flags.push(["Νέα", "good"]);
   if (liq.level === "low") flags.push(["Δύσκολη πώληση", "bad"]);
-  return { l, o, mk, vsMarket, main, aux, effSqm, fl, cond, condWhy, arv0, adj, adjPct, arvPsm, arvAsk, arv, renoPsm, reno, renoTot, buy, buyCost, hold, sellCost, invested, pre, tax, profit, roi, annual, maxOffer, drop, isNew, flags, kind, liq, months, score, safety, doubt, ppsm: l.price && main ? l.price / main : null };
+  return { l, o, mk, vsMarket, main, aux, effSqm, fl, cond, condWhy, arv0, adj, adjPct, arvPsm, arvAsk, arv, renoPsm, reno, renoTot, buy, buyCost, hold, sellCost, invested, F, pre, tax, profit, roi, underOffer, shaky, annual, maxOffer, drop, isNew, flags, kind, liq, months, score, safety, doubt, ppsm: l.price && main ? l.price / main : null };
 }
 
 function buildAuto() {
@@ -588,12 +623,13 @@ function passes(c) {
   if (v("f-pmax") && !(l.price <= +v("f-pmax"))) return false;
   if (v("f-smin") && !(c.main >= +v("f-smin"))) return false;
   if (v("f-smax") && !(c.main <= +v("f-smax"))) return false;
-  if (v("f-roi") !== "" && !(c.roi * 100 >= +v("f-roi"))) return false;
-  if (v("f-profit") !== "" && !(c.profit >= +v("f-profit"))) return false;
+  if (v("f-roi") !== "" && (c.roi == null || !(c.roi * 100 >= +v("f-roi")))) return false;
+  if (v("f-profit") !== "" && (c.profit == null || !(c.profit >= +v("f-profit")))) return false;
   if (v("f-liq") !== "" && !(c.liq.score >= +v("f-liq"))) return false;
-  if (v("f-score") !== "" && !(c.score >= +v("f-score"))) return false;
+  if (v("f-score") !== "" && (c.score == null || !(c.score >= +v("f-score")))) return false;
   if (v("f-type") && c.kind !== v("f-type")) return false;
-  if (!chk("f-showparking") && c.kind === "parking") return false;
+  if (!chk("f-showparking") && c.kind === "parking" && v("f-type") !== "parking") return false;
+  if (!chk("f-showoffer") && c.underOffer) return false;
   if (!chk("f-showground") && c.fl.kind === "ground") return false;
   if (!chk("f-showbasement") && c.fl.kind === "basement") return false;
   if (!chk("f-showpor") && !l.price) return false;
@@ -607,19 +643,19 @@ function passes(c) {
 // Κωδικοί Intrum· τα νούμερα υπολογίζονται ζωντανά με τις τρέχουσες ρυθμίσεις.
 const PICKS = [
   { code: "PHO-00249", label: "Η πιο ισορροπημένη",
-    why: "Άγιος Δημήτριος, 1ος όροφος σε μικρή τριώροφη πολυκατοικία, διαμπερές 2 υπνοδωματίων, στα €1.314/m² σε αγορά με 2.000+ αγγελίες. Η περιγραφή λέει ακριβώς τι θέλει (κουζίνα, μπάνιο, κουφώματα, θέρμανση, μόνωση), άρα το κόστος ανακαίνισης είναι προβλέψιμο. Το τελικό προϊόν (70 m², ~€210.000) είναι ό,τι ψάχνει το μεγαλύτερο κοινό των νοτίων προαστίων.",
+    why: "Άγιος Δημήτριος, 1ος όροφος σε μικρή τριώροφη πολυκατοικία, διαμπερές 2 υπνοδωματίων, στα €1.314/m² σε αγορά με 2.000+ αγγελίες. Η περιγραφή λέει ακριβώς τι θέλει (κουζίνα, μπάνιο, κουφώματα, θέρμανση, μόνωση), άρα το κόστος ανακαίνισης είναι προβλέψιμο. Το τελικό προϊόν (70 m², ανακαινισμένο) είναι ό,τι ψάχνει το μεγαλύτερο κοινό των νοτίων προαστίων.",
     check: "Χωρίς ασανσέρ (ο 1ος δεν πειράζει). Κοινόχρηστα και κεντρική θέρμανση: ρώτα αν μπορεί να γίνει αυτονομία." },
   { code: "SN1-01331", label: "Το μικρότερο ρίσκο κεφαλαίου",
-    why: "Περιστέρι, Άσπρα Χώματα: 61 m², γωνιακό και διαμπερές, με 2 μπαλκόνια, στα €75.000. Με συνολικό κεφάλαιο κάτω από €115.000 μπαίνεις σε μία από τις πιο ρευστές αγορές της Αθήνας (2.278 διαμερίσματα στο spiti24, μετρό). Ακόμα κι αν η τιμή πώλησης βγει 25% χαμηλότερα, δεν χάνεις.",
+    why: "Περιστέρι, Άσπρα Χώματα: 61 m², γωνιακό και διαμπερές, με 2 μπαλκόνια, στα €75.000. Με συνολικό κεφάλαιο κάτω από €115.000 μπαίνεις σε μία από τις πιο ρευστές αγορές της Αθήνας (χιλιάδες αγγελίες διαμερισμάτων, μετρό). Ακόμα κι αν η τιμή πώλησης βγει 25% χαμηλότερα, δεν χάνεις.",
     check: "Δεν δίνει έτος κατασκευής: ζήτα οικοδομική άδεια και δες αν είναι πριν το 1985 (στατικά, μόνωση)." },
   { code: "SN1-00149", label: "Η μεγαλύτερη απόσταση από την αγορά",
-    why: "Πεύκη, 78 m², 2 υπνοδωμάτια, 7 λεπτά με τα πόδια από το μετρό ΚΑΤ, στα €1.551/m², σε δήμο όπου τα διαμερίσματα ζητούν ~€3.800/m². Τα βόρεια προάστια έχουν σταθερή ζήτηση από οικογένειες. Εδώ το περιθώριο αντέχει ακόμα και αν η ανακαίνιση βγει πλήρης.",
+    why: "Πεύκη, 78 m², 2 υπνοδωμάτια, 7 λεπτά με τα πόδια από το μετρό ΚΑΤ, στα €1.551/m², σε δήμο όπου τα διαμερίσματα ζητούν πάνω από διπλάσια (δες «vs αγορά»). Τα βόρεια προάστια έχουν σταθερή ζήτηση από οικογένειες. Εδώ το περιθώριο αντέχει ακόμα και αν η ανακαίνιση βγει πλήρης.",
     check: "Λεωφόρος Ειρήνης (θόρυβος, πρόσοψη ή πίσω πλευρά;), ενεργειακή κλάση Η και χωρίς έτος: πιθανότατα κτίριο του '70. Υπολόγισε πλήρη ανακαίνιση και δες αν έχει ασανσέρ (4ος όροφος)." },
   { code: "SN1-0034388", label: "Η «σίγουρη» της Θεσσαλονίκης",
     why: "Εύοσμος, 79 m², κτίριο 2007 με διπλά τζάμια και διπλή πρόσοψη, στα €1.127/m². Θέλει μόνο ελαφριά ανακαίνιση (βάψιμο, δάπεδα, κουζίνα), άρα ο χρόνος είναι μικρός και το ρίσκο κατασκευής σχεδόν μηδενικό. Το ROI είναι χαμηλότερο, αλλά είναι το πιο προβλέψιμο της λίστας και διασπείρει τον κίνδυνο εκτός Αθήνας.",
     check: "Ο Εύοσμος είναι αγορά πρώτης κατοικίας με χαμηλές τιμές: μην ξεπεράσεις τα ~€2.000/m² στην πώληση." },
   { code: "PG-0500 (PHO-00292)", label: "Το μεγαλύτερο upside, με προϋποθέσεις",
-    why: "Γλυφάδα, Τερψιθέα: οροφοδιαμέρισμα 75 m² στον 3ο, διαμπερές, με 2 μπαλκόνια, κτίριο 1983, στα €1.867/m², σε περιοχή που ανακαινισμένα πουλάνε €4.500+. Η Γλυφάδα πουλιέται πάντα και το τελικό εισιτήριο (~€340.000) είναι ακόμα σε λογικό εύρος.",
+    why: "Γλυφάδα, Τερψιθέα: οροφοδιαμέρισμα 75 m² στον 3ο, διαμπερές, με 2 μπαλκόνια, κτίριο 1983, στα €1.867/m², σε περιοχή που ανακαινισμένα πουλάνε €4.500+. Η Γλυφάδα πουλιέται πάντα και το τελικό εισιτήριο είναι ακόμα σε λογικό εύρος.",
     check: "Είναι 66% κάτω από την αγορά, που είναι συνήθως σημάδι κάποιου προβλήματος. Πριν από οτιδήποτε: νομικός έλεγχος (βάρη, συνιδιοκτησία, κατάληψη), αυτοψία για υγρασία και στατικά στο δώμα." },
 ];
 function renderPicks() {
@@ -637,6 +673,7 @@ function renderPicks() {
         el("span", {}, "ROI ", el("b", { class: c.roi > 0 ? "pos" : "neg" }, pct(c.roi))),
         el("span", {}, "Ρευστότητα ", el("b", {}, c.liq.score)),
         el("span", {}, "Αντοχή ", el("b", {}, c.safety > 0 ? "−" + Math.round(c.safety * 100) + "%" : "0%"))),
+      c.underOffer ? el("p", { class: "check" }, "Προσοχή: η αγγελία είναι «σε διαδικασία προσφοράς», άρα μπορεί να κλείσει σύντομα.") : null,
       el("p", {}, p.why),
       el("p", { class: "check" }, "Έλεγξε: " + p.check));
   });
@@ -659,6 +696,8 @@ const COLS = [
   ["maxOffer", "Μέγ. προσφορά", (c) => c.maxOffer ?? -1e12],
   ["safety", "Αντοχή", (c) => c.safety ?? -9],
 ];
+// Η μέγιστη προσφορά δεν εμφανίζεται ποτέ πάνω από τη ζητούμενη τιμή: πάνω από αυτήν δεν έχει νόημα να προσφέρεις.
+const offerText = (c) => !(c.maxOffer > 0) ? "—" : c.l.price && c.maxOffer >= c.l.price ? "η ζητούμενη" : eur(c.maxOffer);
 function renderHead() {
   $("thead").replaceChildren(...COLS.map(([k, label, get]) => {
     const th = el("th", { class: k === "title" ? "" : "num", scope: "col" }, label);
@@ -678,14 +717,14 @@ function row(c) {
     el("td", { class: "num" }, l.price ? eur(l.price) : "κατ' αίτηση"),
     el("td", { class: "num" }, num(c.main)),
     el("td", { class: "num" }, num(c.ppsm)),
-    el("td", { class: "num " + (c.vsMarket < -0.2 ? "pos" : c.vsMarket > 0 ? "neg" : ""), title: c.mk ? `Αγορά ${c.mk.name} (${c.mk.src}): €${nf.format(c.mk.psm)}/m²` : "" }, c.vsMarket == null ? "—" : (c.vsMarket > 0 ? "+" : "−") + Math.abs(c.vsMarket * 100).toFixed(0) + "%"),
+    el("td", { class: "num " + (c.vsMarket < -0.5 ? "" : c.vsMarket < -0.2 ? "pos" : c.vsMarket > 0 ? "neg" : ""), title: c.mk ? `Αγορά ${c.mk.name} (${c.mk.src}): €${nf.format(c.mk.psm)}/m²` : "" }, c.vsMarket == null ? "—" : (c.vsMarket > 0 ? "+" : "−") + Math.abs(c.vsMarket * 100).toFixed(0) + "%"),
     el("td", { class: "num" }, eur(c.arv)),
     el("td", { class: "num" }, eur(c.renoTot)),
-    el("td", { class: "num " + (c.profit > 0 ? "pos" : c.profit < 0 ? "neg" : "") }, eur(c.profit)),
-    el("td", { class: "num " + (c.roi > 0 ? "pos" : c.roi < 0 ? "neg" : "") }, pct(c.roi)),
+    el("td", { class: "num " + (c.profit > 0 ? (c.shaky ? "dim" : "pos") : c.profit < 0 ? "neg" : ""), title: c.shaky && c.profit > 0 ? "Αβέβαιο: δες τις ετικέτες" : null }, eur(c.profit)),
+    el("td", { class: "num " + (c.roi > 0 ? (c.shaky ? "dim" : "pos") : c.roi < 0 ? "neg" : "") }, pct(c.roi)),
     el("td", { class: "num", title: `${LIQ_LABEL[c.liq.level]} ρευστότητα · πώληση σε ~${c.liq.months} μήνες` + (c.liq.why.length ? "\n" + c.liq.why.map(([p, t]) => `${p} ${t}`).join("\n") : "") }, el("span", { class: "liq " + c.liq.level }, c.liq.score)),
     el("td", { class: "num" }, el("b", {}, c.score ?? "—")),
-    el("td", { class: "num" }, c.maxOffer > 0 ? eur(c.maxOffer) : "—"),
+    el("td", { class: "num" }, offerText(c)),
     el("td", { class: "num " + (c.safety >= 0.2 ? "pos" : c.safety < 0.1 ? "neg" : ""), title: "Πόσο μπορεί να πέσει η τιμή πώλησης πριν μπεις μέσα" }, c.safety == null ? "—" : c.safety <= 0 ? "0%" : "−" + Math.round(c.safety * 100) + "%"));
   return tr;
 }
@@ -704,12 +743,30 @@ function render() {
   renderPicks();
   document.documentElement.style.setProperty("--tb", document.querySelector(".toolbar").offsetHeight + "px");
   const body = ROWS.slice(0, shown).map(row);
-  if (!ROWS.length) body.push(el("tr", {}, el("td", { colspan: COLS.length, class: "empty" }, "Κανένα ακίνητο με αυτά τα φίλτρα.")));
+  if (!ROWS.length) body.push(el("tr", {}, el("td", { colspan: COLS.length, class: "empty" }, emptyState())));
   if (ROWS.length > shown) body.push(el("tr", { class: "more-row" }, el("td", { colspan: COLS.length },
     el("button", { type: "button", onclick: () => { shown += 200; render(); } }, `Εμφάνιση περισσότερων (${nf.format(ROWS.length - shown)} ακόμα)`))));
   $("tbody").replaceChildren(...body);
   if (view === "map") drawMap();
   renderRegions();
+}
+
+// Άδειο αποτέλεσμα: δείξε ποια φίλτρα είναι ενεργά, για να φαίνεται τι τα απέκλεισε όλα.
+function emptyState() {
+  const active = [];
+  for (const id of FILTER_IDS) {
+    const f = $(id);
+    if (f.type === "checkbox") {
+      const lab = f.closest("label").textContent.trim();
+      if (f.checked !== (id === "f-showground" || id === "f-showoffer")) active.push(f.checked ? `Μόνο: ${lab}` : `Κρυμμένα: ${lab}`);
+    } else if (f.value) {
+      const lab = f.closest("label").querySelector("span").textContent;
+      active.push(`${lab}: ${f.tagName === "SELECT" ? f.selectedOptions[0].textContent : f.value}`);
+    }
+  }
+  if (excludedRegions.size) active.push(`${excludedRegions.size} περιοχές εκτός`);
+  return [el("b", {}, "Κανένα ακίνητο με αυτά τα φίλτρα."), active.length ? el("ul", {}, active.map((t) => el("li", {}, t))) : null,
+    el("button", { type: "button", onclick: () => $("f-reset").click() }, "Καθαρισμός φίλτρων")];
 }
 
 // Οι ρυθμίσεις εφαρμόζονται καθώς πληκτρολογείς (με μικρή καθυστέρηση), ώστε ένα κλικ σε ακίνητο αμέσως μετά να μη χάνεται.
@@ -784,11 +841,16 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeDrawe
 function summaryNodes(c) {
   const l = c.l, o = c.o;
   const pairs = (rows) => el("dl", {}, rows.filter(Boolean).flatMap(([k, v, total]) => [el("dt", { class: total ? "total" : "" }, k), el("dd", { class: total ? "total" : "" }, v)]));
+  const why = [c.doubt ? "η τιμή είναι πάνω από 60% κάτω από την αγορά, που συνήθως σημαίνει κρυφό πρόβλημα ή λάθος δεδομένα" : null,
+    c.liq.level === "low" ? "η πώληση μετά την ανακαίνιση θα είναι δύσκολη" : null,
+    c.arv0.auto && o.arv == null ? "η τιμή πώλησης είναι αυτόματη εκτίμηση" : null].filter(Boolean);
   return [
-    el("div", { class: "facts" },
+    c.underOffer ? el("p", { class: "alert" }, "Η αγγελία είναι «σε διαδικασία προσφοράς» στο Intrum: κάποιος έχει ήδη κάνει προσφορά και μπορεί να κλείσει σύντομα.") : null,
+    c.shaky ? el("p", { class: "alert" }, `Αβέβαια νούμερα: ${why.join("· ")}. Μην τα εμπιστευτείς πριν το ελέγξεις.`) : null,
+    el("div", { class: "facts" + (c.shaky ? " shaky" : "") },
       el("div", { class: "fact" }, el("span", { class: "eyebrow" }, "Κέρδος"), el("b", { class: c.profit > 0 ? "pos" : "neg" }, eur(c.profit))),
-      el("div", { class: "fact" }, el("span", { class: "eyebrow" }, "ROI"), el("b", { class: c.roi > 0 ? "pos" : "neg" }, pct(c.roi)), el("span", { class: "note" }, `${pct(c.annual)} ετήσιο`)),
-      el("div", { class: "fact" }, el("span", { class: "eyebrow" }, "Μέγ. προσφορά"), el("b", {}, c.maxOffer > 0 ? eur(c.maxOffer) : "—"), el("span", { class: "note" }, `για ROI ${pn(S.targetRoi)}%`))),
+      el("div", { class: "fact" }, el("span", { class: "eyebrow" }, S.loanPct > 0 ? "ROI ιδίων" : "ROI"), el("b", { class: c.roi > 0 ? "pos" : "neg" }, pct(c.roi)), c.shaky ? null : el("span", { class: "note" }, `${pct(c.annual)} ετήσιο`)),
+      el("div", { class: "fact" }, el("span", { class: "eyebrow" }, "Μέγ. προσφορά"), el("b", {}, offerText(c)), el("span", { class: "note" }, `για ROI ${pn(S.targetRoi)}%`))),
     c.safety != null ? el("p", { class: "note" }, c.safety > 0 ? `Αντοχή: η τιμή πώλησης μπορεί να πέσει έως ${Math.round(c.safety * 100)}% (στα ${eur(c.arv * (1 - c.safety))}) πριν μπεις μέσα.` : "Αντοχή: με αυτές τις τιμές δεν υπάρχει περιθώριο· ήδη ζημιά.") : null,
     el("div", { class: "liqbox " + c.liq.level },
       el("div", {}, el("span", { class: "eyebrow" }, "Ρευστότητα"), " ", el("b", {}, `${c.liq.score}/100 · ${LIQ_LABEL[c.liq.level]}`), el("span", { class: "note" }, ` · πώληση σε ~${c.liq.months} μήνες · βαθμός ευκαιρίας ${c.score ?? "—"}/100`)),
@@ -802,7 +864,10 @@ function summaryNodes(c) {
       [`Κόστη αγοράς (${pn(S.buyPct)}% + €${nf.format(S.buyFixed)})`, eur(c.buyCost)],
       o.reno != null ? ["Ανακαίνιση (δική σου τιμή)", eur(c.renoTot)] : [`Ανακαίνιση: ${COND_LABEL[c.cond]} (${c.condWhy}) €${nf.format(c.renoPsm)}/m² + ${pn(S.contingency)}% απρόβλεπτα`, eur(c.renoTot)],
       [`Κράτηση ${pn(c.months)} μήνες (${pn(S.renoMonths)} έργο + ${pn(c.liq.months)} πώληση)`, eur(c.hold)],
-      ["Συνολική επένδυση", eur(c.invested), true],
+      c.F && c.F.loan ? [`Τόκοι δανείου ${eur(c.F.loan)} (${pn(S.loanRate)}% για ${pn(c.months)} μήνες) + έξοδα ${pn(S.loanFees)}%`, eur(c.F.interest + c.F.loanFee)] : null,
+      c.F && c.F.loan ? ["Συνολικό κόστος", eur(c.F.cost)] : null,
+      c.F && c.F.loan ? ["Μείον δάνειο", "−" + eur(c.F.loan)] : null,
+      [c.F && c.F.loan ? "Δικά σου χρήματα" : "Συνολική επένδυση", eur(c.invested), true],
       o.arv != null ? ["Τιμή πώλησης (δική σου)", eur(c.arv)] : [`Τιμή πώλησης: €${num(c.arvPsm)}/m² × ${num(c.effSqm)} m²`, eur(c.arvAsk)],
       o.arv == null && S.sellNeg ? [`Διαπραγμάτευση στην πώληση −${pn(S.sellNeg)}%`, "−" + eur(c.arvAsk - c.arv)] : null,
       [`Κόστη πώλησης`, "−" + eur(c.sellCost)],
@@ -893,7 +958,7 @@ function drawMap() {
     if (c.l.lat == null) continue;
     pts.push([c.l.lat, c.l.lng]);
     L.circleMarker([c.l.lat, c.l.lng], { radius: 6, weight: 1, color: "#fff", fillColor: color(c.roi), fillOpacity: 0.9 })
-      .bindTooltip(`${c.l.title}<br>${eur(c.l.price)} · ROI ${pct(c.roi)}`).on("click", () => openDrawer(c)).addTo(layer);
+      .bindTooltip(el("span", {}, c.l.title, el("br"), `${eur(c.l.price)} · ROI ${pct(c.roi)}`)).on("click", () => openDrawer(c)).addTo(layer);
   }
   setTimeout(() => { map.invalidateSize(); if (pts.length) map.fitBounds(pts, { padding: [30, 30], maxZoom: 13 }); }, 50);
 }
@@ -919,12 +984,15 @@ $("export").addEventListener("click", () => {
   const esc = (v) => `"${String(v ?? "").replace(/"/g, '""')}"`;
   download(`flip-${new Date().toISOString().slice(0, 10)}.csv`, "﻿" + cols.map(([h]) => esc(h)).join(";") + "\n" + ROWS.map((c) => cols.map(([, f]) => esc(f(c))).join(";")).join("\n"), "text/csv;charset=utf-8");
 });
-$("cfg-export").addEventListener("click", () => download("flip-ρυθμίσεις.json", JSON.stringify({ assumptions: S, arv: ARV, overrides: OVR }, null, 1), "application/json"));
+$("cfg-export").addEventListener("click", () => download("flip-ρυθμίσεις.json", JSON.stringify({ v: SETTINGS_VERSION, assumptions: changedSettings(), arv: ARV, overrides: OVR }, null, 1), "application/json"));
 $("cfg-import-btn").addEventListener("click", () => $("cfg-import").click());
 $("cfg-import").addEventListener("change", async (e) => {
   try {
     const j = JSON.parse(await e.target.files[0].text());
-    Object.assign(S, DEFAULTS, j.assumptions || {});
+    if (!j || typeof j !== "object" || Array.isArray(j)) throw new Error("bad");
+    const ja = { ...(j.assumptions || {}) };
+    for (const k of Object.keys(ja)) if (!(k in DEFAULTS) || !isFinite(+ja[k]) || (j.v !== SETTINGS_VERSION && ja[k] === LEGACY_DEFAULTS[k])) delete ja[k]; else ja[k] = +ja[k];
+    Object.assign(S, DEFAULTS, ja);
     for (const k of Object.keys(ARV)) delete ARV[k];
     Object.assign(ARV, j.arv || {});
     for (const k of Object.keys(OVR)) delete OVR[k];
@@ -941,7 +1009,7 @@ for (const id of FILTER_IDS) {
   $(id).addEventListener($(id).type === "checkbox" || $(id).tagName === "SELECT" ? "change" : "input", () => { shown = 100; persist(); render(); });
 }
 $("f-reset").addEventListener("click", () => {
-  for (const id of FILTER_IDS) { if ($(id).type === "checkbox") $(id).checked = id === "f-showground"; else $(id).value = ""; }
+  for (const id of FILTER_IDS) { if ($(id).type === "checkbox") $(id).checked = id === "f-showground" || id === "f-showoffer"; else $(id).value = ""; }
   excludedRegions.clear(); shown = 100; persist(); render();
 });
 
@@ -958,6 +1026,8 @@ fetch("data/arv-defaults.json", { cache: "no-cache" }).then((r) => r.ok ? r.json
   const withDetail = DATA.filter((l) => l.detailFetchedAt).length;
   $("sub").textContent = `Κατοικίες προς πώληση από Intrum · ${nf.format(DATA.length)} αγγελίες · ενημέρωση ${updatedAt ? new Date(updatedAt).toLocaleString("el-GR", { dateStyle: "medium", timeStyle: "short" }) : "—"}` +
     (withDetail < DATA.length ? ` · αναλυτικά στοιχεία για ${nf.format(withDetail)}` : "");
+  const age = updatedAt ? Math.floor((Date.now() - Date.parse(updatedAt)) / 864e5) : null;
+  if (age != null && age >= 7) $("sub").append(" · ", el("span", { class: "stale" }, `⚠ τα δεδομένα είναι ${age} ημερών: τρέξε ανανέωση`));
   buildAuto(); buildRegions(); renderAssumptions(); renderArv(); render();
 }).catch((e) => {
   $("sub").textContent = "Δεν φορτώθηκαν οι αγγελίες";
