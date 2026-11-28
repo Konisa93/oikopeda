@@ -188,6 +188,23 @@ function ringPrism(outer, inner, h, mat, y0, parent = mass, shadow = false) {
 }
 function pointIn(pt, poly) { let c = false; for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) { const a = poly[i], b = poly[j]; if ((a[1] > pt[1]) !== (b[1] > pt[1]) && pt[0] < (b[0] - a[0]) * (pt[1] - a[1]) / (b[1] - a[1]) + a[0]) c = !c; } return c; }
 function resample(p, step) { const out = []; let carry = 0; for (let i = 0; i < p.length; i++) { const a = p[i], b = p[(i + 1) % p.length], L = Math.hypot(b[0] - a[0], b[1] - a[1]); if (L < 1e-6) continue; const ang = Math.atan2(b[1] - a[1], b[0] - a[0]); let s = carry; while (s < L) { out.push([[a[0] + (b[0] - a[0]) * s / L, a[1] + (b[1] - a[1]) * s / L], ang]); s += step; } carry = s - L; } return out; }
+function placePool(plot, foot, gap) {
+  let best = null, bi = 0; plot.forEach((a, i) => { const b = plot[(i + 1) % plot.length], L = Math.hypot(b[0] - a[0], b[1] - a[1]); if (L > bi) { bi = L; best = [(b[0] - a[0]) / L, (b[1] - a[1]) / L]; } });
+  const inner = offsetPoly(plot, -1.2), blk = offsetPoly(foot, gap + 0.8), fc = centroid(foot);
+  const xs = plot.map(p => p[0]), ys = plot.map(p => p[1]);
+  for (const [L, W, rot] of [[10, 4, 0], [10, 4, 1], [9, 3.6, 0], [9, 3.6, 1], [8, 3.5, 0], [8, 3.5, 1], [7, 3.2, 0], [7, 3.2, 1], [6, 3, 0], [6, 3, 1]]) {
+    const d = rot ? [-best[1], best[0]] : best, n = [-d[1], d[0]];
+    let pick = null, pd = -1;
+    for (let x = Math.min(...xs); x <= Math.max(...xs); x += 0.75) for (let y = Math.min(...ys); y <= Math.max(...ys); y += 0.75) {
+      const r = [[-1, -1], [1, -1], [1, 1], [-1, 1]].map(([a, b]) => [x + d[0] * a * L / 2 + n[0] * b * W / 2, y + d[1] * a * L / 2 + n[1] * b * W / 2]);
+      const pts = r.concat(r.map((p, i) => { const q = r[(i + 1) % 4]; return [(p[0] + q[0]) / 2, (p[1] + q[1]) / 2]; }), [[x, y]]);
+      if (!pts.every(p => pointIn(p, inner)) || pts.some(p => pointIn(p, blk)) || blk.some(p => pointIn(p, r))) continue;
+      const dd = Math.hypot(x - fc[0], y - fc[1]); if (dd > pd) { pd = dd; pick = r; }
+    }
+    if (pick) return pick;
+  }
+  return null;
+}
 function tree(x, z, s = 1) { const tr = new THREE.Mesh(new THREE.CylinderGeometry(0.12 * s, 0.18 * s, 2.2 * s, 6), M.trunk); tr.position.set(x, 1.1 * s, z); tr.castShadow = true; mass.add(tr);
   const cr = new THREE.Mesh(new THREE.IcosahedronGeometry(1.6 * s, 1), M.leaf); cr.position.set(x, 2.9 * s, z); cr.scale.set(1, 0.85, 1); cr.castShadow = true; mass.add(cr); }
 function shapeOf(p) { const s = new THREE.Shape(); p.forEach((a, i) => i ? s.lineTo(a[0], -a[1]) : s.moveTo(a[0], -a[1])); s.closePath(); return s; }
@@ -227,6 +244,9 @@ const M = {
   rail: new THREE.MeshStandardMaterial({color: 0xcfe7ee, roughness: 0.05, metalness: 0.1, transparent: true, opacity: 0.28, depthWrite: false}),
   led: new THREE.MeshBasicMaterial({color: 0xffd9a0, toneMapped: false}),
   leaf: new THREE.MeshStandardMaterial({color: 0x5f7f3a, roughness: 0.95}),
+  water: new THREE.MeshBasicMaterial({color: 0x3cc6ea, toneMapped: false}),
+  stone: new THREE.MeshStandardMaterial({color: 0xece6da, roughness: 0.8}),
+  deck: new THREE.MeshStandardMaterial({color: 0xb08259, roughness: 0.75}),
   trunk: new THREE.MeshStandardMaterial({color: 0x6b5643, roughness: 0.9})
 };
 (() => { const c = document.createElement('canvas'); c.width = 64; c.height = 8; const x = c.getContext('2d'); x.fillStyle = '#000'; x.fillRect(0, 0, 64, 8); x.fillStyle = '#fff'; for (let i = 0; i < 64; i += 8) x.fillRect(i, 0, 4, 8); const tx = new THREE.CanvasTexture(c); tx.wrapS = tx.wrapT = THREE.RepeatWrapping; tx.repeat.set(6, 1);
@@ -252,7 +272,7 @@ function placeLabels() {
 }
 
 let view = 1, P = {sd: 0.8, cov: 50, lv: 3, sh: 40, ex: 25, pk: 'under', a2: '950', mode: 'anti', cost: 2500, bcost: 1100, soft: 7, cont: 5, price: 5000, ppark: 15000};
-const layers = {nb: true, old: true, plan: true, mass: true, lbl: true, dim: false};
+const layers = {nb: true, old: true, plan: true, mass: true, lbl: true, dim: false, pool: true};
 
 function drawBase() {
   clear(world); clearLabels(false);
@@ -316,7 +336,7 @@ function building() {
     const z0 = out.zone[0], z1 = out.zone[1], u = [z1[0] - z0[0], z1[1] - z0[1]], L = Math.hypot(u[0], u[1]), n = [u[0] / L, u[1] / L];
     const r0 = [z0[0] + n[0] * 1, z0[1] + n[1] * 1], r1 = [r0[0] + n[0] * 3.5, r0[1] + n[1] * 3.5];
     flat([r0, r1, [r1[0] - n[1] * 14, r1[1] + n[0] * 14], [r0[0] - n[1] * 14, r0[1] + n[0] * 14]], 0x1f5fd1, 0.22, 0.45, mass);
-    const el2 = addLabel('P ≈ ' + out.spaces, out.zone[0][0], 1, out.zone[0][1], 'st'); el2.classList.add('mass');
+    const el2 = addLabel('P ≈ ' + out.spaces, r1[0] - n[1] * 14, 1, r1[1] + n[0] * 14, 'st'); el2.classList.add('mass');
   }
   const R0 = view === 2 ? 5 : 3.2, OV = 1.7;
   const fac = roundPoly(foot, R0);
@@ -335,7 +355,12 @@ function building() {
   }
   if (pil) { insetPoly(foot, 0.6).forEach(c => prism([[c[0] - 0.25, c[1] - 0.25], [c[0] + 0.25, c[1] - 0.25], [c[0] + 0.25, c[1] + 0.25], [c[0] - 0.25, c[1] + 0.25]], pil, M.col, 0, mass)); }
   { const Ht = pil + floors * fh; ringPrism(offsetPoly(fac, 0.0), offsetPoly(fac, -0.25), 0.9, M.conc, Ht, mass, true); }
-  { const z = out.zone, zc = centroid(z); [0, Math.floor(z.length / 3), Math.floor(2 * z.length / 3)].forEach((i, k) => { const p = z[i], q = [p[0] + (zc[0] - p[0]) * 0.12, p[1] + (zc[1] - p[1]) * 0.12]; if (!pointIn(q, offsetPoly(foot, OV + 1))) tree(q[0], q[1], 0.9 + k * 0.15); }); }
+  let poolR = null; if (layers.pool && view === 1) { const pr = placePool(GEO.v1.newplot, foot, OV); poolR = pr; if (pr) {
+      prism(roundPoly(offsetPoly(pr, 1.4), 1.2), 0.12, M.deck, 0.02, mass);
+      ringPrism(roundPoly(offsetPoly(pr, 0.35), 0.6), roundPoly(pr, 0.4), 0.2, M.stone, 0.02, mass);
+      prism(roundPoly(pr, 0.4), 0.16, M.water, 0.02, mass, false);
+      const pc = centroid(pr); const el3 = addLabel('Πισίνα', pc[0], 1.5, pc[1], 'st'); el3.classList.add('mass'); } }
+  { const z = out.zone, zc = centroid(z); [0, Math.floor(z.length / 3), Math.floor(2 * z.length / 3)].forEach((i, k) => { const p = z[i], q = [p[0] + (zc[0] - p[0]) * 0.12, p[1] + (zc[1] - p[1]) * 0.12]; if (!pointIn(q, offsetPoly(foot, OV + 1)) && !(poolR && pointIn(q, offsetPoly(poolR, 2)))) tree(q[0], q[1], 0.9 + k * 0.15); }); }
   const H = pil + floors * fh; const el = addLabel(fmt(H, 1) + ' m', cc[0], H + 2, cc[1], ''); el.classList.add('mass');
   return out;
 }
@@ -345,7 +370,8 @@ function calc() {
   const zone = view === 1 ? GEO.v1.zone : N2.zc, zA = areaOf(zone), A = view === 1 ? 688.52 : N2.area, build = A * P.sd, fh = 3.2, pil = P.pk === 'pil' ? 3 : 0, HMAX = 14, maxF = Math.floor((HMAX - pil) / fh + 1e-6);
   let floors = Math.min(P.lv, maxF), fp = Math.min(zA, build / floors), capped = build / fp > floors + 0.05;
   if (capped && floors < maxF) { floors = maxF; fp = Math.min(zA, build / floors); capped = build / fp > floors + 0.05; }
-  const foot = scaleAbout(zone, Math.sqrt(fp / zA));
+  let anchor; if (view === 1 && layers.pool) { let bi = -1, bs = 1e9; zone.forEach((p, i) => { const q = zone[(i + 1) % zone.length], my = (p[1] + q[1]) / 2; if (my < bs) { bs = my; bi = i; } }); const p = zone[bi], q = zone[(bi + 1) % zone.length]; anchor = [(p[0] + q[0]) / 2, (p[1] + q[1]) / 2]; }
+  const foot = scaleAbout(zone, Math.sqrt(fp / zA), anchor || centroid(zone));
   const sell = build * (1 + P.ex / 100);
   const bA = view === 2 ? areaOf(N2.zone) : zA; const spaces = P.pk === 'under' ? Math.max(0, Math.floor(bA / 27) - 2) : Math.max(0, Math.floor((A - fp) / 25 * 0.6));
   return {A, zA: bA, build, fp, floors, fh, pil, foot, capped, maxF, H: pil + floors * fh, sell, own: sell * P.sh / 100, spaces, zone: view === 2 ? N2.zone : zone};
@@ -369,7 +395,7 @@ function panel() {
     const setMode = m => { P.mode = m; $('mAnti').setAttribute('aria-pressed', m === 'anti'); $('mSelf').setAttribute('aria-pressed', m === 'self'); update(); };
     $('mAnti').addEventListener('click', () => setMode('anti')); $('mSelf').addEventListener('click', () => setMode('self')); setMode(P.mode);
   }
-  ['nb', 'old', 'plan', 'mass', 'lbl', 'dim'].forEach(k => { const i = $('L' + k); if (!i) return; i.checked = layers[k]; i.addEventListener('change', () => { layers[k] = i.checked; drawBase(); update(); }); });
+  ['nb', 'old', 'plan', 'mass', 'lbl', 'dim', 'pool'].forEach(k => { const i = $('L' + k); if (!i) return; i.checked = layers[k]; i.addEventListener('change', () => { layers[k] = i.checked; drawBase(); update(); }); });
 }
 function controls() { return '<div class="ctl"><label for="pk">Στάθμευση</label><select id="pk" style="width:100%;min-height:44px;font:inherit;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink)"><option value="under">Υπόγειο πάρκινγκ (ισόγειο με διαμερίσματα)</option><option value="pil">Πιλοτή</option></select></div>' +
       '<div class="ctl"><label for="sd">Συντελεστής δόμησης <b id="sdv"></b></label><input type="range" id="sd" min="0.4" max="1.6" step="0.05"></div>' +
@@ -385,7 +411,7 @@ function controls() { return '<div class="ctl"><label for="pk">Στάθμευσ�
       '<label for="soft">Μελέτες, άδεια, επίβλεψη %</label><input id="soft" type="number" inputmode="decimal" step="0.5">' +
       '<label for="cont">Απρόβλεπτα %</label><input id="cont" type="number" inputmode="decimal" step="0.5"></div>' +
       '<div class="kpi" id="kpi"></div><ul class="res" id="eres"></ul><p class="small" style="margin:8px 0 0">Χωρίς εισφορά σε χρήμα, χρηματοδότηση, φόρους και μεσιτικά. Η τιμή πώλησης είναι δική σου εκτίμηση.</p></div>' + toggles(); }
-function toggles() { return '<div class="chk"><label><input type="checkbox" id="Lold">Σήμερα</label><label><input type="checkbox" id="Lplan">Νέο σχέδιο</label><label><input type="checkbox" id="Lnb">Γειτονικά</label>' + '<label><input type="checkbox" id="Lmass">Πολυκατοικία</label><label><input type="checkbox" id="Llbl">Ετικέτες</label><label><input type="checkbox" id="Ldim">Διαστάσεις</label>' + '</div>'; }
+function toggles() { return '<div class="chk"><label><input type="checkbox" id="Lold">Σήμερα</label><label><input type="checkbox" id="Lplan">Νέο σχέδιο</label><label><input type="checkbox" id="Lnb">Γειτονικά</label>' + '<label><input type="checkbox" id="Lmass">Πολυκατοικία</label><label><input type="checkbox" id="Lpool">Πισίνα</label><label><input type="checkbox" id="Llbl">Ετικέτες</label><label><input type="checkbox" id="Ldim">Διαστάσεις</label>' + '</div>'; }
 
 function update() {
   const o = building();
