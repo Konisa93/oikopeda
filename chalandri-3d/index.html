@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Οικόπεδα Χαλάνδρι 3D</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+/* VOICE: μελέτη αρχιτεκτονικού γραφείου για ιδιοκτήτη και κατασκευαστή: ήρεμη, ακριβής, χωρίς θόρυβο.
+   IDEA: η «μακέτα» πάνω στην αεροφωτογραφία, όπως στο τραπέζι μιας παρουσίασης ακινήτου.
+   PICTURE: λευκός όγκος με σκιές του ήλιου πάνω σε ευθυγραμμισμένη αεροφωτογραφία, όρια οικοπέδων σε χρώμα.
+   COLOUR and TYPE: ανθρακί σκούρο πλαίσιο, λευκό χαρτί, πορτοκαλί για το νέο οικόπεδο, κόκκινο για το σημερινό· Archivo.
+   LAYOUT: τίτλος, μεγάλη σκηνή με πάνελ δεξιά, από κάτω φύλλο στοιχείων για κατασκευαστή. */
+:root{color-scheme:light dark;--bg:light-dark(#f7f6f2,#121314);--ink:light-dark(#17181a,#ecebe6);--mute:light-dark(#5e6166,#a3a6ab);--line:light-dark(#dedad0,#2f3236);--card:light-dark(#fff,#1b1d20);--org:#f07a2e;--red:#e0313b;--grn:#2fb35a;--acc:#1f5fd1}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Archivo,system-ui,sans-serif;overflow-x:clip}
+.band{padding:clamp(18px,3vw,36px) max(4vw,16px);max-width:1360px;margin:0 auto}
+h1{font-size:clamp(28px,4vw,46px);line-height:1.05;margin:0 0 8px;font-weight:800;text-wrap:balance}
+h2{font-size:20px;margin:0 0 10px}
+.lede{color:var(--mute);margin:0;max-width:72ch}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:16px 0 12px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--card)}
+.seg button{font:inherit;font-size:15px;min-height:44px;padding:0 16px;border:0;background:none;color:var(--ink);cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--ink);color:var(--bg)}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 350px;gap:16px}
+.stage{position:relative;height:clamp(460px,68vh,760px);border-radius:14px;overflow:hidden;background:#20242a}
+.stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.labels{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.lb{position:absolute;transform:translate(-50%,-100%);white-space:nowrap;font-size:12px;font-weight:700;padding:2px 8px;border-radius:999px;background:rgba(255,255,255,.94);color:#17181a;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.lb::after{content:"";position:absolute;left:50%;top:100%;width:1px;height:8px;background:rgba(255,255,255,.9)}.lb.hide{visibility:hidden}
+.lb.org{background:var(--org);color:#fff}.lb.red{background:var(--red);color:#fff}.lb.grn{background:#1d8a45;color:#fff}
+.lb.st{background:rgba(23,24,26,.78);color:#fff;font-weight:500;border-radius:6px}.lb.st::after{display:none}
+.lb.dim{background:rgba(255,255,255,.88);color:#17181a;font-weight:500;font-size:11px;border-radius:4px;transform:translate(-50%,-50%)}.lb.dim::after{display:none}
+.hud{position:absolute;left:12px;right:12px;top:12px;display:flex;justify-content:space-between;gap:8px;pointer-events:none}
+.hud>*{pointer-events:auto}
+.views{display:flex;gap:6px;flex-wrap:wrap}
+.views button{font:inherit;font-size:13px;min-height:36px;padding:0 12px;border-radius:8px;border:0;background:rgba(18,19,21,.72);color:#fff;cursor:pointer}
+.views button:hover{background:rgba(18,19,21,.9)}
+.north{width:44px;height:44px;border-radius:50%;background:rgba(18,19,21,.72);display:grid;place-items:center}
+.north svg{width:30px;height:30px;transition:transform .05s}
+.sun{position:absolute;left:12px;right:12px;bottom:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:rgba(18,19,21,.72);color:#fff;border-radius:10px;padding:6px 12px;font-size:13px}
+.sun input[type=range]{flex:1;min-width:120px;accent-color:var(--org);height:28px}
+.sun select{font:inherit;font-size:13px;background:transparent;color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:6px;min-height:30px}
+.sun select option{color:#000}
+.attr{position:absolute;right:10px;bottom:62px;font-size:11px;color:rgba(255,255,255,.75)}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+.ctl{margin-bottom:12px}.ctl label{display:flex;justify-content:space-between;font-size:14px;color:var(--mute);margin-bottom:2px}.ctl label b{color:var(--ink)}
+input[type=range]{width:100%;accent-color:var(--org);height:30px}
+.big{display:flex;align-items:baseline;gap:10px;margin:10px 0 0}.big b{font-size:44px;font-weight:800;line-height:1}.big span{color:var(--mute);font-size:14px}
+.res{list-style:none;padding:0;margin:10px 0 0;font-size:14px}
+.res li{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-top:1px solid var(--line)}
+.res li span:last-child{font-weight:700;white-space:nowrap;text-align:right}.res li span:first-child{min-width:0}
+.warn{font-size:13px;color:var(--red);margin-top:8px}
+.chk{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:14px;margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}
+.chk label{display:flex;gap:6px;align-items:center;min-height:30px;cursor:pointer}.chk input{width:18px;height:18px;accent-color:var(--ink)}
+.note{font-size:14px;margin:0 0 10px}
+.facts{padding-left:18px;margin:0;font-size:14px}.facts li{margin-bottom:7px}
+.sheet{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px}
+.sheet .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+table{width:100%;border-collapse:collapse;font-size:15px}
+td,th{padding:7px 0;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+td:last-child{text-align:right;font-weight:600}
+.tag{display:inline-block;font-size:12px;padding:2px 8px;border-radius:999px;background:light-dark(#fde7d8,#3a2618);color:light-dark(#9a3f0a,#f6b58a);font-weight:600}
+.q{margin:12px 0 0;padding-left:18px;font-size:14px}.q li{margin-bottom:6px}
+.small{font-size:13px;color:var(--mute)}
+.btn{font:inherit;font-size:15px;min-height:44px;padding:0 16px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+.econ{margin-top:14px;padding-top:12px;border-top:2px solid var(--ink)}
+.econ h3{font-size:16px;margin:0 0 8px}
+.mode{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-bottom:10px}
+.mode button{font:inherit;font-size:14px;min-height:40px;border:0;background:none;color:var(--ink);cursor:pointer}
+.mode button[aria-pressed=true]{background:var(--org);color:#fff}
+.inp{display:grid;grid-template-columns:minmax(0,1fr) 108px;gap:6px 8px;align-items:center;font-size:13px;color:var(--mute);margin-bottom:8px}
+.inp input{font:inherit;font-size:16px;width:100%;min-height:38px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);padding:0 8px;text-align:right}
+.kpi{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}
+.kpi div{background:var(--bg);border-radius:8px;padding:8px 10px}.kpi span{display:block;font-size:12px;color:var(--mute)}.kpi b{font-size:16px;white-space:nowrap}.kpi i{display:block;font-style:normal;font-size:12px;font-weight:600}
+.pos{color:#1d8a45}.neg{color:var(--red)}
+@media(max-width:960px){.grid{grid-template-columns:minmax(0,1fr)}.sheet{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:600px){.views button{font-size:12px;padding:0 9px}.stage{height:440px}}
+@media print{.stage,.bar,.panel,.noprint{display:none!important}.grid{display:block}body{background:#fff;color:#000}}
+</style>
+</head>
+<body>
+<div class="band">
+<h1>Τα οικόπεδα στο Χαλάνδρι, σε 3D</h1>
+<p class="lede">Αεροφωτογραφία και όρια Κτηματολογίου σε ΕΓΣΑ87, με το νέο σχέδιο Πεύκο Πολίτη από πάνω. Κόκκινο: το οικόπεδο σήμερα. Πορτοκαλί: το νέο οικόπεδο. Λευκός όγκος: η πολυκατοικία που χωράει.</p>
+<div class="bar">
+<div class="seg" role="group" aria-label="Οικόπεδο"><button id="t1" aria-pressed="true">Οικόπεδο 1 · Καμάρι / Έβρου</button><button id="t2" aria-pressed="false">Οικόπεδο 2 · Αγράφων / Αστυπαλαίας</button></div>
+</div>
+<div class="grid">
+<div class="stage" id="stage">
+<canvas id="cv"></canvas>
+<div class="labels" id="labels"></div>
+<div class="hud">
+<div class="views" role="group" aria-label="Θέσεις κάμερας"><button data-v="persp">3/4 προοπτικό</button><button data-v="top">Κάτοψη</button><button data-v="street">Από τον δρόμο</button><button data-v="far">Γειτονιά</button></div>
+<div class="north" title="Βορράς"><svg id="nsvg" viewBox="0 0 30 30" aria-label="Βορράς"><path d="M15 3 L20 17 L15 14 L10 17 Z" fill="#fff"/><text x="15" y="27" text-anchor="middle" font-size="9" font-family="Archivo" font-weight="700" fill="#fff">Β</text></svg></div>
+</div>
+<div class="attr">Αεροφωτογραφία: Esri World Imagery · Όρια: Κτηματολόγιο</div>
+<div class="sun">
+<span>Ήλιος</span>
+<select id="season" aria-label="Εποχή"><option value="172">21 Ιουνίου</option><option value="80">21 Μαρτίου</option><option value="355">21 Δεκεμβρίου</option></select>
+<input type="range" id="hour" min="7" max="20" step="0.25" value="15" aria-label="Ώρα">
+<b id="hourv">15:00</b>
+</div>
+</div>
+<div class="panel" id="panel"></div>
+</div>
+</div>
+
+<div class="band">
+<h2>Φύλλο στοιχείων για κατασκευαστή</h2>
+<p class="small noprint" style="margin:0 0 14px">Με τις τιμές που έχεις τώρα στο πάνελ. <button class="btn" id="printb" style="min-height:34px;margin-left:8px">Εκτύπωση / PDF</button></p>
+<div class="sheet" id="sheet"></div>
+<p class="small" style="margin-top:16px">Πηγές: όρια γεωτεμαχίων από τον ψηφιακό χάρτη του Κτηματολογίου (ακριβή, ΕΓΣΑ87). Νέα οικοδομικά τετράγωνα από το ρυμοτομικό του Δήμου Χαλανδρίου, ευθυγραμμισμένα στο Κτηματολόγιο (ακρίβεια περίπου 2 m). Συντελεστής 0,8 και ύψος 14 m από τον ιδιοκτήτη. Πλάγιες αποστάσεις 3 m και πρασιά 4 m: παραδοχές μέχρι την επιβεβαίωση από μηχανικό. Δεν αποτελεί τεχνική μελέτη.</p>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+{
+const GEO = {"meta": {"crs": "ΕΓΣΑ87 (EPSG:2100)", "note": "Τοπικές συντεταγμένες σε μέτρα: x ανατολικά, y νότια, από το origin (ΕΓΣΑ87). Όρια παλιών γεωτεμαχίων: Κτηματολόγιο (maps.ktimatologio.gr). Νέα Ο.Τ. και οικόπεδο 02: ρυμοτομικό δήμου, ευθυγραμμισμένο στα όρια του Κτηματολογίου (ακρίβεια ~2 m)."}, "v1": {"origin": [1325.6507409825483, 1103.2588328095937], "block": [[-1.53, -18.3], [82.22, 37.57], [82.74, 44.11], [53.83, 50.56], [-18.51, 5.62]], "buildline": [[-0.52, -12.82], [78.39, 39.82], [78.48, 40.96], [54.56, 46.3], [-12.78, 4.47]], "newplot": [[-1.53, -18.3], [18.66, -4.83], [1.33, 17.94], [-18.51, 5.62]], "zone": [[1.2, 13.15], [-12.78, 4.47], [-0.52, -12.82], [13.73, -3.31]], "old": [[82.22, 37.57], [74.8, 43.84], [-9.62, -7.69], [-2.6, -16.82], [-1.53, -18.3]], "big": [[183.18, -19.78], [204.91, -4.94], [258.93, 32.13], [111.07, 67.03], [96.25, 70.49], [-17.65, 2.76], [-9.62, -7.69], [74.8, 43.84], [82.22, 37.57], [94.55, 27.2], [98.8, 29.86], [107.74, 16.08], [108.84, 15.16], [131.53, -3.98], [145.04, -15.06], [156.16, -24.53], [165.59, -32.42], [166.35, -33.06], [167.57, -31.9], [173.89, -26.16]], "neighbors": [{"p": [[6.35, -33.74], [16.35, -27.24], [8.35, -15.74], [-8.65, -26.74], [-0.65, -38.74]]}, {"p": [[97.35, 9.26], [87.85, 22.26], [78.85, 15.76], [88.85, 2.76]]}, {"p": [[136.35, -38.24], [121.35, -50.24], [129.85, -61.24], [144.35, -49.24]]}, {"p": [[13.35, 68.76], [3.85, 84.26], [-7.15, 77.76], [2.35, 62.26]]}, {"p": [[156.35, -24.74], [144.85, -15.24], [132.85, -24.74], [141.85, -36.24]]}, {"p": [[121.35, -50.24], [136.85, -37.74], [129.85, -26.74], [97.35, -50.24], [106.35, -62.24]]}, {"p": [[144.85, -15.24], [131.35, -3.74], [122.35, -11.24], [132.85, -24.74]]}, {"p": [[112.35, -39.24], [101.35, -25.74], [86.35, -37.24], [97.35, -50.24]]}, {"p": [[162.85, -71.24], [151.35, -56.74], [141.35, -65.24], [152.85, -79.24]]}, {"p": [[-24.15, 43.76], [-19.65, 46.76], [-30.15, 64.26], [-44.65, 55.76], [-34.15, 37.76]]}, {"p": [[-6.65, -63.74], [-16.65, -49.74], [-28.15, -57.24], [-18.65, -71.24]]}, {"p": [[16.35, -47.74], [6.35, -33.74], [-5.15, -41.74], [4.85, -55.74]]}, {"p": [[26.35, -41.24], [16.35, -27.24], [6.35, -33.74], [16.35, -47.74]]}, {"p": [[-45.65, 100.76], [-52.15, 96.76], [-45.15, 83.26], [-32.15, 90.76], [-30.65, 92.76], [-33.65, 100.76], [-42.65, 102.76]]}, {"p": [[11.35, 89.26], [3.85, 84.26], [13.35, 68.76], [39.35, 84.26], [14.35, 90.76]]}, {"p": [[90.85, -52.74], [81.35, -40.74], [65.85, -51.74], [75.35, -63.74]]}, {"p": [[165.35, -32.24], [156.35, -24.74], [141.85, -36.24], [149.35, -45.24]]}, {"p": [[43.35, -28.74], [33.35, -15.24], [16.35, -27.24], [27.85, -43.24], [44.85, -30.74]]}, {"p": [[-34.65, 61.76], [-43.15, 76.26], [-53.65, 70.76], [-44.65, 55.76]]}, {"p": [[33.35, -14.74], [50.35, -2.24], [43.35, 7.76], [25.35, -4.74]]}, {"p": [[-18.15, 33.76], [-24.15, 43.76], [-48.65, 29.26], [-43.15, 19.26]]}, {"p": [[129.85, -61.24], [121.35, -50.24], [106.35, -62.24], [115.35, -73.24]]}, {"p": [[66.85, 7.76], [76.35, 14.76], [68.85, 25.26], [55.85, 16.26], [63.85, 6.26]]}, {"p": [[107.85, 16.26], [98.85, 29.76], [87.85, 22.26], [97.35, 9.26]]}, {"p": [[-28.15, -57.24], [-26.65, -56.24], [-34.65, -43.74], [-47.15, -52.24], [-38.65, -65.24]]}, {"p": [[33.35, -15.24], [25.35, -4.74], [8.35, -15.74], [16.35, -27.24]]}, {"p": [[59.85, -17.24], [49.85, -3.24], [33.35, -14.74], [43.35, -28.74]]}, {"p": [[88.85, 2.76], [78.85, 15.76], [66.85, 7.76], [76.85, -5.74]]}, {"p": [[78.85, 15.76], [93.35, 26.26], [82.85, 35.26], [68.85, 25.26], [76.35, 14.76]]}, {"p": [[-9.65, 55.26], [-18.65, 71.26], [-30.15, 64.26], [-20.65, 48.76]]}, {"p": [[96.35, 70.26], [80.85, 74.26], [-24.15, 11.26], [-17.65, 2.76]]}, {"p": [[101.35, -25.74], [119.35, -12.74], [108.35, 2.26], [82.35, -16.24], [92.85, -32.24]]}, {"p": [[2.35, 62.26], [-7.15, 77.76], [-18.65, 71.26], [-9.65, 55.26]]}, {"p": [[-34.15, 37.76], [-40.15, 47.76], [-53.65, 39.76], [-53.65, 38.26], [-48.15, 29.26]]}, {"p": [[-45.15, 83.26], [-52.15, 96.76], [-66.65, 88.26], [-58.65, 74.76]]}, {"p": [[-43.15, 19.26], [-49.15, 28.76], [-61.65, 21.26], [-51.65, 4.26], [-39.15, 12.26]]}, {"p": [[76.85, -5.74], [66.85, 7.76], [49.85, -3.24], [59.85, -17.24]]}, {"p": [[4.85, -55.74], [-5.15, -41.74], [-16.65, -49.74], [-6.65, -63.74]]}, {"p": [[-16.65, -49.74], [-0.65, -38.74], [-8.65, -26.74], [-34.65, -43.74], [-26.65, -56.24]]}, {"p": [[-40.15, 47.76], [-47.65, 60.76], [-61.15, 52.26], [-53.65, 39.76]]}, {"p": [[127.85, -27.74], [116.85, -14.74], [101.35, -25.74], [112.35, -39.24]]}, {"p": [[54.85, 80.26], [39.85, 83.26], [18.85, 70.26], [24.85, 60.76]]}, {"p": [[-40.65, -66.24], [-38.65, -65.24], [-47.15, -52.24], [-55.15, -57.74], [-46.65, -70.24]]}, {"p": [[132.85, 79.76], [120.35, 84.26], [107.85, 85.76], [96.35, 88.76], [83.35, 94.76], [81.35, 94.26], [67.85, 96.26], [39.85, 103.76], [33.85, 103.26], [32.35, 98.76], [129.35, 74.76]]}, {"p": [[-30.15, 64.26], [11.35, 89.26], [-14.65, 95.26], [-44.15, 77.76], [-34.65, 61.76]]}, {"p": [[75.35, -63.74], [84.35, -75.24], [90.35, -70.24], [101.35, -84.74], [110.35, -76.74], [90.85, -52.74]]}, {"p": [[63.85, 6.26], [55.85, 16.26], [43.35, 7.76], [50.35, -2.24]]}, {"p": [[24.85, 60.76], [18.85, 70.26], [-24.15, 43.76], [-18.15, 33.76]]}, {"p": [[65.85, -51.74], [92.85, -32.24], [82.35, -16.24], [57.85, -33.24], [48.85, -41.24], [45.85, -55.24], [51.35, -61.24]]}, {"p": [[75.35, -63.74], [65.85, -51.74], [51.35, -61.24], [61.85, -73.74]]}], "streets": [{"name": "Καμάρι (πεζόδρομος)", "p": [[-1.53, -18.3], [82.22, 37.57], [86.66, 30.91], [2.91, -24.96]]}, {"name": "Έβρου", "p": [[53.83, 50.56], [-18.51, 5.62], [-23.78, 14.12], [48.56, 59.05]]}], "areas": {"old": 1126.16, "new": 688.52, "zone": 351.0, "block": 2679.7, "big": 10456.4}}, "v2": {"origin": [1016.8288404986447, 860.887230646589], "block": [[-136.9, -23.4], [-105.96, -30.59], [-60.97, -40.44], [-6.77, -18.32], [-7.23, 25.19], [-21.77, 20.8], [-34.08, 17.08], [-47.28, 13.24], [-60.93, 9.16], [-74.13, 4.87], [-86.43, 0.7], [-99.85, -3.82], [-109.57, -8.18], [-136.41, -17.44]], "old": [[-52.33, -21.69], [-37.86, -16.83], [-37.16, -18.51], [-33.19, -17.16], [-21.96, -13.35], [-19.17, -12.33], [-11.14, -9.28], [8.18, -2.65], [26.73, 3.57], [29.88, 4.61], [41.68, 8.53], [41.36, 9.4], [68.9, 21.17], [94.57, 31.44], [92.27, 37.07], [86.86, 35.15], [80.06, 32.64], [71.79, 29.6], [60.03, 25.36], [60.21, 24.79], [43.45, 18.75], [43.29, 19.33], [29.75, 14.46], [16.86, 10.05], [5.93, 6.24], [-15.24, -1.53], [-22.47, -3.35], [-27.25, -4.82], [-39.83, -9.38], [-53.05, -13.64], [-59.47, -15.84], [-65.83, -18.28], [-68.14, -19.01], [-78.5, -22.28], [-92.68, -27.13], [-86.11, -33.29]], "neighbors": [{"p": [[11.67, 52.89], [8.67, 63.39], [-23.83, 56.39], [-21.83, 46.89]]}, {"p": [[-29.33, 56.89], [-35.33, 81.39], [-46.33, 78.89], [-39.83, 55.39]]}, {"p": [[-37.83, 43.89], [-39.33, 52.89], [-51.83, 50.89], [-51.83, 49.89], [-64.33, 47.89], [-61.83, 37.89]]}, {"p": [[-53.83, 81.89], [-53.33, 99.39], [-64.33, 99.89], [-64.83, 80.89]]}, {"p": [[29.67, 14.39], [23.67, 33.89], [10.17, 30.39], [16.67, 9.89]]}, {"p": [[-52.83, -13.61], [-61.33, 10.39], [-73.83, 5.89], [-65.83, -18.11]]}, {"p": [[-64.83, 80.89], [-63.83, 114.39], [-95.83, 116.39], [-95.33, 96.39], [-71.83, 78.89], [-64.83, 79.89]]}, {"p": [[-51.83, 50.89], [-39.33, 52.89], [-46.33, 78.89], [-61.33, 76.89], [-55.83, 49.89]]}, {"p": [[-23.83, 56.39], [-12.83, 58.89], [-18.83, 84.39], [-35.33, 81.39], [-28.83, 55.39]]}, {"p": [[-43.33, 82.39], [-42.33, 110.39], [-52.83, 110.39], [-53.83, 81.39]]}, {"p": [[16.67, 9.89], [10.17, 30.39], [-0.83, 27.89], [6.17, 6.39]]}, {"p": [[121.17, 30.89], [118.67, 41.39], [112.67, 44.89], [92.17, 36.89], [98.17, 21.39]]}, {"p": [[0.67, 31.89], [-2.83, 44.39], [-61.33, 29.39], [-56.83, 15.39]]}, {"p": [[87.67, 58.39], [72.17, 65.89], [-2.83, 44.39], [0.67, 31.89]]}, {"p": [[-72.33, 46.39], [-71.33, 48.89], [-75.83, 73.89], [-77.83, 75.39], [-96.33, 72.89], [-90.33, 43.39]]}, {"p": [[-15.33, -1.61], [-22.33, 21.39], [-34.33, 18.39], [-27.33, -4.61]]}, {"p": [[-61.83, 37.89], [-64.33, 47.89], [-88.83, 41.39], [-86.33, 32.39]]}, {"p": [[-100.83, -3.11], [-138.33, -16.11], [-92.83, -27.11]]}, {"p": [[-86.33, 32.39], [-88.83, 42.39], [-113.33, 37.39], [-110.83, 26.89]]}, {"p": [[8.67, 63.39], [5.17, 75.39], [10.17, 76.39], [7.17, 89.39], [-9.33, 85.89], [-3.33, 60.89]]}, {"p": [[60.17, 25.39], [54.17, 43.89], [38.17, 38.39], [43.67, 18.89]]}, {"p": [[-94.33, 20.39], [-29.83, 37.39], [-31.33, 44.89], [-140.33, 19.39], [-136.33, 6.89], [-122.83, 12.39]]}, {"p": [[30.67, -6.11], [26.67, 3.39], [8.17, -2.61], [10.67, -12.61]]}, {"p": [[45.17, -1.11], [41.67, 8.39], [26.67, 3.39], [30.67, -6.61]]}, {"p": [[-55.83, 49.89], [-61.33, 76.89], [-73.83, 75.39], [-68.83, 47.39]]}, {"p": [[-71.83, 78.89], [-95.33, 96.39], [-94.33, 76.89]]}, {"p": [[50.17, -55.61], [43.67, -44.61], [12.17, -57.61], [33.17, -62.61]]}, {"p": [[-18.83, -23.11], [-21.83, -13.11], [-37.33, -18.61], [-33.33, -28.61]]}, {"p": [[91.67, 92.39], [105.17, 103.39], [91.17, 111.89], [56.17, 92.89], [55.17, 88.39], [73.67, 78.39]]}, {"p": [[19.67, 92.39], [7.17, 89.39], [10.17, 76.39], [23.17, 79.89]]}, {"p": [[-2.83, 44.39], [13.17, 48.39], [11.67, 52.89], [-31.33, 44.89], [-29.83, 37.39]]}, {"p": [[45.67, 75.89], [45.17, 77.89], [19.67, 92.39], [23.17, 79.89], [5.17, 75.39], [8.67, 63.39], [46.67, 71.89]]}, {"p": [[98.17, 21.39], [94.67, 31.39], [68.67, 21.39], [74.17, 11.39]]}, {"p": [[72.17, 65.89], [65.17, 69.89], [11.67, 52.89], [13.17, 48.39]]}, {"p": [[92.17, 36.89], [112.67, 44.89], [92.17, 55.39], [67.67, 47.89], [73.17, 30.39]]}, {"p": [[65.17, 69.89], [54.17, 75.89], [49.67, 76.89], [45.67, 75.89], [46.67, 71.89], [8.67, 63.39], [11.67, 53.39]]}, {"p": [[-89.33, 4.89], [-94.33, 20.39], [-122.83, 12.39], [-176.33, -8.61], [-150.83, -16.61]]}, {"p": [[73.17, 30.39], [67.67, 47.89], [54.17, 43.89], [60.17, 25.39]]}, {"p": [[10.67, -12.61], [8.17, -2.61], [-21.83, -13.11], [-18.83, -23.11]]}, {"p": [[43.17, 19.39], [38.17, 38.39], [23.67, 33.89], [29.67, 14.39]]}, {"p": [[-33.33, -28.61], [-37.83, -16.61], [-52.33, -21.61], [-47.33, -33.61]]}, {"p": [[-56.83, 15.39], [-61.83, 29.39], [-78.33, 24.89], [-73.83, 9.89]]}, {"p": [[118.67, -39.11], [114.17, -28.11], [101.17, -33.11], [106.17, -44.11]]}, {"p": [[74.17, 11.39], [68.67, 21.39], [41.17, 9.39], [45.17, -1.11]]}, {"p": [[105.67, -43.11], [101.67, -34.61], [89.17, -40.11], [93.67, -49.11]]}, {"p": [[-78.33, -22.11], [-86.33, 1.89], [-100.83, -3.11], [-92.83, -27.11]]}, {"p": [[-39.83, -9.61], [-47.83, 14.39], [-61.33, 10.39], [-52.83, -13.61]]}, {"p": [[-27.33, -4.61], [-34.33, 18.39], [-47.83, 14.39], [-39.83, -9.61]]}, {"p": [[-47.33, -33.61], [-52.33, -21.61], [-86.83, -34.11], [-85.83, -35.11], [-64.83, -39.61]]}, {"p": [[6.17, 6.39], [-0.83, 27.89], [-22.33, 21.39], [-15.33, -1.61]]}, {"p": [[-3.33, 61.39], [-9.33, 85.89], [-18.83, 84.39], [-12.83, 58.89]]}, {"p": [[-65.83, -18.11], [-73.83, 5.89], [-86.33, 1.89], [-78.33, -22.11]]}, {"p": [[-31.33, 44.89], [-21.83, 46.89], [-23.83, 56.39], [-28.83, 55.39], [-29.33, 56.89], [-39.83, 55.39], [-37.83, 43.89]]}, {"p": [[-68.83, 47.39], [-73.83, 75.39], [-77.83, 75.39], [-75.83, 73.89], [-71.33, 48.89], [-72.33, 46.39]]}, {"p": [[-138.33, -16.11], [10.17, 30.39], [92.17, 55.39], [87.67, 58.39], [-89.33, 4.89], [-150.83, -16.61]]}, {"p": [[-73.83, 9.89], [-78.33, 24.89], [-94.33, 20.39], [-89.33, 4.89]]}, {"p": [[-31.33, 84.39], [-30.33, 110.39], [-42.33, 110.39], [-43.33, 82.39]]}, {"p": [[13.67, 94.39], [-23.33, 109.39], [-30.33, 109.89], [-31.33, 84.39]]}, {"p": [[-46.33, 78.89], [7.17, 89.39], [19.67, 92.39], [13.17, 98.39], [13.67, 93.89], [-43.33, 82.39], [-64.83, 80.89], [-64.83, 79.89], [-71.83, 78.89], [-73.83, 75.39]]}, {"p": [[93.67, -49.11], [89.17, -40.11], [73.67, -46.61], [77.67, -55.61]]}, {"p": [[39.67, -61.11], [101.67, -34.61], [101.17, -33.11], [33.17, -62.61], [34.67, -63.11]]}, {"p": [[73.67, -46.61], [54.17, -55.11], [58.17, -64.11], [77.17, -55.61]]}], "streets": [{"name": "Αστυπαλαίας (πεζόδρομος)", "p": [[-60.97, -40.44], [-44.1, -43.97], [-6.4, -53.11], [-6.77, -18.32]]}, {"name": "Αλωπεκής", "p": [[-109.57, -8.18], [-99.85, -3.82], [-86.43, 0.7], [-74.13, 4.87], [-60.93, 9.16], [-47.28, 13.24], [-34.08, 17.08], [-21.77, 20.8], [-24.38, 29.41], [-36.64, 25.71], [-49.82, 21.87], [-63.61, 17.76], [-76.96, 13.41], [-89.31, 9.23], [-103.08, 4.59], [-113.26, 0.03]]}], "areas": {"old": 1590.9, "title": 1557.8, "inblock": 729.8}, "blockOpenEdge": [3, 4], "markers": [{"t": "22", "p": [-66.77, -22.32]}, {"t": "14", "p": [-112.25, -19.44]}, {"t": "25N", "p": [-102.76, -15.41]}], "new2": {"700": {"p": [[-60.97, -40.44], [-103.79, -31.07], [-57.6, -14.69], [-50.05, -35.98]], "zone": [[-59.42, -18.52], [-54.17, -33.34], [-61.33, -36.27], [-91.09, -29.75]], "area": 700, "zarea": 331, "w": 53.7}, "800": {"p": [[-60.97, -40.44], [-103.79, -31.07], [-53.4, -13.21], [-45.93, -34.3]], "zone": [[-55.23, -17.04], [-50.05, -31.66], [-61.33, -36.27], [-91.09, -29.75]], "area": 800, "zarea": 400, "w": 57.9}, "950": {"p": [[-60.97, -40.44], [-103.79, -31.07], [-47.04, -10.95], [-39.67, -31.75]], "zone": [[-48.87, -14.78], [-43.79, -29.11], [-61.33, -36.27], [-91.09, -29.75]], "area": 950, "zarea": 504, "w": 64.1}, "1100": {"p": [[-60.97, -40.44], [-103.79, -31.07], [-40.58, -8.67], [-33.32, -29.16]], "zone": [[-42.41, -12.5], [-37.44, -26.52], [-61.33, -36.27], [-91.09, -29.75]], "area": 1100, "zarea": 607, "w": 70.5}}}};
+const SAT = {1: {src: 'sat1.jpg', ext: [-120, 180, -150, 150]}, 2: {src: 'sat2.jpg', ext: [-200, 130, -140, 140]}};
+const $ = id => document.getElementById(id);
+const fmt = (n, d = 0) => n.toLocaleString('el-GR', {maximumFractionDigits: d, minimumFractionDigits: d});
+const areaOf = p => Math.abs(p.reduce((s, a, i) => { const b = p[(i + 1) % p.length]; return s + a[0] * b[1] - b[0] * a[1]; }, 0)) / 2;
+const centroid = p => { let A = 0, x = 0, y = 0; p.forEach((a, i) => { const b = p[(i + 1) % p.length], c = a[0] * b[1] - b[0] * a[1]; A += c; x += (a[0] + b[0]) * c; y += (a[1] + b[1]) * c; }); return A ? [x / (3 * A), y / (3 * A)] : p[0]; };
+const scaleAbout = (p, f, c = centroid(p)) => p.map(a => [c[0] + (a[0] - c[0]) * f, c[1] + (a[1] - c[1]) * f]);
+const insetPoly = (p, d) => { const c = centroid(p); return p.map(a => { const dx = a[0] - c[0], dy = a[1] - c[1], L = Math.hypot(dx, dy); return [a[0] - dx / L * d, a[1] - dy / L * d]; }); };
+
+const stage = $('stage'), cv = $('cv'), LBL = $('labels');
+const R = new THREE.WebGLRenderer({canvas: cv, antialias: true});
+R.setPixelRatio(Math.min(devicePixelRatio, 2));
+R.shadowMap.enabled = true; R.shadowMap.type = THREE.PCFSoftShadowMap;
+R.outputEncoding = THREE.sRGBEncoding; R.toneMapping = THREE.ACESFilmicToneMapping; R.toneMappingExposure = 0.82;
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xc9d3dc); scene.fog = new THREE.Fog(0xc9d3dc, 260, 620);
+const cam = new THREE.PerspectiveCamera(38, 1, 0.3, 3000);
+const ctl = new THREE.OrbitControls(cam, cv); ctl.enableDamping = true; ctl.dampingFactor = 0.08; ctl.maxPolarAngle = Math.PI * 0.495; ctl.minDistance = 8; ctl.maxDistance = 500;
+const hemi = new THREE.HemisphereLight(0xdfe9f5, 0x6b5e4a, 0.55); scene.add(hemi);
+const sun = new THREE.DirectionalLight(0xfff1dc, 1.6); sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048); sun.shadow.bias = -0.0004; sun.shadow.normalBias = 0.04;
+Object.assign(sun.shadow.camera, {left: -90, right: 90, top: 90, bottom: -90, near: 1, far: 600});
+scene.add(sun); scene.add(sun.target);
+
+const world = new THREE.Group(), mass = new THREE.Group(); scene.add(world); scene.add(mass);
+const tex = {}; const loader = new THREE.TextureLoader();
+function satTex(n, cb) { if (tex[n]) return cb(tex[n]); loader.load(SAT[n].src, t => { t.encoding = THREE.sRGBEncoding; t.anisotropy = R.capabilities.getMaxAnisotropy(); tex[n] = t; cb(t); }, undefined, () => cb(null)); }
+
+function shapeOf(p) { const s = new THREE.Shape(); p.forEach((a, i) => i ? s.lineTo(a[0], -a[1]) : s.moveTo(a[0], -a[1])); s.closePath(); return s; }
+function prism(p, h, mat, y0 = 0, parent = world, shadow = true) {
+  const g = new THREE.ExtrudeGeometry(shapeOf(p), {depth: h, bevelEnabled: false}); g.rotateX(-Math.PI / 2);
+  const m = new THREE.Mesh(g, mat); m.position.y = y0; m.castShadow = shadow; m.receiveShadow = true; parent.add(m); return m;
+}
+function flat(p, color, y, opacity, parent = world) {
+  const g = new THREE.ShapeGeometry(shapeOf(p)); g.rotateX(-Math.PI / 2);
+  const m = new THREE.Mesh(g, new THREE.MeshBasicMaterial({color, transparent: true, opacity, depthWrite: false, toneMapped: false})); m.position.y = y; m.renderOrder = 2; parent.add(m); return m;
+}
+function ribbon(p, color, w, y, closed = true, dashed = false, parent = world) {
+  const pts = closed ? p.concat([p[0]]) : p; const grp = new THREE.Group();
+  for (let i = 0; i < pts.length - 1; i++) {
+    const a = pts[i], b = pts[i + 1], L = Math.hypot(b[0] - a[0], b[1] - a[1]); if (L < 0.05) continue;
+    const seg = dashed ? Math.floor(L / 2.2) : 1;
+    for (let k = 0; k < seg; k++) {
+      const t0 = dashed ? k / seg : 0, t1 = dashed ? (k + 0.55) / seg : 1;
+      const ax = a[0] + (b[0] - a[0]) * t0, ay = a[1] + (b[1] - a[1]) * t0, bx = a[0] + (b[0] - a[0]) * t1, by = a[1] + (b[1] - a[1]) * t1;
+      const l = Math.hypot(bx - ax, by - ay); const m = new THREE.Mesh(new THREE.PlaneGeometry(l, w), new THREE.MeshBasicMaterial({color, depthWrite: false, toneMapped: false}));
+      m.rotation.x = -Math.PI / 2; m.rotation.z = -Math.atan2(by - ay, bx - ax); m.position.set((ax + bx) / 2, y, (ay + by) / 2); m.renderOrder = 3; grp.add(m);
+    }
+  }
+  parent.add(grp); return grp;
+}
+function clear(g) { g.traverse(o => { if (o.geometry) o.geometry.dispose(); if (o.material && o.material !== M.white && o.material !== M.glass && o.material !== M.slab && o.material !== M.col && o.material !== M.core) o.material.dispose && o.material.dispose(); }); while (g.children.length) g.remove(g.children[0]); }
+const M = {
+  white: new THREE.MeshStandardMaterial({color: 0xf4f2ee, roughness: 0.85}),
+  glass: new THREE.MeshStandardMaterial({color: 0x51606f, roughness: 0.25, metalness: 0.35}),
+  slab: new THREE.MeshStandardMaterial({color: 0xd9d6cf, roughness: 0.9}),
+  col: new THREE.MeshStandardMaterial({color: 0xe8e5df, roughness: 0.9}),
+  core: new THREE.MeshStandardMaterial({color: 0xcfcbc3, roughness: 0.9})
+};
+
+let labels = [];
+function addLabel(text, x, y, z, cls = '') { const el = document.createElement('div'); el.className = 'lb ' + cls; el.textContent = text; LBL.appendChild(el); labels.push({el, v: new THREE.Vector3(x, y, z)}); return el; }
+function clearLabels(keepDims) { labels = labels.filter(l => { if (keepDims && !l.el.classList.contains('dim') && !l.el.classList.contains('mass')) return true; l.el.remove(); return false; }); }
+const tmp = new THREE.Vector3();
+const PRI = el => el.classList.contains('org') ? 5 : el.classList.contains('mass') ? 4 : el.classList.contains('red') ? 3 : el.classList.contains('st') ? 2 : el.classList.contains('dim') ? 1 : 4;
+function placeLabels() {
+  const w = stage.clientWidth, h = stage.clientHeight, placed = [];
+  LBL.style.display = layers.lbl ? '' : 'none'; if (!layers.lbl) return;
+  const items = labels.map(l => { tmp.copy(l.v).project(cam); return {l, x: (tmp.x + 1) / 2 * w, y: (1 - tmp.y) / 2 * h, vis: tmp.z < 1 && Math.abs(tmp.x) < 1.05 && Math.abs(tmp.y) < 1.05, p: PRI(l.el)}; }).sort((a, b) => b.p - a.p);
+  items.forEach(it => {
+    const el = it.l.el; if (!it.vis) { el.style.display = 'none'; return; }
+    el.style.display = ''; el.style.left = it.x + 'px'; el.style.top = it.y + 'px';
+    const r = {w: el.offsetWidth, h: el.offsetHeight}; const box = el.classList.contains('dim') ? [it.x - r.w / 2, it.y - r.h / 2, it.x + r.w / 2, it.y + r.h / 2] : [it.x - r.w / 2, it.y - r.h - 8, it.x + r.w / 2, it.y];
+    const hit = placed.some(b => !(box[2] + 4 < b[0] || box[0] - 4 > b[2] || box[3] + 2 < b[1] || box[1] - 2 > b[3]));
+    el.classList.toggle('hide', hit); if (!hit) placed.push(box);
+  });
+}
+
+let view = 1, P = {sd: 0.8, cov: 50, sh: 40, ex: 25, pk: 'under', a2: '950', mode: 'anti', cost: 2500, bcost: 1100, soft: 7, cont: 5, price: 5000, ppark: 15000};
+const layers = {nb: true, old: true, plan: true, mass: true, lbl: true, dim: false};
+
+function drawBase() {
+  clear(world); clearLabels(false);
+  const G = view === 1 ? GEO.v1 : GEO.v2, E = SAT[view].ext;
+  const gw = E[1] - E[0], gh = E[3] - E[2];
+  const gmat = new THREE.MeshStandardMaterial({color: 0xffffff, roughness: 1});
+  const ground = new THREE.Mesh(new THREE.PlaneGeometry(gw, gh), gmat); ground.rotation.x = -Math.PI / 2; ground.position.set((E[0] + E[1]) / 2, 0, -(E[2] + E[3]) / 2); ground.receiveShadow = true; world.add(ground);
+  const skirt = new THREE.Mesh(new THREE.PlaneGeometry(2400, 2400), new THREE.MeshStandardMaterial({color: 0x8d8f86, roughness: 1})); skirt.rotation.x = -Math.PI / 2; skirt.position.y = -0.05; world.add(skirt);
+  satTex(view, t => { if (t) { gmat.map = t; gmat.needsUpdate = true; } else gmat.color.set(0xb9b8ad); });
+  if (layers.nb) G.neighbors.forEach(n => ribbon(n.p, 0xffffff, 0.12, 0.05).children.forEach(m => { m.material.transparent = true; m.material.opacity = 0.45; }));
+  if (view === 1) {
+    if (layers.plan) {
+      G.streets.forEach(s => { const c = centroid(s.p); addLabel(s.name, c[0], 0.5, c[1], 'st'); });
+      ribbon(G.block, 0x2fb35a, 0.7, 0.12);
+      ribbon(G.buildline, 0xffffff, 0.18, 0.13, true, true);
+      flat(G.big, 0x6b8fe0, 0.06, layers.nb ? 0.18 : 0);
+      const c1 = centroid(G.big); 
+      prism(G.newplot, 0.25, new THREE.MeshStandardMaterial({color: 0xf07a2e, roughness: 0.8, transparent: true, opacity: 0.55}), 0.02, world, false);
+      ribbon(G.newplot, 0xf07a2e, 0.8, 0.3);
+      const c = centroid(G.newplot); addLabel('Νέο 02 · 688 m²', c[0], 16, c[1], 'org');
+      const b = centroid(G.block); 
+      if (layers.dim) dims(G.newplot);
+    }
+    if (layers.old) { flat(G.old, 0xe0313b, 0.09, 0.32); ribbon(G.old, 0xe0313b, 0.6, 0.16); const c = centroid(G.old); addLabel('Σήμερα 1.126 m²', c[0] + 28, 2, c[1] - 9, 'red'); }
+  } else {
+    if (layers.plan) {
+      G.streets.forEach(s => { flat(s.p, 0xffffff, 0.07, 0.22); const c = centroid(s.p); addLabel(s.name, c[0], 0.5, c[1], 'st'); });
+      const B = G.block, open = G.blockOpenEdge;
+      const poly = B.slice(open[1]).concat(B.slice(0, open[0] + 1));
+      ribbon(poly, 0x2fb35a, 0.7, 0.12, false);
+      ribbon([B[open[0]], B[open[1]]], 0xffffff, 0.2, 0.12, false, true);
+      const b = centroid(B); 
+      
+      
+      const N2 = G.new2[P.a2];
+      prism(N2.p, 0.25, new THREE.MeshStandardMaterial({color: 0xf07a2e, roughness: 0.8, transparent: true, opacity: 0.55}), 0.02, world, false);
+      ribbon(N2.p, 0xf07a2e, 0.8, 0.3); if (layers.dim) dims(N2.p);
+      const cN = centroid(N2.p); addLabel('Νέο ~' + fmt(N2.area) + ' m² (υπόθεση)', cN[0], 16, cN[1], 'org');
+      const m22 = G.markers.find(m => m.t === '22');
+      if (false) { const ring = new THREE.Mesh(new THREE.RingGeometry(9, 10.2, 48), new THREE.MeshBasicMaterial({color: 0xf07a2e, transparent: true, opacity: 0.95, depthWrite: false, toneMapped: false}));
+      ring.rotation.x = -Math.PI / 2; ring.position.set(m22.p[0], 0.2, m22.p[1]); ring.renderOrder = 4; world.add(ring);
+      }
+    }
+    if (layers.old) { flat(G.old, 0xe0313b, 0.09, 0.32); ribbon(G.old, 0xe0313b, 0.6, 0.16); const c = centroid(G.old); addLabel('Σήμερα 1.591 m²', c[0] + 30, 2, c[1] - 3, 'red'); }
+  }
+}
+function dims(p) {
+  p.forEach((a, i) => { const b = p[(i + 1) % p.length], L = Math.hypot(b[0] - a[0], b[1] - a[1]); if (L < 6) return;
+    const c = centroid(p), mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2, dx = mx - c[0], dy = my - c[1], d = Math.hypot(dx, dy) || 1;
+    const el = addLabel(fmt(L, 1) + ' m', mx + dx / d * 3, 0.5, my + dy / d * 3, 'dim'); });
+}
+
+function building() {
+  clear(mass); labels.filter(l => l.el.classList.contains('mass')).forEach(l => l.el.remove()); labels = labels.filter(l => !l.el.classList.contains('mass'));
+  const out = calc(); if (!layers.mass || !out) return out;
+  const {foot, floors, fh, pil, build, fp} = out;
+  const cc = centroid(foot);
+  if (pil > 0) {
+    insetPoly(foot, 0.6).forEach(c => prism([[c[0] - 0.25, c[1] - 0.25], [c[0] + 0.25, c[1] - 0.25], [c[0] + 0.25, c[1] + 0.25], [c[0] - 0.25, c[1] + 0.25]], pil, M.col, 0, mass));
+    prism([[cc[0] - 2.2, cc[1] - 3], [cc[0] + 2.2, cc[1] - 3], [cc[0] + 2.2, cc[1] + 3], [cc[0] - 2.2, cc[1] + 3]], pil, M.core, 0, mass);
+  } else {
+    ribbon(out.zone, 0x1f5fd1, 0.35, 0.2, true, true, mass);
+    const z0 = out.zone[0], z1 = out.zone[1], u = [z1[0] - z0[0], z1[1] - z0[1]], L = Math.hypot(u[0], u[1]), n = [u[0] / L, u[1] / L];
+    const r0 = [z0[0] + n[0] * 1, z0[1] + n[1] * 1], r1 = [r0[0] + n[0] * 3.5, r0[1] + n[1] * 3.5];
+    flat([r0, r1, [r1[0] - n[1] * 14, r1[1] + n[0] * 14], [r0[0] - n[1] * 14, r0[1] + n[0] * 14]], 0x1f5fd1, 0.22, 0.45, mass);
+    const el2 = addLabel('P ≈ ' + out.spaces, out.zone[0][0], 1, out.zone[0][1], 'st'); el2.classList.add('mass');
+  }
+  for (let f = 0; f < floors; f++) {
+    const frac = f === floors - 1 ? Math.min(1, build / fp - (floors - 1)) : 1;
+    const fpoly = frac < 0.97 ? scaleAbout(foot, Math.sqrt(Math.max(frac, 0.2))) : foot;
+    const y = pil + f * fh;
+    prism(insetPoly(fpoly, -0.35), 0.3, M.slab, y, mass);
+    prism(insetPoly(fpoly, 0.25), 1.0, M.white, y + 0.3, mass);
+    prism(insetPoly(fpoly, 0.45), fh - 1.6, M.glass, y + 1.3, mass);
+    prism(insetPoly(fpoly, 0.25), 0.3, M.white, y + fh - 0.3, mass);
+    if (f === floors - 1) prism(insetPoly(fpoly, -0.35), 0.9, M.white, y + fh, mass);
+  }
+  const H = pil + floors * fh; const el = addLabel(fmt(H, 1) + ' m', cc[0], H + 2, cc[1], ''); el.classList.add('mass');
+  return out;
+}
+
+function calc() {
+  const N2 = GEO.v2.new2[P.a2];
+  const zone = view === 1 ? GEO.v1.zone : N2.zone, zA = areaOf(zone), A = view === 1 ? 688.52 : N2.area, build = A * P.sd, fh = 3.2, pil = P.pk === 'pil' ? 3 : 0, HMAX = 14, maxF = Math.floor((HMAX - pil) / fh + 1e-6);
+  let fp = Math.min(A * P.cov / 100, zA), floors = Math.ceil(build / fp - 0.05), capped = false;
+  if (floors > maxF) { fp = Math.min(zA, build / maxF); floors = Math.min(maxF, Math.ceil(build / fp - 0.05)); capped = build / fp > maxF + 0.05; }
+  const foot = scaleAbout(zone, Math.sqrt(fp / zA));
+  const sell = build * (1 + P.ex / 100);
+  const spaces = P.pk === 'under' ? Math.max(0, Math.floor(zA / 27) - 2) : Math.max(0, Math.floor((A - fp) / 25 * 0.6));
+  return {A, zA, build, fp, floors, fh, pil, foot, capped, maxF, H: pil + floors * fh, sell, own: sell * P.sh / 100, spaces, zone};
+}
+
+function panel() {
+  const el = $('panel');
+  if (view === 2) {
+    el.innerHTML = '<h2>Οικόπεδο 2 · νέο (υπόθεση)</h2>' +
+      '<p class="note">Σήμερα: λωρίδα 1.591 m² στην παλιά Αγράφων, που στο νέο σχέδιο μπαίνει μέσα στο Ο.Τ. 753. Το πορτοκαλί είναι <b>υπόθεση</b> για το νέο οικόπεδο: στο δυτικό τέρμα, με πρόσοψη στην Αστυπαλαίας, εκεί που το τετράγωνο ανοίγει σαν χωνί.</p>' +
+      '<div class="ctl"><label for="a2">Εμβαδόν νέου οικοπέδου (υπόθεση)</label><select id="a2" style="width:100%;min-height:44px;font:inherit;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink)"><option value="700">~700 m²</option><option value="800">~800 m²</option><option value="950">~950 m² (ίδια εισφορά με το 1: 61%)</option><option value="1100">~1.100 m²</option></select></div>' + controls();
+    $('a2').value = P.a2; $('a2').addEventListener('change', e => { P.a2 = e.target.value; drawBase(); update(); });
+  } else {
+    el.innerHTML = '<h2>Νέο 02 · Ο.Τ. 715</h2>' + controls();
+  }
+  {
+    ['sd', 'cov', 'sh', 'ex'].forEach(k => { const i = $(k); i.value = P[k]; i.addEventListener('input', () => { P[k] = +i.value; update(); }); });
+    $('pk').value = P.pk; $('pk').addEventListener('change', e => { P.pk = e.target.value; update(); });
+    ['price', 'cost', 'bcost', 'ppark', 'soft', 'cont'].forEach(k => { const i = $(k); i.value = P[k]; i.addEventListener('input', () => { const v = parseFloat(i.value); if (isFinite(v) && v >= 0) { P[k] = v; update(); } }); });
+    const setMode = m => { P.mode = m; $('mAnti').setAttribute('aria-pressed', m === 'anti'); $('mSelf').setAttribute('aria-pressed', m === 'self'); update(); };
+    $('mAnti').addEventListener('click', () => setMode('anti')); $('mSelf').addEventListener('click', () => setMode('self')); setMode(P.mode);
+  }
+  ['nb', 'old', 'plan', 'mass', 'lbl', 'dim'].forEach(k => { const i = $('L' + k); if (!i) return; i.checked = layers[k]; i.addEventListener('change', () => { layers[k] = i.checked; drawBase(); update(); }); });
+}
+function controls() { return '<div class="ctl"><label for="pk">Στάθμευση</label><select id="pk" style="width:100%;min-height:44px;font:inherit;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink)"><option value="under">Υπόγειο πάρκινγκ (ισόγειο με διαμερίσματα)</option><option value="pil">Πιλοτή</option></select></div>' +
+      '<div class="ctl"><label for="sd">Συντελεστής δόμησης <b id="sdv"></b></label><input type="range" id="sd" min="0.4" max="1.6" step="0.05"></div>' +
+      '<div class="ctl"><label for="cov">Κάλυψη <b id="covv"></b></label><input type="range" id="cov" min="25" max="70" step="5"></div>' +
+      '<div class="ctl"><label for="ex">Επιπλέον μη προσμετρούμενα (μπαλκόνια, κλιμακοστάσιο κ.λπ.) <b id="exv"></b></label><input type="range" id="ex" min="0" max="40" step="1"></div>' +
+      '<div class="ctl"><label for="sh">Ποσοστό αντιπαροχής οικοπεδούχου <b id="shv"></b></label><input type="range" id="sh" min="25" max="55" step="1"></div>' +
+      '<div class="big"><b id="fl"></b><span id="flt"></span></div><ul class="res" id="res"></ul><div class="warn" id="warn"></div>' +
+      '<div class="econ"><h3>Οικονομικά</h3><div class="mode" role="group" aria-label="Τρόπος"><button id="mAnti">Αντιπαροχή</button><button id="mSelf">Χτίζεις μόνος σου</button></div>' +
+      '<div class="inp"><label for="price">Τιμή πώλησης διαμερισμάτων €/m²</label><input id="price" type="number" inputmode="numeric" step="100">' +
+      '<label for="cost">Κόστος κατασκευής διαμερισμάτων €/m²</label><input id="cost" type="number" inputmode="numeric" step="50">' +
+      '<label for="bcost">Κόστος κατασκευής υπογείου πάρκινγκ €/m² <span id="bm2"></span></label><input id="bcost" type="number" inputmode="numeric" step="50">' +
+      '<label for="ppark">Τιμή πώλησης θέσης πάρκινγκ €</label><input id="ppark" type="number" inputmode="numeric" step="1000">' +
+      '<label for="soft">Μελέτες, άδεια, επίβλεψη %</label><input id="soft" type="number" inputmode="decimal" step="0.5">' +
+      '<label for="cont">Απρόβλεπτα %</label><input id="cont" type="number" inputmode="decimal" step="0.5"></div>' +
+      '<div class="kpi" id="kpi"></div><ul class="res" id="eres"></ul><p class="small" style="margin:8px 0 0">Χωρίς εισφορά σε χρήμα, χρηματοδότηση, φόρους και μεσιτικά. Η τιμή πώλησης είναι δική σου εκτίμηση.</p></div>' + toggles(); }
+function toggles() { return '<div class="chk"><label><input type="checkbox" id="Lold">Σήμερα</label><label><input type="checkbox" id="Lplan">Νέο σχέδιο</label><label><input type="checkbox" id="Lnb">Γειτονικά</label>' + '<label><input type="checkbox" id="Lmass">Πολυκατοικία</label><label><input type="checkbox" id="Llbl">Ετικέτες</label><label><input type="checkbox" id="Ldim">Διαστάσεις</label>' + '</div>'; }
+
+function update() {
+  const o = building();
+  if (o) {
+    $('sdv').textContent = fmt(P.sd, 2); $('covv').textContent = P.cov + '%'; $('shv').textContent = P.sh + '%'; $('exv').textContent = '+' + P.ex + '%';
+    $('fl').textContent = o.floors; $('flt').textContent = (o.pil ? 'όροφοι πάνω από πιλοτή' : 'όροφοι (ισόγειο + ' + (o.floors - 1) + ') με υπόγειο') + ' · ύψος ≈ ' + fmt(o.H, 1) + ' m (όριο 14 m)';
+    $('res').innerHTML = [['Δόμηση', fmt(o.build) + ' m²'], ['Αποτύπωμα κτιρίου', fmt(o.fp) + ' m²'], ['Ελεύθερος χώρος', fmt(o.A - o.fp) + ' m²'], [o.pil ? 'Θέσεις στάθμευσης (ακάλυπτος/πιλοτή)' : 'Θέσεις στο υπόγειο', '≈ ' + o.spaces], ['Συνολικά m² (δόμηση +' + P.ex + '%)', '≈ ' + fmt(o.sell) + ' m²'], ['Στον οικοπεδούχο', '≈ ' + fmt(o.own) + ' m²'], ['Διαμερίσματα (σύνολο, ~90 m²)', '≈ ' + fmt(o.sell / 90, 1)]].map(r => '<li><span>' + r[0] + '</span><span>' + r[1] + '</span></li>').join('');
+    $('warn').textContent = o.capped ? 'Με όριο 14 m δεν χωράει όλη η δόμηση στο αποτύπωμα που επιτρέπουν οι αποστάσεις.' : (o.A * P.cov / 100 > o.zA ? 'Η κάλυψη περιορίζεται από τις αποστάσεις: έως ' + fmt(o.zA) + ' m².' : '');
+  }
+  if (o) econRender(o);
+  sheet();
+}
+
+function econ(o) {
+  const above = o.sell, base = o.pil ? 0 : o.zA, sp = o.spaces, k = 1 + (P.soft + P.cont) / 100;
+  const cost = (above * P.cost + base * P.bcost) * k;
+  const rev = above * P.price + sp * P.ppark;
+  const sh = P.sh / 100;
+  const r = {cost, rev, above, base, sp};
+  if (P.mode === 'anti') {
+    r.ownM2 = above * sh; r.ownSp = sp * sh; r.ownVal = r.ownM2 * P.price + r.ownSp * P.ppark;
+    r.bRev = rev * (1 - sh); r.bProfit = r.bRev - cost; r.bMargin = r.bProfit / cost;
+    r.be = (cost - sp * (1 - sh) * P.ppark) / (above * (1 - sh));
+  } else {
+    r.profit = rev - cost; r.margin = r.profit / cost; r.be = (cost - sp * P.ppark) / above;
+  }
+  return r;
+}
+const eur = n => (n < 0 ? '−€' : '€') + fmt(Math.abs(Math.round(n / 1000) * 1000));
+const pct = n => fmt(n * 100, 0) + '%';
+function econRender(o) {
+  if (!$('kpi')) return; const e = econ(o); if ($('bm2')) $('bm2').textContent = e.base ? '(' + fmt(e.base) + ' m²)' : '(δεν υπάρχει)';
+  const k = (a, b, cls = '', sub = '') => '<div><span>' + a + '</span><b class="' + cls + '">' + b + '</b>' + (sub ? '<i class="' + cls + '">' + sub + '</i>' : '') + '</div>';
+  if (P.mode === 'anti') {
+    $('kpi').innerHTML = k('Αξία για οικοπεδούχο', eur(e.ownVal)) + k('Κέρδος κατασκευαστή', eur(e.bProfit), e.bProfit >= 0 ? 'pos' : 'neg', pct(e.bMargin) + ' επί του κόστους');
+    $('eres').innerHTML = [['Οικοπεδούχος παίρνει', fmt(e.ownM2) + ' m² + ' + fmt(e.ownSp, 1) + ' θέσεις'], ['Κόστος έργου (κατασκευαστής)', eur(e.cost)], ['Έσοδα κατασκευαστή (' + (100 - P.sh) + '%)', eur(e.bRev)], ['Νεκρό σημείο κατασκευαστή', '€' + fmt(e.be) + '/m²']].map(r => '<li><span>' + r[0] + '</span><span>' + r[1] + '</span></li>').join('');
+  } else {
+    $('kpi').innerHTML = k('Κόστος έργου', eur(e.cost)) + k('Κέρδος', eur(e.profit), e.profit >= 0 ? 'pos' : 'neg', pct(e.margin) + ' επί του κόστους');
+    $('eres').innerHTML = [['Έσοδα (όλα τα m² + θέσεις)', eur(e.rev)], ['Κατασκευή υπέργειων (' + fmt(e.above) + ' m²)', eur(e.above * P.cost)], ['Υπόγειο (' + fmt(e.base) + ' m²)', eur(e.base * P.bcost)], ['Μελέτες + απρόβλεπτα', eur(e.cost - e.above * P.cost - e.base * P.bcost)], ['Κόστος ανά πωλήσιμο m²', '€' + fmt(e.cost / e.above)], ['Νεκρό σημείο τιμής', '€' + fmt(e.be) + '/m²']].map(r => '<li><span>' + r[0] + '</span><span>' + r[1] + '</span></li>').join('');
+  }
+}
+
+function econRows(o) { const e = econ(o), row = (a, b) => '<tr><td>' + a + '</td><td>' + b + '</td></tr>';
+  return row('Κόστος έργου (€' + fmt(P.cost) + '/m²)', eur(e.cost)) + (P.mode === 'anti' ? row('Αξία οικοπεδούχου (€' + fmt(P.price) + '/m²)', eur(e.ownVal)) + row('Κέρδος κατασκευαστή', eur(e.bProfit) + ' (' + pct(e.bMargin) + ')') : row('Κέρδος αν χτίσεις μόνος (€' + fmt(P.price) + '/m²)', eur(e.profit) + ' (' + pct(e.margin) + ')')); }
+function sheet() {
+  const o = (() => { const v = view; view = 1; const r = calc(); view = v; return r; })(); const o2 = (() => { const v = view; view = 2; const r = calc(); view = v; return r; })();
+  const row = (a, b) => '<tr><td>' + a + '</td><td>' + b + '</td></tr>';
+  $('sheet').innerHTML =
+    '<div class="card"><h2>Οικόπεδο 1 · Ο.Τ. 715, Καμάρι / Έβρου</h2><table>' +
+    row('Εμβαδόν σήμερα', '1.126,16 m²') + row('Νέο οικόπεδο', '02 · 688,52 m²') +
+    row('Πρόσοψη', 'Έβρου (οδός) · Καμάρι (πεζόδρομος)') + row('Ζώνη', 'Αμιγής κατοικία') + row('Συντελεστής / ύψος', fmt(P.sd, 2) + ' · έως 14 m') +
+    row('Δόμηση', fmt(o.build) + ' m²') + row('Όροφοι', o.floors + (o.pil ? ' + πιλοτή' : ' + υπόγειο πάρκινγκ (≈ ' + o.spaces + ' θέσεις)') + ' · ≈ ' + fmt(o.H, 1) + ' m') + row('Συνολικά m² (δόμηση +' + P.ex + '%)', '≈ ' + fmt(o.sell) + ' m²') +
+    row('Οικοπεδούχος στο ' + P.sh + '%', '≈ ' + fmt(o.own) + ' m²') + row('Ιδιοκτησία', '100% · ένας δικαιούχος') + econRows(o) + '</table>' +
+    '<p class="small" style="margin:12px 0 0"><span class="tag">Να επιβεβαιωθεί</span></p><ul class="q"><li>Κύρωση πράξης εφαρμογής και τελικό εμβαδόν 02.</li><li>Εισφορά σε χρήμα και ποιος την πληρώνει.</li><li>Μέγιστη κάλυψη και πλάγιες αποστάσεις.</li><li>Είσοδος οχημάτων από Έβρου.</li></ul></div>' +
+    '<div class="card"><h2>Οικόπεδο 2 · Ο.Τ. 753, Αγράφων / Αστυπαλαίας</h2><table>' +
+    row('Εμβαδόν σήμερα', '1.590,90 m² (τίτλος 1.557,80)') + row('Θέση σήμερα', 'παλιά οδός Αγράφων, μέσα στο νέο Ο.Τ. 753') +
+    row('Νέο οικόπεδο', 'δυτικό τέρμα, πρόσοψη Αστυπαλαίας (υπόθεση)') + row('Εμβαδόν νέου (υπόθεση)', '~' + fmt(o2.A) + ' m²') + row('Συντελεστής / ύψος', fmt(P.sd, 2) + ' · έως 14 m') +
+    row('Δόμηση', fmt(o2.build) + ' m²') + row('Επίπεδα', o2.floors + (o2.pil ? ' + πιλοτή' : ' + υπόγειο (≈ ' + o2.spaces + ' θέσεις)')) + row('Συνολικά m² (+' + P.ex + '%)', '≈ ' + fmt(o2.sell) + ' m²') + row('Οικοπεδούχος στο ' + P.sh + '%', '≈ ' + fmt(o2.own) + ' m²') + row('Ιδιοκτησία', '100% · ένας δικαιούχος') + econRows(o2) + '</table>' +
+    '<p class="small" style="margin:12px 0 0"><span class="tag">Να επιβεβαιωθεί</span></p><ul class="q"><li>Απόσπασμα πράξης εφαρμογής: αριθμός και m² νέου οικοπέδου.</li><li>Τι γίνεται με την υπόλοιπη λωρίδα (μένει, συμψηφίζεται ή αποζημιώνεται).</li><li>Είσοδος οχημάτων: Αστυπαλαίας και Αλωπεκής είναι πεζόδρομοι;</li></ul></div>';
+}
+
+const VIEWS = {
+  1: {persp: [[-75, 62, 85], [8, 4, -4]], top: [[8, 210, 1], [8, 0, 0]], street: [[-6, 1.7, 30], [0, 6, 0]], far: [[-150, 130, 170], [30, 0, -10]]},
+  2: {persp: [[-130, 62, 50], [-68, 4, -24]], top: [[-45, 210, 1], [-45, 0, 0]], street: [[-100, 1.7, -40], [-62, 5, -18]], far: [[-200, 150, 170], [-40, 0, 0]]}
+};
+let tween = null;
+function goView(name, instant) {
+  const v = VIEWS[view][name]; const from = {p: cam.position.clone(), t: ctl.target.clone()}, to = {p: new THREE.Vector3(...v[0]), t: new THREE.Vector3(...v[1])};
+  if (instant || matchMedia('(prefers-reduced-motion: reduce)').matches) { cam.position.copy(to.p); ctl.target.copy(to.t); ctl.update(); return; }
+  tween = {from, to, t0: performance.now(), d: 900};
+}
+document.querySelectorAll('.views button').forEach(b => b.addEventListener('click', () => goView(b.dataset.v)));
+
+function sunUpdate() {
+  const N = +$('season').value, hr = +$('hour').value, lat = 38.03 * Math.PI / 180, lon = 23.8;
+  const tz = (N > 86 && N < 300) ? 3 : 2;
+  const decl = 23.44 * Math.PI / 180 * Math.sin(2 * Math.PI * (284 + N) / 365);
+  const solar = hr - tz + lon / 15, H = (solar - 12) * 15 * Math.PI / 180;
+  const el = Math.asin(Math.sin(lat) * Math.sin(decl) + Math.cos(lat) * Math.cos(decl) * Math.cos(H));
+  const az = Math.atan2(Math.sin(H), Math.cos(H) * Math.sin(lat) - Math.tan(decl) * Math.cos(lat)) + Math.PI;
+  const e = Math.max(el, 0.02), dist = 250, c = ctl.target;
+  sun.position.set(c.x + Math.sin(az) * Math.cos(e) * dist, Math.sin(e) * dist, c.z - Math.cos(az) * Math.cos(e) * dist);
+  sun.target.position.copy(c); sun.intensity = el > 0 ? 0.5 + 0.9 * Math.min(1, Math.sin(el) * 2.2) : 0.12;
+  hemi.intensity = el > 0 ? 0.42 : 0.3;
+  const hh = Math.floor(hr), mm = Math.round((hr - hh) * 60); $('hourv').textContent = String(hh).padStart(2, '0') + ':' + String(mm).padStart(2, '0');
+}
+$('hour').addEventListener('input', sunUpdate); $('season').addEventListener('change', sunUpdate);
+
+function setView(v) {
+  view = v; $('t1').setAttribute('aria-pressed', v === 1); $('t2').setAttribute('aria-pressed', v === 2);
+  drawBase(); panel(); update(); goView('persp', true); sunUpdate();
+}
+$('t1').addEventListener('click', () => setView(1)); $('t2').addEventListener('click', () => setView(2));
+$('printb').addEventListener('click', () => { try { window.print(); } catch (e) {} });
+
+const ro = new ResizeObserver(() => { const w = stage.clientWidth, h = stage.clientHeight; R.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix(); });
+ro.observe(stage);
+const nsvg = $('nsvg');
+(function loop(now) {
+  if (tween) { const k = Math.min(1, (now - tween.t0) / tween.d), e = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2; cam.position.lerpVectors(tween.from.p, tween.to.p, e); ctl.target.lerpVectors(tween.from.t, tween.to.t, e); if (k >= 1) tween = null; }
+  ctl.update(); sunUpdate();
+  const az = Math.atan2(cam.position.x - ctl.target.x, cam.position.z - ctl.target.z); nsvg.style.transform = 'rotate(' + (az * 180 / Math.PI) + 'deg)';
+  R.render(scene, cam); placeLabels(); requestAnimationFrame(loop);
+})(performance.now());
+setView(1);
+}
+</script>
+</body>
+</html>
