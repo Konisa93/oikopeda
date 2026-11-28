@@ -29,6 +29,7 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid 
 .grid{display:grid;grid-template-columns:minmax(0,1fr) 350px;gap:16px}
 .stage{position:relative;height:clamp(460px,68vh,760px);border-radius:14px;overflow:hidden;background:#20242a}
 .stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.stage::after{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,transparent 55%,rgba(10,14,20,.28) 100%)}
 .labels{position:absolute;inset:0;pointer-events:none;overflow:hidden}
 .lb{position:absolute;transform:translate(-50%,-100%);white-space:nowrap;font-size:12px;font-weight:700;padding:2px 8px;border-radius:999px;background:rgba(255,255,255,.94);color:#17181a;box-shadow:0 2px 8px rgba(0,0,0,.25)}
 .lb::after{content:"";position:absolute;left:50%;top:100%;width:1px;height:8px;background:rgba(255,255,255,.9)}.lb.hide{visibility:hidden}
@@ -143,20 +144,26 @@ const stage = $('stage'), cv = $('cv'), LBL = $('labels');
 const R = new THREE.WebGLRenderer({canvas: cv, antialias: true});
 R.setPixelRatio(Math.min(devicePixelRatio, 2)); cv.style.touchAction = 'none';
 R.shadowMap.enabled = true; R.shadowMap.type = THREE.PCFSoftShadowMap;
-R.outputEncoding = THREE.sRGBEncoding; R.toneMapping = THREE.ACESFilmicToneMapping; R.toneMappingExposure = 0.82;
+R.outputEncoding = THREE.sRGBEncoding; R.toneMapping = THREE.ACESFilmicToneMapping; R.toneMappingExposure = 0.85; R.physicallyCorrectLights = false;
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0xc9d3dc); scene.fog = new THREE.Fog(0xc9d3dc, 260, 620);
+function gradTex(stops, w = 4, h = 256) { const c = document.createElement('canvas'); c.width = w; c.height = h; const x = c.getContext('2d'); const g = x.createLinearGradient(0, 0, 0, h); stops.forEach(s => g.addColorStop(s[0], s[1])); x.fillStyle = g; x.fillRect(0, 0, w, h); const t = new THREE.CanvasTexture(c); t.encoding = THREE.sRGBEncoding; return t; }
+const SKY = [[0, '#4a7fbf'], [0.42, '#93b8de'], [0.72, '#d3e2ec'], [1, '#dfe7ec']];
+scene.background = gradTex(SKY); scene.fog = new THREE.Fog(0xdfe7ec, 220, 560);
+(() => { // soft studio-sky environment for reflections
+  const es = new THREE.Scene(); const sph = new THREE.Mesh(new THREE.SphereGeometry(50, 32, 16), new THREE.MeshBasicMaterial({map: gradTex([[0, '#4f86c6'], [0.48, '#cfe0ef'], [0.52, '#b9b2a2'], [1, '#6f6a5c']]), side: THREE.BackSide})); es.add(sph);
+  const sunB = new THREE.Mesh(new THREE.SphereGeometry(5, 16, 8), new THREE.MeshBasicMaterial({color: 0xfff4dd})); sunB.position.set(25, 30, -20); es.add(sunB);
+  const pm = new THREE.PMREMGenerator(R); scene.environment = pm.fromScene(es, 0.02).texture; pm.dispose(); })();
 const cam = new THREE.PerspectiveCamera(38, 1, 0.3, 3000);
 const ctl = new THREE.OrbitControls(cam, cv); ctl.enableDamping = true; ctl.dampingFactor = 0.08; ctl.maxPolarAngle = Math.PI * 0.495; ctl.minDistance = 8; ctl.maxDistance = 500;
-const hemi = new THREE.HemisphereLight(0xdfe9f5, 0x6b5e4a, 0.55); scene.add(hemi);
-const sun = new THREE.DirectionalLight(0xfff1dc, 1.6); sun.castShadow = true;
+const hemi = new THREE.HemisphereLight(0xcfe2f7, 0x7a6a50, 0.5); scene.add(hemi);
+const sun = new THREE.DirectionalLight(0xffeccc, 1.7); sun.castShadow = true;
 const SMALL = Math.min(innerWidth, innerHeight) < 700; sun.shadow.mapSize.set(SMALL ? 1024 : 2048, SMALL ? 1024 : 2048); sun.shadow.bias = -0.0004; sun.shadow.normalBias = 0.04;
 Object.assign(sun.shadow.camera, {left: -90, right: 90, top: 90, bottom: -90, near: 1, far: 600});
 scene.add(sun); scene.add(sun.target);
 
 const world = new THREE.Group(), mass = new THREE.Group(); scene.add(world); scene.add(mass);
 const tex = {}; const loader = new THREE.TextureLoader();
-function satTex(n, cb) { if (tex[n]) return cb(tex[n]); loader.load(SAT[n].src, t => { t.encoding = THREE.sRGBEncoding; t.anisotropy = R.capabilities.getMaxAnisotropy(); tex[n] = t; cb(t); }, undefined, () => cb(null)); }
+function satTex(n, cb) { if (tex[n]) return cb(tex[n]); loader.load(SAT[n].src, t0 => { const im = t0.image, c = document.createElement('canvas'); c.width = im.width; c.height = im.height; const x = c.getContext('2d'); x.filter = 'saturate(1.3) contrast(1.08) brightness(0.9)'; x.drawImage(im, 0, 0); const t = new THREE.CanvasTexture(c); t.encoding = THREE.sRGBEncoding; t.generateMipmaps = true; t.anisotropy = R.capabilities.getMaxAnisotropy(); tex[n] = t; cb(t); }, undefined, () => cb(null)); }
 
 function sArea(p) { return p.reduce((s, a, i) => { const b = p[(i + 1) % p.length]; return s + a[0] * b[1] - b[0] * a[1]; }, 0) / 2; }
 function offsetPoly(p, d) {
@@ -205,8 +212,11 @@ function placePool(plot, foot, gap) {
   }
   return null;
 }
-function tree(x, z, s = 1) { const tr = new THREE.Mesh(new THREE.CylinderGeometry(0.12 * s, 0.18 * s, 2.2 * s, 6), M.trunk); tr.position.set(x, 1.1 * s, z); tr.castShadow = true; mass.add(tr);
-  const cr = new THREE.Mesh(new THREE.IcosahedronGeometry(1.6 * s, 1), M.leaf); cr.position.set(x, 2.9 * s, z); cr.scale.set(1, 0.85, 1); cr.castShadow = true; mass.add(cr); }
+function tree(x, z, s = 1) { const r = Math.abs(Math.sin(x * 12.9898 + z * 78.233) * 43758.5453) % 1; s *= 0.85 + r * 0.35;
+  const tr = new THREE.Mesh(new THREE.CylinderGeometry(0.1 * s, 0.17 * s, 2.4 * s, 6), M.trunk); tr.position.set(x, 1.2 * s, z); tr.castShadow = true; mass.add(tr);
+  if (r < 0.3) { const cy = new THREE.Mesh(new THREE.ConeGeometry(0.9 * s, 6 * s, 7), M.leaf3); cy.position.set(x, 3.8 * s, z); cy.castShadow = true; mass.add(cy); return; }
+  [[0, 3.0, 0, 1.45, M.leaf], [0.7, 2.6, 0.4, 1.05, M.leaf2], [-0.6, 2.7, -0.3, 1.1, M.leaf3], [0.1, 3.8, -0.2, 0.95, M.leaf2]].forEach(([dx, dy, dz, rr, mt], i) => {
+    const cr = new THREE.Mesh(new THREE.IcosahedronGeometry(rr * s, 1), mt); cr.position.set(x + dx * s, dy * s, z + dz * s); cr.rotation.set(r * 3 + i, r * 5, i); cr.castShadow = true; mass.add(cr); }); }
 function shapeOf(p) { const s = new THREE.Shape(); p.forEach((a, i) => i ? s.lineTo(a[0], -a[1]) : s.moveTo(a[0], -a[1])); s.closePath(); return s; }
 function prism(p, h, mat, y0 = 0, parent = world, shadow = true) {
   const g = new THREE.ExtrudeGeometry(shapeOf(p), {depth: h, bevelEnabled: false}); g.rotateX(-Math.PI / 2);
@@ -232,21 +242,23 @@ function ribbon(p, color, w, y, closed = true, dashed = false, parent = world) {
 }
 function clear(g) { g.traverse(o => { if (o.geometry) o.geometry.dispose(); if (o.material && !keep.has(o.material)) o.material.dispose && o.material.dispose(); }); while (g.children.length) g.remove(g.children[0]); }
 const M = {
-  white: new THREE.MeshStandardMaterial({color: 0xf4f2ee, roughness: 0.85}),
-  glass: new THREE.MeshStandardMaterial({color: 0x51606f, roughness: 0.25, metalness: 0.35}),
-  slab: new THREE.MeshStandardMaterial({color: 0xd9d6cf, roughness: 0.9}),
+  white: new THREE.MeshStandardMaterial({color: 0xf6f2ea, roughness: 0.6, envMapIntensity: 0.45}),
+  glass: new THREE.MeshStandardMaterial({color: 0x2c4656, roughness: 0.06, metalness: 0.9, envMapIntensity: 1.3}),
+  slab: new THREE.MeshStandardMaterial({color: 0xf1ede6, roughness: 0.7, envMapIntensity: 0.5}),
   col: new THREE.MeshStandardMaterial({color: 0xe8e5df, roughness: 0.9}),
   core: new THREE.MeshStandardMaterial({color: 0xcfcbc3, roughness: 0.9}),
   conc: new THREE.MeshStandardMaterial({color: 0xd3d4d0, roughness: 0.92}),
-  wood: new THREE.MeshStandardMaterial({color: 0x9a6a43, roughness: 0.7}),
-  fac: new THREE.MeshStandardMaterial({color: 0x8aa3b2, roughness: 0.08, metalness: 0.45, emissive: 0x0f0a05, transparent: true, opacity: 0.9}),
-  mull: new THREE.MeshStandardMaterial({color: 0x3b3f44, roughness: 0.6}),
-  rail: new THREE.MeshStandardMaterial({color: 0xcfe7ee, roughness: 0.05, metalness: 0.1, transparent: true, opacity: 0.28, depthWrite: false}),
+  wood: new THREE.MeshStandardMaterial({color: 0xb07a4c, roughness: 0.55, envMapIntensity: 0.5}),
+  fac: new THREE.MeshStandardMaterial({color: 0x1f3a4a, roughness: 0.05, metalness: 0.8, envMapIntensity: 1.0, emissive: 0x1a1208, emissiveIntensity: 0.6}),
+  mull: new THREE.MeshStandardMaterial({color: 0x2e3135, roughness: 0.35, metalness: 0.6}),
+  rail: new THREE.MeshStandardMaterial({color: 0xd8f0f6, roughness: 0.02, metalness: 0.3, envMapIntensity: 1.4, transparent: true, opacity: 0.35, depthWrite: false}),
   led: new THREE.MeshBasicMaterial({color: 0xffd9a0, toneMapped: false}),
-  leaf: new THREE.MeshStandardMaterial({color: 0x5f7f3a, roughness: 0.95}),
-  water: new THREE.MeshBasicMaterial({color: 0x3cc6ea, toneMapped: false}),
-  stone: new THREE.MeshStandardMaterial({color: 0xece6da, roughness: 0.8}),
-  deck: new THREE.MeshStandardMaterial({color: 0xb08259, roughness: 0.75}),
+  leaf: new THREE.MeshStandardMaterial({color: 0x41682a, roughness: 0.95, flatShading: true, envMapIntensity: 0.25}),
+  leaf2: new THREE.MeshStandardMaterial({color: 0x5a8236, roughness: 0.95, flatShading: true, envMapIntensity: 0.25}),
+  leaf3: new THREE.MeshStandardMaterial({color: 0x2f5428, roughness: 0.95, flatShading: true, envMapIntensity: 0.25}),
+  water: new THREE.MeshStandardMaterial({color: 0x2bb8de, roughness: 0.03, metalness: 0.3, envMapIntensity: 1.6, emissive: 0x0d6f8e, emissiveIntensity: 0.55}),
+  stone: new THREE.MeshStandardMaterial({color: 0xf2ece0, roughness: 0.7}),
+  deck: new THREE.MeshStandardMaterial({color: 0xba875a, roughness: 0.6}),
   trunk: new THREE.MeshStandardMaterial({color: 0x6b5643, roughness: 0.9})
 };
 (() => { const c = document.createElement('canvas'); c.width = 64; c.height = 8; const x = c.getContext('2d'); x.fillStyle = '#000'; x.fillRect(0, 0, 64, 8); x.fillStyle = '#fff'; for (let i = 0; i < 64; i += 8) x.fillRect(i, 0, 4, 8); const tx = new THREE.CanvasTexture(c); tx.wrapS = tx.wrapT = THREE.RepeatWrapping; tx.repeat.set(6, 1);
@@ -278,9 +290,9 @@ function drawBase() {
   clear(world); clearLabels(false);
   const G = view === 1 ? GEO.v1 : GEO.v2, E = SAT[view].ext;
   const gw = E[1] - E[0], gh = E[3] - E[2];
-  const gmat = new THREE.MeshStandardMaterial({color: 0xffffff, roughness: 1});
+  const gmat = new THREE.MeshStandardMaterial({color: 0xd6d6d6, roughness: 1, envMapIntensity: 0.1});
   const ground = new THREE.Mesh(new THREE.PlaneGeometry(gw, gh), gmat); ground.rotation.x = -Math.PI / 2; ground.position.set((E[0] + E[1]) / 2, 0, -(E[2] + E[3]) / 2); ground.receiveShadow = true; world.add(ground);
-  const skirt = new THREE.Mesh(new THREE.PlaneGeometry(2400, 2400), new THREE.MeshStandardMaterial({color: 0x8d8f86, roughness: 1})); skirt.rotation.x = -Math.PI / 2; skirt.position.y = -0.05; world.add(skirt);
+  const skirt = new THREE.Mesh(new THREE.PlaneGeometry(2400, 2400), new THREE.MeshStandardMaterial({color: 0x9a9a86, roughness: 1})); skirt.rotation.x = -Math.PI / 2; skirt.position.y = -0.05; world.add(skirt);
   satTex(view, t => { if (t) { gmat.map = t; gmat.needsUpdate = true; } else gmat.color.set(0xb9b8ad); });
   if (layers.nb) G.neighbors.forEach(n => ribbon(n.p, 0xffffff, 0.12, 0.05).children.forEach(m => { m.material.transparent = true; m.material.opacity = 0.45; }));
   if (view === 1) {
@@ -290,7 +302,7 @@ function drawBase() {
       ribbon(G.buildline, 0xffffff, 0.18, 0.13, true, true);
       flat(G.big, 0x6b8fe0, 0.06, layers.nb ? 0.18 : 0);
       const c1 = centroid(G.big); 
-      prism(G.newplot, 0.25, new THREE.MeshStandardMaterial({color: 0xf07a2e, roughness: 0.8, transparent: true, opacity: 0.55}), 0.02, world, false);
+      prism(G.newplot, 0.05, new THREE.MeshStandardMaterial({color: 0xf07a2e, roughness: 0.8, transparent: true, opacity: 0.4, depthWrite: false}), 0.02, world, false);
       ribbon(G.newplot, 0xf07a2e, 0.8, 0.3);
       const c = centroid(G.newplot); addLabel('Νέο 02 · 688 m²', c[0], 16, c[1], 'org');
       const b = centroid(G.block); 
@@ -332,10 +344,10 @@ function building() {
   const cc = centroid(foot);
   if (pil > 0) {
   } else {
-    ribbon(out.zone, 0x1f5fd1, 0.35, 0.2, true, true, mass);
+    ribbon(out.zone, 0x1f5fd1, 0.35, 0.09, true, true, mass);
     const z0 = out.zone[0], z1 = out.zone[1], u = [z1[0] - z0[0], z1[1] - z0[1]], L = Math.hypot(u[0], u[1]), n = [u[0] / L, u[1] / L];
     const r0 = [z0[0] + n[0] * 1, z0[1] + n[1] * 1], r1 = [r0[0] + n[0] * 3.5, r0[1] + n[1] * 3.5];
-    flat([r0, r1, [r1[0] - n[1] * 14, r1[1] + n[0] * 14], [r0[0] - n[1] * 14, r0[1] + n[0] * 14]], 0x1f5fd1, 0.22, 0.45, mass);
+    flat([r0, r1, [r1[0] - n[1] * 14, r1[1] + n[0] * 14], [r0[0] - n[1] * 14, r0[1] + n[0] * 14]], 0x1f5fd1, 0.1, 0.4, mass);
     const el2 = addLabel('P ≈ ' + out.spaces, r1[0] - n[1] * 14, 1, r1[1] + n[0] * 14, 'st'); el2.classList.add('mass');
   }
   const R0 = view === 2 ? 5 : 3.2, OV = 1.7;
@@ -497,6 +509,7 @@ function sunUpdate() {
   sun.position.set(c.x + Math.sin(az) * Math.cos(e) * dist, Math.sin(e) * dist, c.z - Math.cos(az) * Math.cos(e) * dist);
   sun.target.position.copy(c); sun.intensity = el > 0 ? 0.5 + 0.9 * Math.min(1, Math.sin(el) * 2.2) : 0.12;
   hemi.intensity = el > 0 ? 0.42 : 0.3;
+  const warm = Math.max(0, Math.min(1, 1 - Math.sin(Math.max(el, 0)) * 2.4)); sun.color.setRGB(1, 0.93 - 0.2 * warm, 0.8 - 0.35 * warm);
   const hh = Math.floor(hr), mm = Math.round((hr - hh) * 60); $('hourv').textContent = String(hh).padStart(2, '0') + ':' + String(mm).padStart(2, '0');
 }
 $('hour').addEventListener('input', sunUpdate); $('season').addEventListener('change', sunUpdate);
