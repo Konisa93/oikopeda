@@ -986,7 +986,7 @@ function summaryNodes(c) {
     c.underOffer ? el("p", { class: "alert" }, "Η αγγελία είναι «σε διαδικασία προσφοράς» στο Intrum: κάποιος έχει ήδη κάνει προσφορά και μπορεί να κλείσει σύντομα.") : null,
     c.shaky ? el("p", { class: "alert" }, `Αβέβαια νούμερα: ${why.join("· ")}. Μην τα εμπιστευτείς πριν το ελέγξεις.`) : null,
     c.score != null ? el("p", { class: "verdict " + scoreLevel(c.score) }, el("b", {}, `${VERDICT[scoreLevel(c.score)]} · βαθμός ${c.score}. `),
-      c.safety > 0 ? `Η τιμή πώλησης μπορεί να πέσει έως ${Math.round(c.safety * 100)}% (στα ${eur(c.arv * (1 - c.safety))}) πριν μπεις μέσα.` : "Με αυτές τις τιμές δεν υπάρχει περιθώριο: ήδη ζημιά.") : null,
+      c.safety > 0 ? `Η τιμή πώλησης μπορεί να πέσει έως ${Math.round(c.safety * 100)}% (στα ${eur(c.arv * (1 - c.safety))}) πριν έχεις ζημιά.` : "Με αυτές τις τιμές έχεις ήδη ζημιά.") : null,
     el("div", { class: "facts" + (c.shaky ? " shaky" : "") },
       el("div", { class: "fact" }, el("span", { class: "eyebrow" }, "Κέρδος"), el("b", { class: c.profit > 0 ? "pos" : "neg" }, eur(c.profit))),
       el("div", { class: "fact" }, el("span", { class: "eyebrow" }, S.loanPct > 0 ? "ROI ιδίων" : "ROI"), el("b", { class: roiClass(c) }, pct(c.roi)), c.shaky ? null : el("span", { class: "note" }, `${pct(c.annual)} ετήσιο`)),
