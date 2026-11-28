@@ -79,7 +79,15 @@ td:last-child{text-align:right;font-weight:600}
 .kpi div{background:var(--bg);border-radius:8px;padding:8px 10px}.kpi span{display:block;font-size:12px;color:var(--mute)}.kpi b{font-size:16px;white-space:nowrap}.kpi i{display:block;font-style:normal;font-size:12px;font-weight:600}
 .pos{color:#1d8a45}.neg{color:var(--red)}
 @media(max-width:960px){.grid{grid-template-columns:minmax(0,1fr)}.sheet{grid-template-columns:minmax(0,1fr)}}
-@media(max-width:600px){.views button{font-size:12px;padding:0 9px}.stage{height:440px}}
+.attr2{margin:6px 0 0;grid-column:1/-1}
+@media(max-width:600px){
+ h1{font-size:28px}.lede{font-size:14px}.bar{margin:12px 0 10px}.seg{display:grid;grid-template-columns:1fr 1fr;width:100%}.seg .sub{display:none}
+ .band{padding:16px 12px}.stage{height:min(62vh,520px);border-radius:12px}
+ .hud{left:8px;right:8px;top:8px}.views{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;max-width:calc(100% - 52px)}.views::-webkit-scrollbar{display:none}
+ .views button{font-size:12px;padding:0 10px;min-height:34px;white-space:nowrap;flex:none}.north{width:40px;height:40px}
+ .sun{left:8px;right:8px;bottom:8px;padding:4px 8px;gap:6px;flex-wrap:nowrap}.sun>span{display:none}.sun select{font-size:12px;max-width:110px}.sun input[type=range]{min-width:0}
+ .panel{padding:14px}.big b{font-size:36px}.lb{font-size:11px}.inp{grid-template-columns:minmax(0,1fr) 96px}
+}
 @media print{.stage,.bar,.panel,.noprint{display:none!important}.grid{display:block}body{background:#fff;color:#000}}
 </style>
 </head>
@@ -88,7 +96,7 @@ td:last-child{text-align:right;font-weight:600}
 <h1>Τα οικόπεδα στο Χαλάνδρι, σε 3D</h1>
 <p class="lede">Αεροφωτογραφία και όρια Κτηματολογίου σε ΕΓΣΑ87, με το νέο σχέδιο Πεύκο Πολίτη από πάνω. Κόκκινο: το οικόπεδο σήμερα. Πορτοκαλί: το νέο οικόπεδο. Λευκός όγκος: η πολυκατοικία που χωράει.</p>
 <div class="bar">
-<div class="seg" role="group" aria-label="Οικόπεδο"><button id="t1" aria-pressed="true">Οικόπεδο 1 · Καμάρι / Έβρου</button><button id="t2" aria-pressed="false">Οικόπεδο 2 · Αγράφων / Αστυπαλαίας</button></div>
+<div class="seg" role="group" aria-label="Οικόπεδο"><button id="t1" aria-pressed="true">Οικόπεδο 1<span class="sub"> · Καμάρι / Έβρου</span></button><button id="t2" aria-pressed="false">Οικόπεδο 2<span class="sub"> · Αγράφων / Αστυπαλαίας</span></button></div>
 </div>
 <div class="grid">
 <div class="stage" id="stage">
@@ -98,7 +106,7 @@ td:last-child{text-align:right;font-weight:600}
 <div class="views" role="group" aria-label="Θέσεις κάμερας"><button data-v="persp">3/4 προοπτικό</button><button data-v="top">Κάτοψη</button><button data-v="street">Από τον δρόμο</button><button data-v="far">Γειτονιά</button></div>
 <div class="north" title="Βορράς"><svg id="nsvg" viewBox="0 0 30 30" aria-label="Βορράς"><path d="M15 3 L20 17 L15 14 L10 17 Z" fill="#fff"/><text x="15" y="27" text-anchor="middle" font-size="9" font-family="Archivo" font-weight="700" fill="#fff">Β</text></svg></div>
 </div>
-<div class="attr">Αεροφωτογραφία: Esri World Imagery · Όρια: Κτηματολόγιο</div>
+
 <div class="sun">
 <span>Ήλιος</span>
 <select id="season" aria-label="Εποχή"><option value="172">21 Ιουνίου</option><option value="80">21 Μαρτίου</option><option value="355">21 Δεκεμβρίου</option></select>
@@ -107,6 +115,7 @@ td:last-child{text-align:right;font-weight:600}
 </div>
 </div>
 <div class="panel" id="panel"></div>
+<p class="small attr2">Αεροφωτογραφία: Esri World Imagery · Όρια: Κτηματολόγιο</p>
 </div>
 </div>
 
@@ -132,7 +141,7 @@ const insetPoly = (p, d) => { const c = centroid(p); return p.map(a => { const d
 
 const stage = $('stage'), cv = $('cv'), LBL = $('labels');
 const R = new THREE.WebGLRenderer({canvas: cv, antialias: true});
-R.setPixelRatio(Math.min(devicePixelRatio, 2));
+R.setPixelRatio(Math.min(devicePixelRatio, 2)); cv.style.touchAction = 'none';
 R.shadowMap.enabled = true; R.shadowMap.type = THREE.PCFSoftShadowMap;
 R.outputEncoding = THREE.sRGBEncoding; R.toneMapping = THREE.ACESFilmicToneMapping; R.toneMappingExposure = 0.82;
 const scene = new THREE.Scene();
@@ -141,7 +150,7 @@ const cam = new THREE.PerspectiveCamera(38, 1, 0.3, 3000);
 const ctl = new THREE.OrbitControls(cam, cv); ctl.enableDamping = true; ctl.dampingFactor = 0.08; ctl.maxPolarAngle = Math.PI * 0.495; ctl.minDistance = 8; ctl.maxDistance = 500;
 const hemi = new THREE.HemisphereLight(0xdfe9f5, 0x6b5e4a, 0.55); scene.add(hemi);
 const sun = new THREE.DirectionalLight(0xfff1dc, 1.6); sun.castShadow = true;
-sun.shadow.mapSize.set(2048, 2048); sun.shadow.bias = -0.0004; sun.shadow.normalBias = 0.04;
+const SMALL = Math.min(innerWidth, innerHeight) < 700; sun.shadow.mapSize.set(SMALL ? 1024 : 2048, SMALL ? 1024 : 2048); sun.shadow.bias = -0.0004; sun.shadow.normalBias = 0.04;
 Object.assign(sun.shadow.camera, {left: -90, right: 90, top: 90, bottom: -90, near: 1, far: 600});
 scene.add(sun); scene.add(sun.target);
 
@@ -395,6 +404,7 @@ const VIEWS = {
 let tween = null;
 function goView(name, instant) {
   const v = VIEWS[view][name]; const from = {p: cam.position.clone(), t: ctl.target.clone()}, to = {p: new THREE.Vector3(...v[0]), t: new THREE.Vector3(...v[1])};
+  const asp = stage.clientWidth / stage.clientHeight; if (asp < 1.1 && name !== 'street') { const k = Math.min(1.3, 0.95 / asp); to.p.sub(to.t).multiplyScalar(k).add(to.t); }
   if (instant || matchMedia('(prefers-reduced-motion: reduce)').matches) { cam.position.copy(to.p); ctl.target.copy(to.t); ctl.update(); return; }
   tween = {from, to, t0: performance.now(), d: 900};
 }
