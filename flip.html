@@ -5,30 +5,29 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Ευκαιρίες Flip</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Commissioner:wght@400;500;600;650&family=JetBrains+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <style>
 /* Ίδιο σύστημα με το Ευρετήριο Οικοπέδων: φίλτρα & ρυθμίσεις αριστερά, αποτελέσματα δεξιά, λεπτομέρεια σε συρτάρι. */
+/* Σκούρο θέμα «data terminal». Χρώμα μόνο στα δεδομένα, ως φανάρι: πράσινο = καλό, κίτρινο = θέλει έλεγχο, κόκκινο = δεν βγαίνει. */
 :root{
-  --bg:#f4f3ef; --panel:#fffefb; --ink:#1b1f1d; --muted:#5d6561; --line:#dedbd3; --chip:#efede7;
-  --accent:#1d5f4f; --accent-hi:#174d40; --accent-ink:#ffffff; --danger:#b3261e;
-  --ok:#2b7a3d; --warn:#9a5b00;
-  --r-s:4px; --r-m:6px;
+  --bg:#0b0d0c; --panel:#121514; --ink:#eef1ef; --muted:#97a19c; --line:#232826; --chip:#1a1e1c;
+  --accent:#eef1ef; --accent-hi:#ffffff; --accent-ink:#0b0d0c;
+  --ok:#5fd38d; --warn:#e9c46a; --danger:#f07a6a;
+  --ok-t:rgb(95 211 141/.14); --warn-t:rgb(233 196 106/.14); --danger-t:rgb(240 122 106/.14);
+  --r-s:4px; --r-m:8px;
   --ease-out:cubic-bezier(0.23,1,0.32,1);
-  --sans:"Commissioner",system-ui,-apple-system,"Segoe UI",sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  --sans:"Inter Tight",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:dark;
 }
-@media (prefers-color-scheme:dark){:root{
-  --bg:#121614; --panel:#191e1c; --ink:#e8ebe9; --muted:#9ba6a1; --line:#2c3431; --chip:#222927;
-  --accent:#5cc0a2; --accent-hi:#79d0b5; --accent-ink:#08130f; --danger:#f08079;
-  --ok:#6cc483; --warn:#e7a73c; color-scheme:dark}}
 *{box-sizing:border-box}
 html,body{height:100%;margin:0}
 body{display:flex;flex-direction:column}
 ::selection{background:color-mix(in srgb,var(--accent) 30%,transparent)}
 ::placeholder{color:var(--muted);opacity:1}
 .skip{position:absolute;left:8px;top:-60px;z-index:2000;background:var(--panel);padding:8px 12px;border-radius:var(--r-m)}.skip:focus{top:8px}
-body{background:var(--bg);color:var(--ink);font:15px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 var(--sans);font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
 header{display:flex;flex-wrap:wrap;gap:8px 24px;align-items:center;justify-content:space-between;padding-block:12px;padding-inline:max(16px,env(safe-area-inset-left,0px));border-bottom:1px solid var(--line);background:var(--panel)}
 h1{font:650 19px/1.15 var(--sans);margin:0;letter-spacing:-.01em}
 h1 small{display:block;font:400 12.5px/1.3 var(--sans);color:var(--muted);margin-top:3px}
@@ -36,9 +35,9 @@ a{color:var(--accent);text-decoration:none;font-weight:500;background:linear-gra
 @media (hover:hover) and (pointer:fine){a:hover{background-size:100% 1px}}
 input,select,button,summary{font:inherit}
 input:focus-visible,button:focus-visible,a:focus-visible,summary:focus-visible,select:focus-visible,tr:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-button{font:500 14px/1 var(--sans);cursor:pointer;min-height:36px;padding:0 12px;border-radius:var(--r-m);border:1px solid var(--line);background:var(--panel);color:var(--ink);transition:transform 160ms var(--ease-out),border-color 150ms ease;touch-action:manipulation}
+button{font:500 14px/1 var(--sans);cursor:pointer;min-height:36px;padding:0 14px;border-radius:999px;border:1px solid transparent;background:var(--chip);color:var(--ink);transition:transform 160ms var(--ease-out),border-color 150ms ease;touch-action:manipulation}
 button:active{transform:scale(.97)}
-button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:600}
+button.primary{background:var(--ink);color:var(--bg);border-color:var(--ink);font-weight:600}
 button[aria-pressed=true]{background:var(--ink);color:var(--panel);border-color:var(--ink)}
 @media (hover:hover) and (pointer:fine){button:hover{border-color:var(--muted)}}
 
@@ -101,14 +100,14 @@ details.box>.inner{padding:2px 12px 12px;display:flex;flex-direction:column;gap:
 .pick .check{color:var(--warn);font-size:12.5px}
 @media (hover:hover){.pick:hover{border-color:var(--muted)}}
 .stat{display:flex;flex-direction:column}
-.stat b{font:600 18px/1.1 var(--sans);font-variant-numeric:tabular-nums}
+.stat b{font:600 20px/1.1 var(--sans);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
 .stat span{font-size:11.5px;color:var(--muted)}
 
 .tablewrap{padding:0 16px 24px}
 @media (max-width:900px){.tablewrap{overflow-x:auto}th{position:static!important}}
 /* Σε μεσαίες οθόνες κρύβονται δύο βοηθητικές στήλες· φαίνονται στο συρτάρι κάθε ακινήτου. */
-@media (max-width:1560px){.c-ppsm,.c-reno{display:none}}
-@media (max-width:640px){.c-main,.c-ppsm,.c-vsMarket,.c-arv,.c-reno,.c-profit,.c-maxOffer,.c-liq,.c-safety{display:none}#tbody td.title{min-width:0;width:42vw;max-width:42vw}td.title small{display:none}.tablewrap{padding:0 8px 24px}th,td{padding:8px 4px;font-size:13px}.howto{margin:0 8px 10px}.picks{margin:10px 8px 4px}}
+@media (max-width:1800px){.c-ppsm,.c-reno,.c-arv{display:none}}
+@media (max-width:640px){.c-main,.c-ppsm,.c-vsMarket,.c-arv,.c-reno,.c-profit,.c-maxOffer,.c-liq,.c-safety{display:none}#tbody td.title{min-width:0;width:42vw;max-width:42vw}.thumb{display:none}#tbody .score::before{width:24px}td.title small{display:none}.tablewrap{padding:0 8px 24px}th,td{padding:8px 4px;font-size:13px}.howto{margin:0 8px 10px}.picks{margin:10px 8px 4px}}
 .arv-t td{white-space:normal;padding:6px 4px}.arv-t td:last-child{width:96px}.arv-t .note{font-size:11.5px}
 table{width:100%;border-collapse:collapse;font-size:13.5px}
 th,td{padding:9px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle;white-space:nowrap}
@@ -117,19 +116,20 @@ th.num,td.num{text-align:right;font-variant-numeric:tabular-nums}
 th[aria-sort]::after{content:" ↓"}th[aria-sort=ascending]::after{content:" ↑"}
 tbody tr{cursor:pointer}
 @media (hover:hover){tbody tr:hover{background:var(--chip)}}
-td.title{white-space:normal;min-width:240px;max-width:380px}
+td.title{white-space:normal;min-width:260px;max-width:400px}
+.tt{display:flex;gap:12px;align-items:center}.tt>div{min-width:0}
+.thumb{width:52px;height:40px;border-radius:6px;object-fit:cover;background:var(--chip);flex:none}
 td.title b{font-weight:500;display:block;line-height:1.3}
 td.title small{color:var(--muted);font-size:12px}
-.pos{color:var(--ok);font-weight:600}.neg{color:var(--danger)}
+.pos{color:var(--ok);font-weight:600}.mid{color:var(--warn);font-weight:600}.neg{color:var(--danger);font-weight:600}
 .flags{display:flex;gap:4px;flex-wrap:wrap;margin-top:3px}
-.flag{font-size:11px;padding:1px 7px;border-radius:999px;background:var(--chip);color:var(--muted);white-space:nowrap}
-.flag.bad{color:var(--danger)}.flag.warn{color:var(--warn)}.flag.good{color:var(--ok)}
-.liq{display:inline-block;min-width:2.2em;text-align:center;padding:1px 6px;border-radius:999px;background:var(--chip);font-variant-numeric:tabular-nums}.liq.high{color:var(--ok)}.liq.mid{color:var(--warn)}.liq.low{color:var(--danger)}
+.flag{font-size:11.5px;padding:2px 8px;border-radius:999px;background:var(--chip);color:var(--muted);white-space:nowrap}
+.flag.bad{color:var(--danger);background:var(--danger-t)}.flag.warn{color:var(--warn);background:var(--warn-t)}.flag.good{color:var(--ok);background:var(--ok-t)}
+.liq{display:inline-block;min-width:2.6em;text-align:center;padding:2px 8px;border-radius:999px;background:var(--chip);font-weight:600;font-variant-numeric:tabular-nums}.liq.high{color:var(--ok);background:var(--ok-t)}.liq.mid{color:var(--warn);background:var(--warn-t)}.liq.low{color:var(--danger);background:var(--danger-t)}
 .liqbox{border:1px solid var(--line);border-left:4px solid var(--muted);border-radius:8px;padding:10px 12px;margin:12px 0}.liqbox.high{border-left-color:var(--ok)}.liqbox.mid{border-left-color:var(--warn)}.liqbox.low{border-left-color:var(--danger)}.liqbox ul{margin:6px 0 0;padding-left:18px;font-size:13px;color:var(--muted)}
-.score{display:inline-block;min-width:2.6em;text-align:center;padding:2px 8px;border-radius:999px;font-weight:650;font-variant-numeric:tabular-nums;background:var(--chip);color:var(--muted)}
-.score.hi{background:color-mix(in srgb,var(--ok) 20%,transparent);color:var(--ok)}
-.score.mid{background:color-mix(in srgb,var(--warn) 18%,transparent);color:var(--warn)}
-.score.lo{color:var(--muted)}
+.score{display:inline-flex;align-items:center;gap:8px;font-weight:650;font-variant-numeric:tabular-nums;color:var(--muted)}
+.score::before{content:"";width:48px;height:5px;border-radius:3px;background:linear-gradient(currentColor,currentColor) 0 0/var(--w,0%) 100% no-repeat,var(--chip)}
+.score.hi{color:var(--ok)}.score.mid{color:var(--warn)}.score.lo{color:var(--danger)}
 th .sortbtn{all:unset;cursor:pointer;display:inline-flex;gap:3px;align-items:center;min-height:24px;border-radius:var(--r-s)}
 th .sortbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 th{cursor:default}
@@ -142,6 +142,12 @@ th{cursor:default}
 #fclear:not([hidden]){display:inline-flex;align-items:center}
 @media (min-width:901px){.sheethead{display:none}}
 .empty{padding:40px 16px;color:var(--muted)}
+.verdict{border-radius:var(--r-m);padding:10px 12px;font-size:13.5px;margin:0;background:var(--chip)}
+.verdict b{font-weight:650}.verdict.hi{background:var(--ok-t)}.verdict.hi b{color:var(--ok)}.verdict.mid{background:var(--warn-t)}.verdict.mid b{color:var(--warn)}.verdict.lo{background:var(--danger-t)}.verdict.lo b{color:var(--danger)}
+.wi{display:flex;flex-direction:column;gap:8px}.wi-row{display:grid;grid-template-columns:minmax(120px,40%) 1fr 64px 84px;gap:10px;align-items:center;font-size:13px}
+.wi-row>span:first-child{color:var(--muted)}.wi-row>span:nth-child(n+3){text-align:right;font-variant-numeric:tabular-nums}
+.track{height:8px;border-radius:4px;background:var(--bg);overflow:hidden}.track b{display:block;height:100%;border-radius:4px;background:currentColor}
+.legend{display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:var(--muted)}.legend i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:8px}
 .empty ul{margin:8px 0 12px;padding-left:18px}
 textarea{width:100%;min-height:76px;padding:8px 10px;border:1px solid var(--line);border-radius:var(--r-m);background:var(--bg);color:var(--ink);font:inherit;font-size:14px;line-height:1.45;resize:vertical}
 textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
@@ -253,6 +259,12 @@ footer{font-size:12px;color:var(--muted);line-height:1.5}
       <button type="button" id="export">Εξαγωγή CSV</button>
       <button type="button" id="cfg-export">Αποθήκευση ρυθμίσεων</button>
       <label class="btnrow"><button type="button" id="cfg-import-btn">Φόρτωση ρυθμίσεων</button><input type="file" id="cfg-import" accept="application/json" hidden></label>
+    </div>
+    <div class="legend" aria-label="Υπόμνημα χρωμάτων">
+      <span><i style="background:var(--ok)"></i>Καλή ευκαιρία · βαθμός 60+ · ROI πάνω από τον στόχο</span>
+      <span><i style="background:var(--warn)"></i>Θέλει έλεγχο · βαθμός 35–59 · ROI θετικό</span>
+      <span><i style="background:var(--danger)"></i>Δεν βγαίνει · βαθμός κάτω από 35 · ζημιά</span>
+      <span><i style="background:var(--muted)"></i>Γκρι: αβέβαια νούμερα</span>
     </div>
     <footer>Πηγή αγγελιών: Intrum Marketplace (δημόσιες σελίδες). Η λίστα ανανεώνεται όταν ξεκινήσεις την ενημέρωση από το GitHub (Actions → «Ανανέωση αγγελιών Intrum»). Οι υπολογισμοί είναι ενδεικτικοί, βασίζονται σε ζητούμενες τιμές και στις δικές σου ρυθμίσεις κόστους. Πριν από προσφορά: αυτοψία, έλεγχος τίτλων, αυθαιρέτων και βαρών. Οι φωτογραφίες του Intrum μπορεί να είναι επεξεργασμένες.</footer>
   </aside>
@@ -744,11 +756,11 @@ function renderPicks() {
       el("span", { class: "rank" }, `${i + 1} · ${p.label}`),
       el("h3", {}, l.title),
       el("div", { class: "nums" },
-        el("span", {}, "Βαθμός ", el("span", { class: "score " + scoreLevel(c.score) }, c.score ?? "—")),
+        el("span", {}, "Βαθμός ", scoreEl(c.score)),
         el("span", {}, "Τιμή ", el("b", {}, eur(l.price))),
-        el("span", {}, "ROI ", el("b", { class: c.roi > 0 ? "pos" : "neg" }, pct(c.roi))),
-        el("span", {}, "Κέρδος ", el("b", { class: c.profit > 0 ? "pos" : "neg" }, eur(c.profit))),
-        el("span", {}, "Αντοχή ", el("b", {}, safetyText(c.safety)))),
+        el("span", {}, "ROI ", el("b", { class: roiClass(c) }, pct(c.roi))),
+        el("span", {}, "Κέρδος ", el("b", { class: c.profit > 0 ? (c.shaky ? "dim" : "pos") : "neg" }, eur(c.profit))),
+        el("span", {}, "Αντοχή ", el("b", { class: safetyClass(c.safety) }, safetyText(c.safety)))),
       c.underOffer ? el("p", { class: "check" }, "Προσοχή: η αγγελία είναι «σε διαδικασία προσφοράς», άρα μπορεί να κλείσει σύντομα.") : null,
       el("p", {}, p.why),
       el("p", { class: "check" }, "Έλεγξε: " + p.check));
@@ -774,6 +786,11 @@ const COLS = [
   ["reno", "Ανακαίνιση", (c) => c.renoTot, "Κόστος ανακαίνισης με απρόβλεπτα"],
 ];
 const scoreLevel = (v) => v == null ? "" : v >= 60 ? "hi" : v >= 35 ? "mid" : "lo";
+// Φανάρι: πράσινο = πιάνει τον στόχο, κίτρινο = θετικό αλλά κάτω από τον στόχο, κόκκινο = ζημιά.
+const roiClass = (c) => c.roi == null ? "" : c.shaky && c.roi > 0 ? "dim" : c.roi >= S.targetRoi / 100 ? "pos" : c.roi >= 0 ? "mid" : "neg";
+const safetyClass = (v) => v == null ? "" : v >= 0.2 ? "pos" : v >= 0.1 ? "mid" : "neg";
+const scoreEl = (v) => el("span", { class: "score " + scoreLevel(v), style: `--w:${v ?? 0}%` }, v ?? "—");
+const VERDICT = { hi: "Καλή ευκαιρία", mid: "Θέλει έλεγχο", lo: "Δεν βγαίνει" };
 const safetyText = (v) => v == null ? "—" : v <= 0 ? "0%" : Math.round(v * 100) + "%";
 // Η μέγιστη προσφορά δεν εμφανίζεται ποτέ πάνω από τη ζητούμενη τιμή: πάνω από αυτήν δεν έχει νόημα να προσφέρεις.
 const offerText = (c) => !(c.maxOffer > 0) ? "—" : c.l.price && c.maxOffer >= c.l.price ? "η ζητούμενη" : eur(c.maxOffer);
@@ -792,8 +809,10 @@ function row(c) {
   const loc = [l.neighborhood?.name, l.area?.name, l.region?.name].filter(Boolean).join(", ");
   const dimmed = (good) => good ? (c.shaky ? "dim" : "pos") : "";
   const cell = {
-    title: () => el("td", { class: "title c-title" }, el("b", {}, l.title), el("small", {}, loc || "—", " · ", l.code),
-      el("div", { class: "flags" }, c.flags.map(([t, k]) => el("span", { class: "flag " + k }, t)))),
+    title: () => el("td", { class: "title c-title" }, el("div", { class: "tt" },
+      l.image ? el("img", { class: "thumb", src: l.image, alt: "", loading: "lazy", onerror: (e) => e.target.replaceWith(el("span", { class: "thumb" })) }) : el("span", { class: "thumb" }),
+      el("div", {}, el("b", {}, l.title), el("small", {}, loc || "—", " · ", l.code),
+        el("div", { class: "flags" }, c.flags.map(([t, k]) => el("span", { class: "flag " + k }, t)))))),
     price: () => el("td", { class: "num c-price" }, l.price ? eur(l.price) : "κατ' αίτηση"),
     main: () => el("td", { class: "num c-main" }, num(c.main)),
     ppsm: () => el("td", { class: "num c-ppsm" }, num(c.ppsm)),
@@ -801,11 +820,11 @@ function row(c) {
     arv: () => el("td", { class: "num c-arv" }, eur(c.arv)),
     reno: () => el("td", { class: "num c-reno" }, eur(c.renoTot)),
     profit: () => el("td", { class: "num c-profit " + (c.profit > 0 ? dimmed(true) : c.profit < 0 ? "neg" : ""), title: c.shaky && c.profit > 0 ? "Αβέβαιο: δες τις ετικέτες" : null }, eur(c.profit)),
-    roi: () => el("td", { class: "num c-roi " + (c.roi > 0 ? dimmed(true) : c.roi < 0 ? "neg" : "") }, pct(c.roi)),
+    roi: () => el("td", { class: "num c-roi " + roiClass(c) }, pct(c.roi)),
     liq: () => el("td", { class: "num c-liq", title: `${LIQ_LABEL[c.liq.level]} ρευστότητα · πώληση σε ~${c.liq.months} μήνες` + (c.liq.why.length ? "\n" + c.liq.why.map(([p, t]) => `${p} ${t}`).join("\n") : "") }, el("span", { class: "liq " + c.liq.level }, c.liq.score)),
-    score: () => el("td", { class: "num c-score" }, el("span", { class: "score " + scoreLevel(c.score) }, c.score ?? "—")),
+    score: () => el("td", { class: "num c-score" }, scoreEl(c.score)),
     maxOffer: () => el("td", { class: "num c-maxOffer" }, offerText(c)),
-    safety: () => el("td", { class: "num c-safety " + (c.safety >= 0.2 ? "pos" : c.safety < 0.1 ? "neg" : "") }, safetyText(c.safety)),
+    safety: () => el("td", { class: "num c-safety " + safetyClass(c.safety) }, safetyText(c.safety)),
   };
   const tr = el("tr", { tabindex: "0", onclick: () => openDrawer(c), onkeydown: (e) => { if (e.key === "Enter") openDrawer(c); } },
     COLS.map(([k]) => cell[k]()));
@@ -817,10 +836,15 @@ function render() {
   const get = COLS.find(([k]) => k === sortKey)?.[2] || ((c) => c.roi);
   ROWS.sort((a, b) => (get(a) - get(b)) * sortDir);
   const good = ROWS.filter((c) => c.roi >= S.targetRoi / 100);
+  const byLevel = { hi: 0, mid: 0, lo: 0 };
+  for (const c of ROWS) if (c.score != null) byLevel[scoreLevel(c.score)]++;
   $("stats").replaceChildren(
     el("div", { class: "stat" }, el("b", {}, nf.format(ROWS.length)), el("span", {}, `από ${nf.format(DATA.length)} αγγελίες`)),
-    el("div", { class: "stat" }, el("b", { class: "pos" }, nf.format(good.length)), el("span", {}, `με ROI ≥ ${pn(S.targetRoi)}%`)),
-    el("div", { class: "stat" }, el("b", {}, pct(medianAny(ROWS.map((c) => c.roi)))), el("span", {}, "διάμεσο ROI")),
+    el("div", { class: "stat" }, el("b", { class: "pos" }, nf.format(byLevel.hi)), el("span", {}, "καλές ευκαιρίες (60+)")),
+    el("div", { class: "stat" }, el("b", { class: "mid" }, nf.format(byLevel.mid)), el("span", {}, "θέλουν έλεγχο")),
+    el("div", { class: "stat" }, el("b", { class: "neg" }, nf.format(byLevel.lo)), el("span", {}, "δεν βγαίνουν")),
+    el("div", { class: "stat" }, el("b", { class: good.length ? "pos" : "" }, nf.format(good.length)), el("span", {}, `με ROI ≥ ${pn(S.targetRoi)}%`)),
+    (() => { const m = medianAny(ROWS.map((c) => c.roi)); return el("div", { class: "stat" }, el("b", { class: m == null ? "" : m >= S.targetRoi / 100 ? "pos" : m >= 0 ? "mid" : "neg" }, pct(m)), el("span", {}, "διάμεσο ROI")); })(),
   );
   const nAct = activeFilters().length;
   $("fclear").hidden = !nAct;
@@ -961,11 +985,12 @@ function summaryNodes(c) {
   return [
     c.underOffer ? el("p", { class: "alert" }, "Η αγγελία είναι «σε διαδικασία προσφοράς» στο Intrum: κάποιος έχει ήδη κάνει προσφορά και μπορεί να κλείσει σύντομα.") : null,
     c.shaky ? el("p", { class: "alert" }, `Αβέβαια νούμερα: ${why.join("· ")}. Μην τα εμπιστευτείς πριν το ελέγξεις.`) : null,
+    c.score != null ? el("p", { class: "verdict " + scoreLevel(c.score) }, el("b", {}, `${VERDICT[scoreLevel(c.score)]} · βαθμός ${c.score}. `),
+      c.safety > 0 ? `Η τιμή πώλησης μπορεί να πέσει έως ${Math.round(c.safety * 100)}% (στα ${eur(c.arv * (1 - c.safety))}) πριν μπεις μέσα.` : "Με αυτές τις τιμές δεν υπάρχει περιθώριο: ήδη ζημιά.") : null,
     el("div", { class: "facts" + (c.shaky ? " shaky" : "") },
       el("div", { class: "fact" }, el("span", { class: "eyebrow" }, "Κέρδος"), el("b", { class: c.profit > 0 ? "pos" : "neg" }, eur(c.profit))),
-      el("div", { class: "fact" }, el("span", { class: "eyebrow" }, S.loanPct > 0 ? "ROI ιδίων" : "ROI"), el("b", { class: c.roi > 0 ? "pos" : "neg" }, pct(c.roi)), c.shaky ? null : el("span", { class: "note" }, `${pct(c.annual)} ετήσιο`)),
+      el("div", { class: "fact" }, el("span", { class: "eyebrow" }, S.loanPct > 0 ? "ROI ιδίων" : "ROI"), el("b", { class: roiClass(c) }, pct(c.roi)), c.shaky ? null : el("span", { class: "note" }, `${pct(c.annual)} ετήσιο`)),
       el("div", { class: "fact" }, el("span", { class: "eyebrow" }, "Μέγ. προσφορά"), el("b", {}, offerText(c)), el("span", { class: "note" }, `για ROI ${pn(S.targetRoi)}%`))),
-    c.safety != null ? el("p", { class: "note" }, c.safety > 0 ? `Αντοχή: η τιμή πώλησης μπορεί να πέσει έως ${Math.round(c.safety * 100)}% (στα ${eur(c.arv * (1 - c.safety))}) πριν μπεις μέσα.` : "Αντοχή: με αυτές τις τιμές δεν υπάρχει περιθώριο· ήδη ζημιά.") : null,
     el("div", { class: "liqbox " + c.liq.level },
       el("div", {}, el("span", { class: "eyebrow" }, "Ρευστότητα"), " ", el("b", {}, `${c.liq.score}/100 · ${LIQ_LABEL[c.liq.level]}`), el("span", { class: "note" }, ` · πώληση σε ~${c.liq.months} μήνες · βαθμός ευκαιρίας ${c.score ?? "—"}/100`)),
       c.liq.why.length ? el("ul", {}, c.liq.why.map(([p, t]) => el("li", {}, `${p} · ${t}`))) : el("p", { class: "note" }, "Κανένας παράγοντας που δυσκολεύει την πώληση.")),
@@ -1000,14 +1025,14 @@ function whatIfNodes(c) {
   const SC = [["Όπως εκτιμάται", {}], ["Πώληση −10%", { arvMul: 0.9 }], ["Πώληση −20%", { arvMul: 0.8 }],
     ["Ανακαίνιση +30%", { renoMul: 1.3 }], ["+6 μήνες καθυστέρηση", { extraMonths: 6 }],
     ["Όλα μαζί: −10%, +30%, +6 μήνες", { arvMul: 0.9, renoMul: 1.3, extraMonths: 6 }]];
-  const t = el("table", { class: "whatif" },
-    el("thead", {}, el("tr", {}, el("th", { scope: "col" }, "Σενάριο"), el("th", { scope: "col", class: "num" }, "Κέρδος"), el("th", { scope: "col", class: "num" }, "ROI"))),
-    el("tbody", {}, SC.map(([name, sc], i) => {
-      const r = i ? calc(c.l, sc) : c;
-      return el("tr", { class: i ? "" : "base" }, el("td", {}, name),
-        el("td", { class: "num " + (r.profit > 0 ? "pos" : "neg") }, eur(r.profit)),
-        el("td", { class: "num " + (r.roi > 0 ? "pos" : "neg") }, pct(r.roi)));
-    })));
+  const res = SC.map(([name, sc], i) => [name, i ? calc(c.l, sc) : c]);
+  const top = Math.max(0.0001, ...res.map(([, r]) => r.roi ?? 0));
+  const t = el("div", { class: "wi" }, res.map(([name, r]) => {
+    const cls = roiClass({ roi: r.roi, shaky: false });
+    return el("div", { class: "wi-row " + cls }, el("span", {}, name),
+      el("div", { class: "track" }, el("b", { style: `width:${Math.max(0, (r.roi ?? 0) / top) * 100}%` })),
+      el("span", {}, pct(r.roi)), el("span", {}, eur(r.profit)));
+  }));
   return [el("div", { class: "eyebrow" }, "Τι γίνεται αν"), t];
 }
 
@@ -1110,7 +1135,7 @@ function drawMap() {
   if (typeof L === "undefined") { $("map").textContent = "Ο χάρτης δεν φόρτωσε (το Leaflet δεν είναι διαθέσιμο). Δοκίμασε ανανέωση της σελίδας."; return; }
   if (!map) {
     map = L.map("map", { preferCanvas: true }).setView([38.3, 23.8], 7);
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 19, attribution: "© OpenStreetMap" }).addTo(map);
+    L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", { maxZoom: 19, subdomains: "abcd", attribution: "© OpenStreetMap · © CARTO" }).addTo(map);
     layer = L.layerGroup().addTo(map);
   }
   layer.clearLayers();
@@ -1129,7 +1154,7 @@ function drawMap() {
   for (const c of ROWS) {
     if (c.l.lat == null) continue;
     pts.push([c.l.lat, c.l.lng]);
-    L.circleMarker([c.l.lat, c.l.lng], { radius: 6, weight: 1, color: "#fff", fillColor: color(c.score), fillOpacity: 0.9 })
+    L.circleMarker([c.l.lat, c.l.lng], { radius: 6, weight: 1, color: tok("--bg"), fillColor: color(c.score), fillOpacity: 0.9 })
       .bindTooltip(el("span", {}, c.l.title, el("br"), `${eur(c.l.price)} · βαθμός ${c.score ?? "—"} · ROI ${pct(c.roi)}`)).on("click", () => openDrawer(c)).addTo(layer);
   }
   setTimeout(() => { map.invalidateSize(); if (pts.length) map.fitBounds(pts, { padding: [30, 30], maxZoom: 13 }); }, 50);
